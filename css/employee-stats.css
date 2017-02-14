@@ -1,0 +1,57 @@
+clrs {
+	color: #00bdfa;/* valtech blue */
+	color: #363636;/* valtech dark grey */
+	color: #ecedee;/* valtech light grey */
+	color: #d60042;/* valtech red */
+	color: #fecc00;/* valtech yellow */
+}
+
+/*-- Start interface --*/
+
+	button {
+		display: inline-block;
+		margin: 0.5em;
+		padding: 0.5em;
+	}
+
+/*-- End interface --*/
+
+/*-- Start general styles --*/
+
+	svg {
+		/*background: lightblue;*/
+	}
+
+	#defsHolder {
+		height: 0;
+		width: 0;
+	}
+
+	.employee {
+		fill: #00bdfa;/* valtech blue */
+		stroke: #363636;/* valtech dark grey */
+		stroke-width: 2px;
+	}
+
+/*-- End general styles --*/
+
+
+
+/*-- Start topographic stuff --*/
+	.province {
+		fill: #ecedee;/* valtech light grey */
+		fill: #ddd;
+		stroke: #fff;
+		stroke-width: 0.5;
+	}
+	.province:hover {
+		/*fill: #333;*/
+	}
+
+	.office {
+		fill: rgba(0,0,0, 0.8);
+		fill: #fecc00;/* valtech yellow */;
+		fill: #d60042;/* valtech red */
+		fill: rgba(0, 189, 250, 0.5);/* valtech blue */
+	}
+/*-- End topographic stuff --*/

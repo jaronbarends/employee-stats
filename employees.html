@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="nl-nl">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<title>Who are we?</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="stylesheet" href="css/employee-stats.css">
+</head>
+<body>
+	<div class="o-content-width">
+	
+		<svg id="defsHolder">
+			<defs id="imageDefs"></defs>
+		</svg>
+		
+		<p>
+			<button id="combined">Combined</button>
+			<button id="split-by-gender">Split by gender</button>
+			<button id="split-by-discipline">Split by discipline</button>
+			<button id="split-by-hometown">Split by hometown</button>
+		</p>
+
+
+		<div id="chart">
+		</div>
+
+		
+		<div id="element-lib" class="element-lib u-is-invisible">
+			<div class="bubble"></div>
+		</div>
+
+	</div><!-- /.o-content-width -->
+
+
+	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	
+	<script src="js/employees.js"></script>
+		
+
+		
+	</script>
+</body>
+</html>
