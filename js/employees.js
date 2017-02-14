@@ -5,10 +5,10 @@
 	// vars for graph's svg
 	var sgSvg,
 		sgSvgMargin = {
-			top: 20, 
-			left: 20,
-			right: 20,
-			bottom: 20
+			top: 0, 
+			left: 0,
+			right: 0,
+			bottom: 0
 		},
 		sgSvgCanvasWidth = 500,
 		sgSvgCanvasHeight = 600,
@@ -60,8 +60,7 @@
 			* @param {object} d current object's data
 			*/
 			var forceXHometown = function(d) {
-				var x = d.hometownX;
-				x = x | 10;
+				var x = d.hometownX || 20;
 				return x;
 			};
 
@@ -71,13 +70,7 @@
 			* @param {object} d current object's data
 			*/
 			var forceYHometown = function(d) {
-				var y = d.hometownY;
-				console.log(y);
-				if (!y) {
-					y = 10;
-				}
-				// y = y | 10;
-				console.log(y);
+				var y = d.hometownY || 120;
 				return y;
 			};
 
@@ -141,7 +134,7 @@
 		* @returns {force}
 		*/
 		var xForce = function(forceFunction) {
-			return d3.forceX(forceFunction)//.strength(sgForceStrength);
+			return d3.forceX(forceFunction).strength(sgForceStrength);
 		};
 		
 
@@ -152,7 +145,7 @@
 		* @returns {force}
 		*/
 		var yForce = function(forceFunction) {
-			return d3.forceY(forceFunction)//.strength(sgForceStrength);
+			return d3.forceY(forceFunction).strength(sgForceStrength);
 		};
 		
 		
@@ -165,7 +158,7 @@
 		var initSimulation = function() {
 			sgSimulation = d3.forceSimulation()
 				.force('forceX', xForce(forceXCenter))
-				.force('forceY', yForce(forceYCenter).strength(sgForceStrength))
+				.force('forceY', yForce(forceYCenter))
 				.force('collide', d3.forceCollide(sgNodeSize + sgNodeSpacing));
 		};
 
@@ -173,20 +166,6 @@
 	//-- End force / simulation functions
 
 
-
-	/**
-	* split employees by hometown
-	* @returns {undefined}
-	*/
-	var splitByHometown = function() {
-		sgNodes.attr('cx', function(d) {
-				return d.hometownX;
-			})
-			.attr('cy', function(d) {
-				return d.hometownY;
-			})
-	};
-	
 
 
 	/**
@@ -258,10 +237,10 @@
 		});
 		
 		d3.select('#split-by-hometown').on('click', function() {
-			sgSimulation.stop();
-			splitByHometown();
-			// changeForce('forceX', xForce(forceXHometown));
-			// changeForce('forceY', xForce(forceYHometown));
+			// sgSimulation.stop();
+			// splitByHometown();
+			changeForce('forceX', xForce(forceXHometown));
+			changeForce('forceY', yForce(forceYHometown));
 		});
 
 		d3.select('#combined').on('click', function() {
