@@ -22,12 +22,14 @@
 
 	// vars for employee nodes
 	var sgNodes,
-		sgNodeSize = 2,
+		sgDefaultNodeSize = 5,
+		sgNodeSize = sgDefaultNodeSize,
 		sgNodeSpacing = 1;
 
 	// vars for geo stuff
 	var sgProjection,
-		sgPath;
+		sgPath,
+		sgMap;
 
 	// vars for simulation
 	var sgSimulation,
@@ -147,6 +149,17 @@
 		var yForce = function(forceFunction) {
 			return d3.forceY(forceFunction).strength(sgForceStrength);
 		};
+
+
+
+		/**
+		* reset the collision force
+		* @returns {undefined}
+		*/
+		var setDefaultCollisionForce = function() {
+			sgSimulation.force('collide', d3.forceCollide(sgNodeSize + sgNodeSpacing));
+		};
+		
 		
 		
 
@@ -158,8 +171,8 @@
 		var initSimulation = function() {
 			sgSimulation = d3.forceSimulation()
 				.force('forceX', xForce(forceXCenter))
-				.force('forceY', yForce(forceYCenter))
-				.force('collide', d3.forceCollide(sgNodeSize + sgNodeSpacing));
+				.force('forceY', yForce(forceYCenter));
+			setDefaultCollisionForce();	
 		};
 
 
@@ -190,6 +203,18 @@
 				console.log(name);
 			});
 	};
+
+
+	/**
+	* set size of employee nodes
+	* @returns {undefined}
+	*/
+	var setNodeSize = function(size) {
+		sgNodeSize = size || sgDefaultNodeSize;
+		sgSvg.selectAll('.employee')
+			.attr('r', sgNodeSize);
+	};
+	
 
 
 	/**
@@ -227,23 +252,33 @@
 	var initButtons = function() {
 		
 		d3.select('#split-by-gender').on('click', function() {
+			hideMap();
+			setNodeSize();
+			setDefaultCollisionForce();
 			changeForce('forceX', xForce(forceXGender));
 			changeForce('forceY', yForce(forceYCenter));
 		});
 		
 		d3.select('#split-by-discipline').on('click', function() {
+			hideMap();
+			setNodeSize();
+			setDefaultCollisionForce();
 			changeForce('forceX', xForce(forceXDiscipline));
 			changeForce('forceY', yForce(forceYCenter));
 		});
 		
 		d3.select('#split-by-hometown').on('click', function() {
-			// sgSimulation.stop();
-			// splitByHometown();
+			setNodeSize(2);
+			showMap();
 			changeForce('forceX', xForce(forceXHometown));
 			changeForce('forceY', yForce(forceYHometown));
+			setDefaultCollisionForce();
 		});
 
 		d3.select('#combined').on('click', function() {
+			hideMap();
+			setNodeSize();
+			setDefaultCollisionForce();
 			changeForce('forceX', xForce(forceXCenter));
 			changeForce('forceY', yForce(forceYCenter));
 		});
@@ -266,11 +301,12 @@
 			sgProjection = d3.geoMercator().fitSize([sgSvgWidth, sgSvgHeight], geojson);
 			sgPath = d3.geoPath().projection(sgProjection);
 
-			var geoG = sgSvg.append('g')
+			sgMap = sgSvg.append('g')
 				.attr('id', 'geo-group')
+				.attr('class', 'map')
 				.attr('translate', sgGroupTranslate);
 
-			geoG.selectAll('.province')
+			sgMap.selectAll('.province')
 				.data(provinces)
 				.enter()
 				.append('path')
@@ -279,8 +315,27 @@
 				.on('click', function(d) {
 					// console.log(d.properties.OMSCHRIJVI);
 					// console.log(d.properties.name);
-				})
+				});
 		};
+
+
+		/**
+		* show the map
+		* @returns {undefined}
+		*/
+		var showMap = function() {
+			sgMap.classed('map--is-active', true);
+		};
+
+
+		/**
+		* hide the map
+		* @returns {undefined}
+		*/
+		var hideMap = function() {
+			sgMap.classed('map--is-active', false);
+		};
+		
 
 
 
@@ -301,7 +356,7 @@
 		* @returns {undefined}
 		*/
 		var addOffices = function(offices) {
-			sgSvg.selectAll('.office')
+			sgMap.selectAll('.office')
 				.data(offices)
 				.enter()
 				.append('circle')
