@@ -1,17 +1,26 @@
-id,firstName,preposition,lastName,imageUrl,gender,discipline,hometown,office,birthdate,since
-0,Bart,,Plasmeijer,Bart_Plasmeijer-kleur.jpg,male,backend development,leusden,amersfoort,,
-1,Reina,,Zwarts,E295_eFocus_Reina_Zwarts.jpg,female,frontend development,amersfoort,amersfoort,,
-2,Chris,van de,Steeg,eFocus_E307_Chris_van_de_Steeg.jpg,male,backend development,leusden,amersfoort,,
-3,Karin,,Horenberg,eFocus_E310_Karin_Horenberg.jpg,female,backend development,leusden,amersfoort,,
-4,Arjan,den,Os,eFocus_E319_Arjan_van_den_Os.jpg,male,visual design,woudenberg,amersfoort,,
-5,Guido,van,Tricht,eFocus_Guido_van_Tricht-kleur.jpg,male,backend development,driebergen-rijsenburg,amersfoort,,
-6,Ermo,,Leenders,ermo.jpg,male,interaction design,zeist,amersfoort,,
-7,Frank,,Nijmeijer,frank-nijmeijer.jpg,male,backend development,soest,amersfoort,,
-8,Jorian,,Pieneman,jorian-pieneman-intranet.jpg,male,information architecture,zwolle,amersfoort,,
-9,Manon,,Bruinekreeft,manon_bruinekreeft_intranet.jpg,female,project management,barneveld,amersfoort,,
-10,Mo,,Cornelisz,mo_cornelisz_intranet.jpg,female,online marketing,utrecht,52.09073739999999,5.121420100000023amersfoort,,
-11,Ralf,van den,Burg,Ralf_vd_Burg.jpg,male,backend development,barneveld,amersfoort,,
-12,Stefan,,Kuiper,stefan_kuiper_intranet.jpg,male,frontend development,zwolle,amersfoort,,
-13,Jarón,,Barends,eFocus_E328_Jaron_Barends.jpg,male,frontend development,driebergen-rijsenburg,amersfoort,,
-14,Gert-Jan,,Fröberg,eFocus_E395_Gert-Jan_Froberg-kleur.jpg,male,service management,leusden,amersfoort,,
-15,Reinoud,van,Dalen,eFocus_E330_Reinoud_van_Dalen.jpg,male,backend development,lelystad,amersfoort,,
+firstName,preposition,lastName,gender,discipline,hometown,office
+Bart,,Plasmeijer,male,backend development,leusden,amersfoort
+Reina,,Zwarts,female,frontend development,amersfoort,amersfoort
+Chris,van de,Steeg,male,backend development,leusden,amersfoort
+Karin,,Horenberg,female,backend development,leusden,amersfoort
+Arjan,den,Os,male,visual design,woudenberg,amersfoort
+Guido,van,Tricht,male,backend development,driebergen-rijsenburg,amersfoort
+Ermo,,Leenders,male,interaction design,zeist,amersfoort
+Frank,,Nijmeijer,male,backend development,soest,amersfoort
+Jorian,,Pieneman,male,information architecture,zwolle,amersfoort
+Manon,,Bruinekreeft,female,project management,barneveld,amersfoort
+Mo,,Cornelisz,female,online marketing,utrecht,amersfoort
+Ralf,van den,Burg,male,backend development,barneveld,amersfoort
+Stefan,,Kuiper,male,frontend development,zwolle,amersfoort
+Jarón,,Barends,male,frontend development,driebergen-rijsenburg,amersfoort
+Gert-Jan,,Fröberg,male,service management,leusden,amersfoort
+Reinoud,van,Dalen,male,backend development,lelystad,amersfoort
+Talitha,,Kostwinder,female,interaction design,utrecht,amersfoort
+Jeroen,van,Rijn,male,visual design,utrecht,amersfoort
+Joost,van,Eeden,male,project management,amsterdam,amersfoort
+Nicole,,Stroosnijder,female,sales,de meern,amersfoort
+Bart,van,Vuuren,male,sales,zeist,amersfoort
+Ernestien,van de,Griendt,female,project management,utrecht,amersfoort
+Tim,,Keijne,male,information architecture,zwolle,amersfoort
+Daniël,,Hoetmer,male,information architecture,utrecht,amersfoort
+Barry,van,Oven,male,frontend development,amersfoort,amersfoort

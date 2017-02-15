@@ -2,19 +2,14 @@
 
 	'use strict';
 
+	var $sgBody = $('body');
+	
 	// vars for graph's svg
 	var sgSvg,
-		sgSvgMargin = {
-			top: 0, 
-			left: 0,
-			right: 0,
-			bottom: 0
-		},
-		sgSvgCanvasWidth = 500,
-		sgSvgCanvasHeight = 600,
-		sgSvgWidth = sgSvgCanvasWidth - sgSvgMargin.left - sgSvgMargin.right,
-		sgSvgHeight = sgSvgCanvasHeight - sgSvgMargin.top - sgSvgMargin.bottom,
-		sgGroupTranslate = 'translate(' + sgSvgMargin.left + ', ' + sgSvgMargin.top + ')';
+		$sgSvg,
+		sgSvgWidth,
+		sgSvgHeight,
+		sgGroupTranslate = 'translate(0,0)';
 
 	// vars for svg-groups
 	var sgEmployeesG,
@@ -22,14 +17,16 @@
 
 	// vars for employee nodes
 	var sgNodes,
-		sgDefaultNodeSize = 5,
+		sgDefaultNodeSize = 8,
 		sgNodeSize = sgDefaultNodeSize,
-		sgNodeSpacing = 1;
+		sgDefaultNodeSpacing = 2,
+		sgNodeSpacing = sgDefaultNodeSpacing;
 
 	// vars for geo stuff
 	var sgProjection,
 		sgPath,
-		sgMap;
+		sgMap,
+		sgCities;
 
 	// vars for simulation
 	var sgSimulation,
@@ -43,11 +40,11 @@
 	* create svg for graph
 	* @returns {undefined}
 	*/
-	var createSvg = function() {
-		sgSvg = d3.select('#chart')
-			.append('svg')
-			.attr('width', sgSvgCanvasWidth)
-			.attr('height', sgSvgCanvasHeight);
+	var initSvg = function() {
+		sgSvg = d3.select('#main-svg');
+		$sgSvg = $('#main-svg');
+		sgSvgWidth = $sgSvg.width();
+		sgSvgHeight = $sgSvg.height();
 	};
 
 
@@ -187,20 +184,34 @@
 	*/
 	var addEmployeeNodes = function(datapoints) {
 		var employeeG = sgSvg.append('g')
-			.attr('id', 'employee-group')
-			.attr('transform', sgGroupTranslate);
+				.attr('id', 'employee-group')
+				.attr('transform', sgGroupTranslate);
+			// centerX = sgSvgWidth/2,
+			// centerY = sgSvgHeight/2;
 
 		sgNodes = employeeG.selectAll('.employee')
 			.data(datapoints)
 			.enter()
 			.append('circle')
-			.attr('class', 'employee')
+			.attr('class', function(d) {
+				var clsNames = [
+					'employee',
+					'employee--'+d.gender,
+					'employee--office-'+d.office,
+					'employee--discipline-'+d.discipline.replace(' ','-')
+				],
+				cls = clsNames.join(' ');
+
+				return cls;
+			})
 			.attr('r', sgNodeSize)
+			// .attr('cx', centerX)
+			// .attr('cy', centerY)
 			.on('mouseover', function(d) {
 				var name = d.firstName;
 				name += d.preposition ? ' ' + d.preposition : '';
 				name += ' ' + d.lastName
-				console.log(name);
+				// console.log(name);
 			});
 	};
 
@@ -213,6 +224,18 @@
 		sgNodeSize = size || sgDefaultNodeSize;
 		sgSvg.selectAll('.employee')
 			.attr('r', sgNodeSize);
+	};
+
+
+	/**
+	* set spacing between employee nodes
+	* @returns {undefined}
+	*/
+	var setNodeSpacing = function(spacing) {
+		if (typeof spacing === 'undefined') {
+			spacing = sgDefaultNodeSpacing;
+		}
+		sgNodeSpacing = spacing;
 	};
 	
 
@@ -242,47 +265,110 @@
 			.alphaTarget(sgAlphaTarget)
 			.restart();
 	};
+
+
+	/**
+	* enable the default view for filters (hide map, set collision etc)
+	* @returns {undefined}
+	*/
+	var enableDefaultFilterView = function() {
+		hideMap();
+		setNodeSize();
+		setNodeSpacing();
+		setDefaultCollisionForce();
+	};
+	
 	
 
 
 	/**
-	* initialize buttons
+	* initialize links for sorting nodes
 	* @returns {undefined}
 	*/
-	var initButtons = function() {
+	var initSortingLinks = function() {
 		
-		d3.select('#split-by-gender').on('click', function() {
-			hideMap();
-			setNodeSize();
-			setDefaultCollisionForce();
+		$('#sort-by-gender').on('click', function(e) {
+			e.preventDefault();
+			enableDefaultFilterView();
 			changeForce('forceX', xForce(forceXGender));
 			changeForce('forceY', yForce(forceYCenter));
 		});
 		
-		d3.select('#split-by-discipline').on('click', function() {
-			hideMap();
-			setNodeSize();
-			setDefaultCollisionForce();
+		$('#sort-by-discipline').on('click', function(e) {
+			e.preventDefault();
+			enableDefaultFilterView();
 			changeForce('forceX', xForce(forceXDiscipline));
 			changeForce('forceY', yForce(forceYCenter));
 		});
 		
-		d3.select('#split-by-hometown').on('click', function() {
+		$('#sort-by-hometown').on('click', function(e) {
+			e.preventDefault();
 			setNodeSize(2);
+			setNodeSpacing(0);
 			showMap();
 			changeForce('forceX', xForce(forceXHometown));
 			changeForce('forceY', yForce(forceYHometown));
 			setDefaultCollisionForce();
 		});
 
-		d3.select('#combined').on('click', function() {
-			hideMap();
-			setNodeSize();
-			setDefaultCollisionForce();
+		$('#combined').on('click', function(e) {
+			e.preventDefault();
+			enableDefaultFilterView();
 			changeForce('forceX', xForce(forceXCenter));
 			changeForce('forceY', yForce(forceYCenter));
 		});
 	};
+
+
+	/**
+	* remove classes from the body element based on a pattern
+	* @returns {undefined}
+	*/
+	var removeBodyClasses = function(pattern) {
+		var classStr = $sgBody.attr('class');
+
+		if (classStr) {
+			var classes = classStr.split(' ');
+			for (var i=classes.length-1; i>=0; i--) {
+				var clss = classes[i];
+				if (clss.match(pattern)) {
+					$sgBody.removeClass(clss);
+					classes.splice(i, 1);
+				}
+			}
+
+		}
+	};
+
+
+	/**
+	* remove all highlight classes from the body element
+	* @returns {undefined}
+	*/
+	var removehHighlightClasses = function() {
+		removeBodyClasses(/^highlight-/);
+	};
+	
+	
+
+
+	/**
+	* initialize links for highlighting nodes
+	* @returns {undefined}
+	*/
+	var initHighlightLinks = function() {
+		$('#highlight-gender').on('click', function(e) {
+			e.preventDefault();
+			removehHighlightClasses();
+			$sgBody.addClass('highlight-gender');
+		});
+
+		$('#no-highlight').on('click', function(e) {
+			e.preventDefault();
+			removehHighlightClasses();
+		});
+	};
+	
 	
 
 
@@ -324,7 +410,7 @@
 		* @returns {undefined}
 		*/
 		var showMap = function() {
-			sgMap.classed('map--is-active', true);
+			$sgBody.addClass('map-view');
 		};
 
 
@@ -333,7 +419,7 @@
 		* @returns {undefined}
 		*/
 		var hideMap = function() {
-			sgMap.classed('map--is-active', false);
+			$sgBody.removeClass('map-view');
 		};
 		
 
@@ -394,25 +480,38 @@
 
 
 	/**
+	* do stuff with city data:
 	* enrich employee data based on other fetched data (like geo info)
+	* and keep track of # of employees per city
 	* @returns {undefined}
 	*/
-	var enrichEmployeeData = function(employees, cities) {
+	var processCityData = function(employees, cities) {
 		// console.log(cities);
+		sgCities = cities;
 
-		for (var i=0, len=employees.length; i<len; i++) {
+		// add prop for employee count to every city
+		for (var i=0, len=sgCities.length; i<len; i++) {
+			sgCities[i].employeeCount = 0;
+		}
+
+		for (i=0, len=employees.length; i<len; i++) {
 			var employee = employees[i],
 				hometown = employee.hometown.toLowerCase();
 
-			for (var j=0, len2=cities.length; j<len2; j++) {
-				var city = cities[j];
-				if (city.city.toLowerCase() === hometown) {
+			for (var j=0, len2=sgCities.length; j<len2; j++) {
+				var city = sgCities[j];
+
+				if (city.name.toLowerCase() === hometown) {
 					// calculate the city's coords in the map projection
 					var coords = sgProjection([city.long, city.lat]);
 					employee.hometownLat = city.lat;
 					employee.hometownLong = city.long;
 					employee.hometownX = coords[0];
 					employee.hometownY = coords[1];
+
+					// keep track of # of employees per city
+					city.employeeCount++;
+
 					break;
 				}
 			}
@@ -421,6 +520,12 @@
 				console.log('no geo for ', employee.hometown);
 			}
 		}
+
+		// now order cities by # of employees
+		sgCities.sort(function(a, b) {
+			return b.employeeCount - a.employeeCount;
+		});
+
 	};
 	
 	
@@ -438,11 +543,14 @@
 		// initialize geo stuff
 		initGeo(mapData, offices);
 
-		enrichEmployeeData(employees, cities);
+		// do stuff with city data
+		processCityData(employees, cities);
+
 
 		// add shapes for nodes
 		addEmployeeNodes(employees);
 
+		// initialize force simulation
 		sgSimulation.nodes(employees)
 			.on('tick', simulationTickHandler);
 
@@ -471,9 +579,10 @@
 	* @returns {undefined}
 	*/
 	var init = function() {
-		createSvg();
+		initSvg();
 		initSimulation();
-		initButtons();
+		initSortingLinks();
+		initHighlightLinks();
 
 		// load data and kick things off
 		loadData();
