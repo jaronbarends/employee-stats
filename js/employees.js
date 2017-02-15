@@ -22,11 +22,16 @@
 		sgDefaultNodeSpacing = 2,
 		sgNodeSpacing = sgDefaultNodeSpacing;
 
+	// vars for datasets
+	var sgEmployees,
+		sgOffices,
+		sgCities,
+		sgDisciplines = [];
+
 	// vars for geo stuff
 	var sgProjection,
 		sgPath,
-		sgMap,
-		sgCities;
+		sgMap;
 
 	// vars for simulation
 	var sgSimulation,
@@ -59,7 +64,7 @@
 			* @param {object} d current object's data
 			*/
 			var forceXHometown = function(d) {
-				var x = d.hometownX || 20;
+				var x = d.hometownCoords.x || 20;
 				return x;
 			};
 
@@ -69,7 +74,27 @@
 			* @param {object} d current object's data
 			*/
 			var forceYHometown = function(d) {
-				var y = d.hometownY || 120;
+				var y = d.hometownCoords.y || 120;
+				return y;
+			};
+
+			/**
+			* x-force for office
+			* @returns {number}	the x coordinate to move to
+			* @param {object} d current object's data
+			*/
+			var forceXOffice = function(d) {
+				var x = d.officeCoords.x || 20;
+				return x;
+			};
+
+			/**
+			* y-force for office
+			* @returns {number}	the y coordinate to move to
+			* @param {object} d current object's data
+			*/
+			var forceYOffice = function(d) {
+				var y = d.officeCoords.y || 120;
 				return y;
 			};
 
@@ -310,6 +335,16 @@
 			changeForce('forceY', yForce(forceYHometown));
 			setDefaultCollisionForce();
 		});
+		
+		$('#sort-by-office').on('click', function(e) {
+			e.preventDefault();
+			setNodeSize(2);
+			setNodeSpacing(0);
+			showMap();
+			changeForce('forceX', xForce(forceXOffice));
+			changeForce('forceY', yForce(forceYOffice));
+			setDefaultCollisionForce();
+		});
 
 		$('#combined').on('click', function(e) {
 			e.preventDefault();
@@ -345,7 +380,7 @@
 	* remove all highlight classes from the body element
 	* @returns {undefined}
 	*/
-	var removehHighlightClasses = function() {
+	var removeHighlightClasses = function() {
 		removeBodyClasses(/^highlight-/);
 	};
 	
@@ -359,13 +394,13 @@
 	var initHighlightLinks = function() {
 		$('#highlight-gender').on('click', function(e) {
 			e.preventDefault();
-			removehHighlightClasses();
+			removeHighlightClasses();
 			$sgBody.addClass('highlight-gender');
 		});
 
 		$('#no-highlight').on('click', function(e) {
 			e.preventDefault();
-			removehHighlightClasses();
+			removeHighlightClasses();
 		});
 	};
 	
@@ -441,9 +476,9 @@
 		* add circles for offices
 		* @returns {undefined}
 		*/
-		var addOffices = function(offices) {
+		var addOffices = function() {
 			sgMap.selectAll('.office')
-				.data(offices)
+				.data(sgOffices)
 				.enter()
 				.append('circle')
 				.attr('class', 'office')
@@ -452,11 +487,11 @@
 				// })
 				.attr('r', 10)
 				.attr('cx', function(d) {
-					var coords = sgProjection([d.Longitude, d.Latitude]);
+					var coords = sgProjection([d.long, d.lat]);
 					return coords[0];
 				})
 				.attr('cy', function(d) {
-					var coords = sgProjection([d.Longitude, d.Latitude]);
+					var coords = sgProjection([d.long, d.lat]);
 					return coords[1];
 				})
 		};
@@ -467,12 +502,12 @@
 		* initialize geo stuff
 		* @returns {undefined}
 		*/
-		var initGeo = function(mapData, offices) {
+		var initGeo = function(mapData) {
 			
 			var geojson = topojson.feature(mapData, mapData.objects.collection);
 
 			drawMap(geojson);
-			addOffices(offices);
+			addOffices();
 		};
 	
 
@@ -485,48 +520,143 @@
 	* and keep track of # of employees per city
 	* @returns {undefined}
 	*/
-	var processCityData = function(employees, cities) {
+	var processCityData = function() {
 		// console.log(cities);
-		sgCities = cities;
+		var dataset = sgCities,
+			datasetLocationProp = 'name',
+			employeeLocationProp = 'hometown',
+			locationCoordsProp = 'hometownCoords';
 
-		// add prop for employee count to every city
-		for (var i=0, len=sgCities.length; i<len; i++) {
-			sgCities[i].employeeCount = 0;
+		// add prop for employee count to every location
+		for (var i=0, len=dataset.length; i<len; i++) {
+			dataset[i].employeeCount = 0;
 		}
 
-		for (i=0, len=employees.length; i<len; i++) {
-			var employee = employees[i],
-				hometown = employee.hometown.toLowerCase();
+		for (i=0, len=sgEmployees.length; i<len; i++) {
+			var employee = sgEmployees[i],
+				locationName = employee[employeeLocationProp].toLowerCase();
 
-			for (var j=0, len2=sgCities.length; j<len2; j++) {
-				var city = sgCities[j];
+			// create a coordinates object
+			employee[locationCoordsProp] = {};
 
-				if (city.name.toLowerCase() === hometown) {
-					// calculate the city's coords in the map projection
-					var coords = sgProjection([city.long, city.lat]);
-					employee.hometownLat = city.lat;
-					employee.hometownLong = city.long;
-					employee.hometownX = coords[0];
-					employee.hometownY = coords[1];
+			for (var j=0, len2=dataset.length; j<len2; j++) {
+				var location = dataset[j];
 
-					// keep track of # of employees per city
-					city.employeeCount++;
+				if (location.name.toLowerCase() === locationName) {
+					// calculate the location's coords in the map projection
+					var coords = sgProjection([location.long, location.lat]);
+					employee[locationCoordsProp] = {
+						x: coords[0],
+						y: coords[1]
+					};
+
+					// keep track of # of employees per location
+					location.employeeCount++;
 
 					break;
 				}
 			}
 
-			if (!employee.hometownLat) {
-				console.log('no geo for ', employee.hometown);
+			if (!employee[locationCoordsProp].x) {
+				console.log('no geo for ', employee[employeeLocationProp]);
 			}
 		}
 
-		// now order cities by # of employees
-		sgCities.sort(function(a, b) {
+		// now order location by # of employees
+		dataset.sort(function(a, b) {
 			return b.employeeCount - a.employeeCount;
 		});
 
 	};
+
+
+	/**
+	* match employees with a set of locations (cities, offices)
+	* @param {array} dataset The dataset containing the locations
+	* @returns {undefined}
+	*/
+	var matchEmployeesWithLocations = function(options) {
+		// console.log(cities);
+		var dataset = options.dataset,
+			datasetLocationProp = options.datasetLocationProp,
+			employeeLocationProp = options.employeeLocationProp,
+			locationCoordsProp = options.locationCoordsProp;
+
+		// add prop for employee count to every location
+		for (var i=0, len=dataset.length; i<len; i++) {
+			dataset[i].employeeCount = 0;
+		}
+
+		for (i=0, len=sgEmployees.length; i<len; i++) {
+			var employee = sgEmployees[i],
+				locationName = employee[employeeLocationProp].toLowerCase();
+
+			// create a coordinates object
+			employee[locationCoordsProp] = {};
+
+			for (var j=0, len2=dataset.length; j<len2; j++) {
+				var location = dataset[j];
+
+				if (location[datasetLocationProp].toLowerCase() === locationName) {
+					// calculate the location's coords in the map projection
+					var coords = sgProjection([location.long, location.lat]);
+					employee[locationCoordsProp] = {
+						x: coords[0],
+						y: coords[1]
+					};
+
+					// keep track of # of employees per location
+					location.employeeCount++;
+
+					break;
+				}
+			}
+
+			if (!employee[locationCoordsProp].x) {
+				console.log('no geo for ', employee[employeeLocationProp]);
+			}
+		}
+
+		// now order location by # of employees
+		dataset.sort(function(a, b) {
+			return b.employeeCount - a.employeeCount;
+		});
+	};
+	
+
+
+	/**
+	* process data of employees (like fetching disciplines)
+	* @param {object} employees Object with employee data
+	* @returns {undefined}
+	*/
+	var processEmployeeData = function(employees) {
+		for (var i=0, len=employees.length; i<len; i++) {
+			var e = employees[i],
+				discipline = e.discipline,
+				disciplineFound = false;
+
+				
+			for (var j=0, len2=sgDisciplines.length; j<len2; j++) {
+				var d = sgDisciplines[j];
+				if (d.name === discipline) {
+					d.employeeCount++;
+					disciplineFound = true;
+					break;
+				}
+			}
+			
+			if (!disciplineFound) {
+				sgDisciplines.push({name: discipline, employeeCount: 1});
+			}
+		}
+
+		// now order disciplines by # of employees
+		sgDisciplines.sort(function(a, b) {
+			return b.employeeCount - a.employeeCount;
+		});
+	};
+	
 	
 	
 
@@ -540,11 +670,33 @@
 	* @param {object} cities Data for cities (lat long etc)
 	*/
 	var loadHandler = function(error, employees, mapData, offices, cities) {
-		// initialize geo stuff
-		initGeo(mapData, offices);
+		// create semi globals for datasets
+		sgEmployees = employees;
+		sgOffices = offices;
+		sgCities = cities;
 
-		// do stuff with city data
-		processCityData(employees, cities);
+		// initialize geo stuff
+		initGeo(mapData);
+
+		// process data
+		var cityOptions = {
+			dataset: sgCities,
+			datasetLocationProp: 'name',
+			employeeLocationProp: 'hometown',
+			locationCoordsProp: 'hometownCoords'
+		};
+		matchEmployeesWithLocations(cityOptions);
+
+		var officeOptions = {
+			dataset: sgOffices,
+			datasetLocationProp: 'city',
+			employeeLocationProp: 'office',
+			locationCoordsProp: 'officeCoords'
+		};
+		matchEmployeesWithLocations(officeOptions);
+
+		// processCityData(employees, cities);
+		processEmployeeData(employees);
 
 
 		// add shapes for nodes
