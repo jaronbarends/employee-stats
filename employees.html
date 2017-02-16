@@ -31,8 +31,26 @@
 		</ul>
 
 
-		<div id="chart" class="chart">
-			<svg id="main-svg" class="main-svg"></svg>
+		<div id="wrapper">
+
+			<div id="legends" class="legends">
+			
+				<div id="info-box--hometown" class="info-box info-box--hometown">
+					<h3>Most popular hometowns</h3>
+					<ol id="hometown-list" class="hometown-list">
+					</ol>
+				</div>
+			
+				<div id="info-box--offices" class="info-box info-box--offices">
+					<h3>Employees per office</h3>
+					<ol id="office-list" class="office-list">
+					</ol>
+				</div>
+
+			</div>
+			<div id="chart" class="chart">
+				<svg id="main-svg" class="main-svg"></svg>
+			</div>
 		</div>
 
 		
@@ -46,7 +64,7 @@
 	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/d3.min.js"></script>
-	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="js/topojson.v1.min.js"></script>
 	
 	<script src="js/employees.js"></script>
 		

@@ -1,29 +1,29 @@
-firstName,preposition,lastName,gender,discipline,hometown,office
-Bart,,Plasmeijer,male,backend development,leusden,amersfoort
-Reina,,Zwarts,female,frontend development,amersfoort,amersfoort
-Chris,van de,Steeg,male,backend development,leusden,amersfoort
-Karin,,Horenberg,female,backend development,leusden,amersfoort
-Arjan,den,Os,male,visual design,woudenberg,amersfoort
-Guido,van,Tricht,male,backend development,driebergen-rijsenburg,amersfoort
-Ermo,,Leenders,male,interaction design,zeist,amersfoort
-Frank,,Nijmeijer,male,backend development,soest,amersfoort
-Jorian,,Pieneman,male,information architecture,zwolle,amersfoort
-Manon,,Bruinekreeft,female,project management,barneveld,amersfoort
-Mo,,Cornelisz,female,online marketing,utrecht,amersfoort
-Ralf,van den,Burg,male,backend development,barneveld,amersfoort
-Stefan,,Kuiper,male,frontend development,zwolle,amersfoort
-Jarón,,Barends,male,frontend development,driebergen-rijsenburg,amersfoort
-Gert-Jan,,Fröberg,male,service management,leusden,amersfoort
-Reinoud,van,Dalen,male,backend development,lelystad,amersfoort
-Talitha,,Kostwinder,female,interaction design,utrecht,amersfoort
-Jeroen,van,Rijn,male,visual design,utrecht,amersfoort
-Joost,van,Eeden,male,project management,amsterdam,amersfoort
-Nicole,,Stroosnijder,female,sales,de meern,amersfoort
-Bart,van,Vuuren,male,sales,zeist,amersfoort
-Ernestien,van de,Griendt,female,project management,utrecht,amersfoort
-Tim,,Keijne,male,information architecture,zwolle,amersfoort
-Daniël,,Hoetmer,male,information architecture,utrecht,amersfoort
-Barry,van,Oven,male,frontend development,amersfoort,amersfoort
-Klaas,,Dieleman,male,frontend development,utrecht,utrecht
-Ralph,,Meeuws,male,frontend development,utrecht,utrecht
-Bram,,Demmer,male,frontend development,utrecht,utrecht
+firstName,preposition,lastName,gender,discipline,hometown,office,birthday,joinDate
+Bart,,Plasmeijer,male,backend development,leusden,amersfoort,25/9/1970,01/6/2014
+Reina,,Zwarts,female,frontend development,amersfoort,amersfoort,10/11/1987,01/4/2012
+Chris,van de,Steeg,male,backend development,leusden,amersfoort,04/2/1992,01/4/2011
+Karin,,Horenberg,female,backend development,leusden,amersfoort,24/5/1971,01/4/2012
+Arjan,den,Os,male,visual design,woudenberg,amersfoort,26/8/1967,01/8/2003
+Guido,van,Tricht,male,backend development,driebergen-rijsenburg,amersfoort,08/1/1995,01/1/2004
+Ermo,,Leenders,male,interaction design,zeist,amersfoort,02/5/1985,01/5/2011
+Frank,,Nijmeijer,male,backend development,soest,amersfoort,07/12/1969,01/6/2006
+Jorian,,Pieneman,male,information architecture,zwolle,amersfoort,05/7/1980,01/2/2014
+Manon,,Bruinekreeft,female,project management,barneveld,amersfoort,15/7/1981,01/2/2007
+Mo,,Cornelisz,female,online marketing,utrecht,amersfoort,08/7/1994,01/12/2011
+Ralf,van den,Burg,male,backend development,barneveld,amersfoort,05/6/1984,01/9/2007
+Stefan,,Kuiper,male,frontend development,zwolle,amersfoort,17/5/1987,01/4/2007
+Jarón,,Barends,male,frontend development,driebergen-rijsenburg,amersfoort,26/5/1991,01/9/2004
+Gert-Jan,,Fröberg,male,service management,leusden,amersfoort,17/12/1983,01/6/2003
+Reinoud,van,Dalen,male,backend development,lelystad,amersfoort,07/9/1982,01/5/2002
+Talitha,,Kostwinder,female,interaction design,utrecht,amersfoort,28/3/1971,01/7/2006
+Jeroen,van,Rijn,male,visual design,utrecht,amersfoort,05/9/1985,01/6/2010
+Joost,van,Eeden,male,project management,amsterdam,amersfoort,09/2/1992,01/12/2009
+Nicole,,Stroosnijder,female,sales,de meern,amersfoort,10/3/1968,01/9/2003
+Bart,van,Vuuren,male,sales,zeist,amersfoort,05/7/1977,01/10/2008
+Ernestien,van de,Griendt,female,project management,utrecht,amersfoort,03/8/1971,01/10/2005
+Tim,,Keijne,male,information architecture,zwolle,amersfoort,28/10/1985,01/3/2002
+Daniël,,Hoetmer,male,information architecture,utrecht,amersfoort,08/12/1983,01/2/2009
+Barry,van,Oven,male,frontend development,amersfoort,amersfoort,07/9/1975,01/10/2001
+Klaas,,Dieleman,male,frontend development,utrecht,utrecht,04/1/1969,01/8/2009
+Ralph,,Meeuws,male,frontend development,utrecht,utrecht,03/11/1983,01/6/2001
+Bram,,Demmer,male,frontend development,utrecht,utrecht,16/7/1969,01/4/2005

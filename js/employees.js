@@ -622,6 +622,55 @@
 			return b.employeeCount - a.employeeCount;
 		});
 	};
+
+
+	/**
+	* process hometown data
+	* @returns {undefined}
+	*/
+	var processHometownData = function() {
+		var cityOptions = {
+			dataset: sgCities,
+			datasetLocationProp: 'name',
+			employeeLocationProp: 'hometown',
+			locationCoordsProp: 'hometownCoords'
+		};
+		matchEmployeesWithLocations(cityOptions);
+
+		var $list = $('#hometown-list'),
+			items = '';
+		for (var i=0; i<5; i++) {
+			var hometown = sgCities[i];
+			items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
+		}
+
+		$list.append(items);
+	};
+
+
+	/**
+	* process hometown data
+	* @returns {undefined}
+	*/
+	var processOfficeData = function() {
+		var officeOptions = {
+			dataset: sgOffices,
+			datasetLocationProp: 'city',
+			employeeLocationProp: 'office',
+			locationCoordsProp: 'officeCoords'
+		};
+		matchEmployeesWithLocations(officeOptions);
+
+		var $list = $('#office-list'),
+			items = '';
+		for (var i=0, len=sgOffices.length; i<len; i++) {
+			var office = sgOffices[i];
+			items += '<li>'+office.city + '(' + office.employeeCount + ')</li>';
+		}
+
+		$list.append(items);
+	};
+	
 	
 
 
@@ -679,23 +728,11 @@
 		initGeo(mapData);
 
 		// process data
-		var cityOptions = {
-			dataset: sgCities,
-			datasetLocationProp: 'name',
-			employeeLocationProp: 'hometown',
-			locationCoordsProp: 'hometownCoords'
-		};
-		matchEmployeesWithLocations(cityOptions);
+		processHometownData();
+		processOfficeData();
 
-		var officeOptions = {
-			dataset: sgOffices,
-			datasetLocationProp: 'city',
-			employeeLocationProp: 'office',
-			locationCoordsProp: 'officeCoords'
-		};
-		matchEmployeesWithLocations(officeOptions);
 
-		// processCityData(employees, cities);
+		// process employee data (disciplines)
 		processEmployeeData(employees);
 
 
@@ -705,6 +742,8 @@
 		// initialize force simulation
 		sgSimulation.nodes(employees)
 			.on('tick', simulationTickHandler);
+
+		// createRandomBirthdays();
 
 	}// loadHandler
 
@@ -721,6 +760,29 @@
 			.defer(d3.csv, 'data/city-lat-long.csv')
 			.await(loadHandler);
 	};
+
+
+	/**
+	* create random birtdays
+	* @returns {undefined}
+	*/
+	var createRandomBirthdays = function() {
+		// var startYear = 1965,
+		// 	endYear = 1997,
+		var startYear = 2001,
+			endYear = 2016,
+			yearRange = endYear - startYear;
+		for (var i=0, len=sgEmployees.length; i<len; i++) {
+			// var day = Math.ceil(28*Math.random()),
+			var day = 1,
+				month = Math.ceil(12*Math.random()),
+				year = Math.floor(yearRange*Math.random()) + startYear,
+				birthday = day + '-' + month + '-' + year;
+
+			console.log(birthday);
+		}
+	};
+	
 
 
 

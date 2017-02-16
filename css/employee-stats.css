@@ -62,7 +62,19 @@ a:focus {
 
 /*-- Start general styles --*/
 
+	.wrapper {
+		position: relative;
+		perspective: 600px;
+	}
+
+
 	.chart {
+		transform-style: preserve-3d;
+		transition: transform 1s;
+	}
+
+	.map-view .chart {
+		transform: rotateX(45deg) rotateZ(10deg);
 	}
 
 	.main-svg {
@@ -71,6 +83,17 @@ a:focus {
 		width: 500px;
 		height: 600px;
 		/*background: lightblue;*/
+	}
+
+	.legends {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	.info-box {
+		opacity: 0;
+		transition: opacity 0.5s;
 	}
 
 	.employee {
@@ -84,6 +107,11 @@ a:focus {
 		stroke-width: 1px;
 		stroke: white;
 		fill: #363636;/* valtech dark grey */;
+	}
+
+	.map-view .info-box--hometown,
+	.map-view .info-box--offices {
+		opacity: 1;
 	}
 
 /*-- End general styles --*/
