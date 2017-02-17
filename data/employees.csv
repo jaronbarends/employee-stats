@@ -1,4 +1,4 @@
-firstName,preposition,lastName,gender,discipline,hometown,office,birthday,joinDate
+firstName,preposition,lastName,gender,discipline,hometown,office,birthday,startDate
 Bart,,Plasmeijer,male,backend development,leusden,amersfoort,25/9/1970,01/6/2014
 Reina,,Zwarts,female,frontend development,amersfoort,amersfoort,10/11/1987,01/4/2012
 Chris,van de,Steeg,male,backend development,leusden,amersfoort,04/2/1992,01/4/2011
@@ -25,5 +25,5 @@ Tim,,Keijne,male,information architecture,zwolle,amersfoort,28/10/1985,01/3/2002
 Daniël,,Hoetmer,male,information architecture,utrecht,amersfoort,08/12/1983,01/2/2009
 Barry,van,Oven,male,frontend development,amersfoort,amersfoort,07/9/1975,01/10/2001
 Klaas,,Dieleman,male,frontend development,utrecht,utrecht,04/1/1969,01/8/2009
-Ralph,,Meeuws,male,frontend development,utrecht,utrecht,03/11/1983,01/6/2001
+Ralph,,Meeuws,male,frontend development,utrecht,utrecht,16/2/1970,01/6/2001
 Bram,,Demmer,male,frontend development,utrecht,utrecht,16/7/1969,01/4/2005

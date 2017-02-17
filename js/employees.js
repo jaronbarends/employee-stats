@@ -26,7 +26,11 @@
 	var sgEmployees,
 		sgOffices,
 		sgCities,
-		sgDisciplines = [];
+		sgDisciplines = [],
+		sgBirthdays = [],
+		sgAges = [],
+		sgStartDates = [],
+		sgNationalities;
 
 	// vars for geo stuff
 	var sgProjection,
@@ -208,11 +212,8 @@
 	* @returns {undefined}
 	*/
 	var addEmployeeNodes = function(datapoints) {
-		var employeeG = sgSvg.append('g')
-				.attr('id', 'employee-group')
+		var employeeG = sgSvg.selectAll('#employee-group')
 				.attr('transform', sgGroupTranslate);
-			// centerX = sgSvgWidth/2,
-			// centerY = sgSvgHeight/2;
 
 		sgNodes = employeeG.selectAll('.employee')
 			.data(datapoints)
@@ -356,6 +357,28 @@
 
 
 	/**
+	* create chart for age
+	* @returns {undefined}
+	*/
+	var createAgeChart = function() {
+		var ageChart = sgSvg.selectAll('#age-chart');
+
+		ageChart.selectAll('.age-bar')
+			.data(sgAges)
+			.enter()
+			.append('rect')
+			.attr('x', function(d, i) {
+				return 12*i;
+			})
+			.attr('width', 10)
+			.attr('height', function(d) {
+				return 20 * d.employeeCount ;
+			})
+	};
+	
+
+
+	/**
 	* remove classes from the body element based on a pattern
 	* @returns {undefined}
 	*/
@@ -422,9 +445,7 @@
 			sgProjection = d3.geoMercator().fitSize([sgSvgWidth, sgSvgHeight], geojson);
 			sgPath = d3.geoPath().projection(sgProjection);
 
-			sgMap = sgSvg.append('g')
-				.attr('id', 'geo-group')
-				.attr('class', 'map')
+			sgMap = sgSvg.selectAll('#geo-group')
 				.attr('translate', sgGroupTranslate);
 
 			sgMap.selectAll('.province')
@@ -680,12 +701,16 @@
 	* @returns {undefined}
 	*/
 	var processEmployeeData = function(employees) {
+		var ages = [],
+			ageMin = 1000,
+			ageMax = 0;
+
 		for (var i=0, len=employees.length; i<len; i++) {
 			var e = employees[i],
 				discipline = e.discipline,
 				disciplineFound = false;
 
-				
+			// discipline data
 			for (var j=0, len2=sgDisciplines.length; j<len2; j++) {
 				var d = sgDisciplines[j];
 				if (d.name === discipline) {
@@ -698,12 +723,59 @@
 			if (!disciplineFound) {
 				sgDisciplines.push({name: discipline, employeeCount: 1});
 			}
-		}
+
+			// process age data
+			sgBirthdays.push(e.birthday);
+			var age = getYearsUntilToday(e.birthday),
+				ageRound = Math.floor(age);
+
+			// keep track of min and max ages
+			ageMin = Math.min(ageRound, ageMin);
+			ageMax = Math.max(ageRound, ageMax);
+
+			// put age data into array
+			if (!ages[ageRound]) {
+				ages[ageRound] = 1;
+				// this creates an array like ages[22], ages[15]
+				// this is somehow different from a normal array like ages[0], [1] etc
+			} else {
+				ages[ageRound]++;
+			}
+		
+		}// end loop employees
 
 		// now order disciplines by # of employees
 		sgDisciplines.sort(function(a, b) {
 			return b.employeeCount - a.employeeCount;
 		});
+
+		// check if every age between min and max is present
+		var ageRange = ageMax - ageMin;
+		for (var a = 0; a <= ageRange; a++) {
+			var currAge = ageMin + a;
+			sgAges.push({
+				age: currAge,
+				employeeCount: ages[currAge] || 0
+			});
+		}
+	};
+	
+
+	/**
+	* calculate the years passed between a certain date and today
+	* @param {string} pastDateStr Date in the past, format d/m/y
+	* @returns {number} The number of years (not rounded)
+	*/
+	var getYearsUntilToday = function(pastDateStr) {
+		var now = new Date(),
+			dateArr = pastDateStr.split('/'),
+			pastDate = new Date(dateArr[2], dateArr[1]-1, dateArr[0]),// month is 0-based, hence -1
+			nowMsecs = now.getTime(),
+			pastDateMsecs = pastDate.getTime(),
+			diffMsecs = nowMsecs - pastDateMsecs,// diff between dates in milliseconds
+			diffYear = diffMsecs / (1000 * 60 * 60 * 24 * 365);// not entirely accurate (no leap years) but good enough for now
+
+		return diffYear;
 	};
 	
 	
@@ -738,6 +810,8 @@
 
 		// add shapes for nodes
 		addEmployeeNodes(employees);
+
+		createAgeChart();
 
 		// initialize force simulation
 		sgSimulation.nodes(employees)
