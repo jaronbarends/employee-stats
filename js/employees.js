@@ -361,19 +361,72 @@
 	* @returns {undefined}
 	*/
 	var createAgeChart = function() {
-		var ageChart = sgSvg.selectAll('#age-chart');
+		var ageChart = d3.select('#age-chart'),
+			w = parseInt(ageChart.style('width'), 10),
+			h = parseInt(ageChart.style('height'), 10),
+			margin = {
+				top: 10,
+				right: 10,
+				bottom: 30,
+				left: 50
+			},
+			chartW = w - margin.left - margin.right,
+			chartH = h - margin.top - margin.bottom,
+			minAge = d3.min(sgAges, function(obj) {
+				return obj.age;
+			}),
+			maxAge = d3.max(sgAges, function(obj) {
+				return obj.age + 1;// op de een of andere manier moet dit +1 zijn, anders komt laatste bar niet in schaal
+			});
 
-		ageChart.selectAll('.age-bar')
+
+		var xScale = d3.scaleBand()
+				// .domain(d3.range(sgAges.length))
+				.domain(d3.range(minAge, maxAge))
+				.rangeRound([0, chartW])
+				.padding(0.1);
+
+				console.log('ages:', sgAges);
+
+		var yScale = d3.scaleLinear()
+				.domain([0, d3.max(sgAges, function(obj) {
+						return obj.employeeCount;
+					})])
+				.range([0, chartH]);
+
+		var xAxis = d3.axisBottom(xScale)
+				.ticks(5),
+			yAxis = d3.axisLeft(yScale)
+				.ticks(3);
+
+		// render bars
+		ageChart.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			.selectAll('.age-bar')
 			.data(sgAges)
 			.enter()
 			.append('rect')
 			.attr('x', function(d, i) {
-				return 12*i;
+				return xScale(d.age);
 			})
-			.attr('width', 10)
+			.attr('y', function(d) {
+				return chartH - yScale(d.employeeCount);
+			})
+			.attr('width', xScale.bandwidth())
 			.attr('height', function(d) {
-				return 20 * d.employeeCount ;
+				return yScale(d.employeeCount);
 			})
+
+		// render axes
+		ageChart.append('g')
+			.attr('class', 'axis')
+			.attr('transform', 'translate(' + margin.left +',' + (margin.top + chartH) +')')
+			.call(xAxis);
+
+		ageChart.append('g')
+			.attr('class', 'axis')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			.call(yAxis);
 	};
 	
 

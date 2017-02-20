@@ -13,22 +13,28 @@
 <body>
 	<div class="o-content-width">
 
-		<h1>Who are whe?</h1>
-	
-		<h4>Sort by:</h4>
-		<ul>
-			<li><a href="#" id="sort-by-gender">Gender</a></li>
-			<li><a href="#" id="sort-by-discipline">Discipline</a></li>
-			<li><a href="#" id="sort-by-hometown">Hometown</a></li>
-			<li><a href="#" id="sort-by-office">Office</a></li>
-			<li><a href="#" id="combined">Don't sort</a></li>
-		</ul>
+		<h1 id="main-heading">Who are whe?</h1>
 
-		<h4>Highlight:</h4>
-		<ul>
-			<li><a href="#" id="highlight-gender">Gender</a></li>
-			<li><a href="#" id="no-highlight">Don't highlight</a></li>
-		</ul>
+		<div class="filter-box">
+			<h4 class="filter-heading">Sort by:</h4>
+			<ul class="filter-list">
+				<li><a href="#" id="sort-by-gender">Gender</a></li>
+				<li><a href="#" id="sort-by-discipline">Discipline</a></li>
+				<li><a href="#" id="sort-by-hometown">Hometown</a></li>
+				<li><a href="#" id="sort-by-office">Office</a></li>
+				<li><a href="#" id="combined">Don't sort</a></li>
+			</ul>
+
+			<h4 class="filter-heading">Highlight:</h4>
+			<ul class="filter-list">
+				<li><a href="#" id="highlight-gender">Gender</a></li>
+				<li><a href="#" id="no-highlight">Don't highlight</a></li>
+			</ul>
+		</div>
+
+		<div class="info-box info-box--employees-general">
+			<div class="emp"><div class="emp__shadow"></div></div>
+		</div>
 
 
 		<div id="wrapper">
@@ -52,8 +58,16 @@
 				<svg id="main-svg" class="main-svg">
 					<g id="geo-group" class="map"></g>
 					<g id="employee-group"></g>
-					<g id="age-chart"></g>
 				</svg>
+
+				<svg id="age-chart" class="age-chart">
+				</svg>
+				<div>
+					The avarage age is
+					<div>
+						<span class="age-years">32</span> years <span class="age-years">6</span> months
+					</div>
+				</div>
 			</div>
 		</div>
 

@@ -29,12 +29,18 @@ body {
 }
 
 h1 {
-	font-size: 3.2rem;
+	font-size: 9rem;
 	font-weight: bold;
+	color: #ecedee;/* valtech light grey */;
 }
 
 h2 {
 	font-size: 2.4rem;
+	font-weight: bold;
+}
+
+h3 {
+	color: #00bdfa;/* valtech blue */
 	font-weight: bold;
 }
 
@@ -60,6 +66,16 @@ a:focus {
 	max-width: 60em;
 }
 
+.filter-heading,
+.filter-list {
+	display: inline-block;
+}
+
+.filter-list li {
+	display: inline-block;
+	margin-right: 1em;
+}
+
 /*-- Start general styles --*/
 
 	.wrapper {
@@ -74,7 +90,7 @@ a:focus {
 	}
 
 	.map-view .chart {
-		transform: rotateX(45deg) rotateZ(10deg);
+		/*transform: rotateX(45deg) rotateZ(10deg);*/
 	}
 
 	.main-svg {
@@ -115,6 +131,67 @@ a:focus {
 	}
 
 /*-- End general styles --*/
+
+.employee-matrix {
+	margin-left: 400px;
+	width: 440px;
+}
+
+.emp,
+.emp__shadow {
+	z-index: 1;
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: #00bdfa;/* valtech blue */;
+}
+
+.emp::before,
+.emp::after,
+.emp__shadow::before,
+.emp__shadow::after {
+	position: relative;
+	z-index: 1;
+	display: block;
+	content: '';
+	top: 21px;
+	left: 50%;
+	border-radius: 50%;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	width: 16px;
+	height: 16px;
+	background: #00bdfa;/* valtech blue */;
+	transform: translateX(-50%);
+}
+
+.emp {
+	margin: 0 20px 30px 0;
+}
+
+.emp::after,
+.emp__shadow::after {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	width: 8px;
+	height: 6px;
+}
+
+.emp__shadow,
+.emp__shadow::before,
+.emp__shadow::after {
+	background: #ecedee;/* valtech light grey */
+	z-index: 0;
+}
+
+.emp__shadow {
+	position: absolute;
+	left: 150%;
+	transform: scaleY(0.4) translate(-9px, 10px) skewX(-30deg);
+}
+
 
 .highlight-gender .employee--female {
 	fill: pink;
@@ -161,3 +238,18 @@ a:focus {
 		opacity: 1;
 	}
 /*-- End topographic stuff --*/
+
+
+/*-- Start age info --*/
+
+	.age-chart {
+		height: 200px;
+		width: 600px;
+		background: #ffc;
+	}
+
+	.age-chart rect {
+		fill: #00bdfa;/* valtech blue */
+	}
+
+/*-- End age info --*/
