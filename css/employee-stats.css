@@ -90,7 +90,7 @@ a:focus {
 	}
 
 	.map-view .bubble-chart-container {
-		transform: rotateX(45deg) rotateZ(10deg);
+		/*transform: rotateX(45deg) rotateZ(10deg);*/
 	}
 
 	.bubble-chart {
@@ -221,11 +221,13 @@ a:focus {
 /*-- Start employee-icon --*/
 
 
-.highlight-gender .employee--female {
+.highlight-gender .employee--female,
+.highlight-gender .employee--vrouw {
 	fill: pink;
 }
 
-.highlight-gender .employee--male {
+.highlight-gender .employee--male,
+.highlight-gender .employee--man {
 	fill: #00bdfa;/* valtech blue */
 }
 

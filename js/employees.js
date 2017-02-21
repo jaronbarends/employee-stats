@@ -26,9 +26,11 @@
 	var sgEmployees,
 		sgOffices,
 		sgCities,
+		sgPlacesWithoutGeoData = [],
 		sgDisciplines = [],
 		sgBirthdays = [],
 		sgAges = [],
+		sgAvarageAge,
 		sgStartDates = [],
 		sgNationalities;
 
@@ -109,9 +111,9 @@
 			* @param {object} d current object's data
 			*/
 			var forceXGender = function(d) {
-				var x = sgBubbleChartWidth/3;
-				if (d.gender === 'male') {
-					x = 2*sgBubbleChartWidth/3;
+				var x = sgBubbleChartWidth/4;
+				if (d.gender.toLowerCase() === 'man') {
+					x = 3*sgBubbleChartWidth/4;
 				}
 				return x;
 			};
@@ -222,9 +224,9 @@
 			.attr('class', function(d) {
 				var clsNames = [
 					'employee',
-					'employee--'+d.gender,
-					'employee--office-'+d.office,
-					'employee--discipline-'+d.discipline.replace(' ','-')
+					'employee--'+d.gender.toLowerCase(),
+					'employee--office-'+d.office.toLowerCase(),
+					'employee--discipline-'+d.discipline.toLowerCase().replace(' ','-')
 				],
 				cls = clsNames.join(' ');
 
@@ -234,9 +236,9 @@
 			// .attr('cx', centerX)
 			// .attr('cy', centerY)
 			.on('mouseover', function(d) {
-				var name = d.firstName;
-				name += d.preposition ? ' ' + d.preposition : '';
-				name += ' ' + d.lastName
+				// var name = d.firstName;
+				// name += d.preposition ? ' ' + d.preposition : '';
+				// name += ' ' + d.lastName
 				// console.log(name);
 			});
 	};
@@ -289,6 +291,7 @@
 		sgSimulation
 			.force(forceId, newForce)
 			.alphaTarget(sgAlphaTarget)
+			.alphaDecay(0.4)
 			.restart();
 	};
 
@@ -428,6 +431,24 @@
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 			.call(yAxis);
 	};
+
+
+	/**
+	* calculate and show age info
+	* @returns {undefined}
+	*/
+	var calculateAgeInfo = function() {
+		var avgYears = Math.floor(sgAvarageAge),
+			avgMonths = Math.floor(12 * (sgAvarageAge % avgYears));
+
+		console.log(sgAvarageAge, avgYears, avgMonths);
+
+		$('#age-info').find('.age-years')
+			.text(avgYears)
+			.end()
+			.find('.age-months').text(avgMonths);
+	};
+	
 	
 
 
@@ -595,7 +616,6 @@
 	* @returns {undefined}
 	*/
 	var processCityData = function() {
-		// console.log(cities);
 		var dataset = sgCities,
 			datasetLocationProp = 'name',
 			employeeLocationProp = 'hometown',
@@ -632,7 +652,8 @@
 			}
 
 			if (!employee[locationCoordsProp].x) {
-				console.log('no geo for ', employee[employeeLocationProp]);
+				// console.log('no geo for ', employee[employeeLocationProp]);
+				sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
 			}
 		}
 
@@ -642,6 +663,7 @@
 		});
 
 	};
+
 
 
 	/**
@@ -654,7 +676,8 @@
 		var dataset = options.dataset,
 			datasetLocationProp = options.datasetLocationProp,
 			employeeLocationProp = options.employeeLocationProp,
-			locationCoordsProp = options.locationCoordsProp;
+			locationCoordsProp = options.locationCoordsProp,
+			unknownPlaces = [];
 
 		// add prop for employee count to every location
 		for (var i=0, len=dataset.length; i<len; i++) {
@@ -687,7 +710,8 @@
 			}
 
 			if (!employee[locationCoordsProp].x) {
-				console.log('no geo for ', employee[employeeLocationProp]);
+				// console.log('no geo for ', employee[employeeLocationProp]);
+				sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
 			}
 		}
 
@@ -695,7 +719,32 @@
 		dataset.sort(function(a, b) {
 			return b.employeeCount - a.employeeCount;
 		});
+
 	};
+
+
+	/**
+	* report missing data in the dataset
+	* @returns {undefined}
+	*/
+	var reportMissingData = function() {
+		
+		Array.prototype.unique = function() {
+		  return this.filter(function (value, index, self) { 
+		    return self.indexOf(value) === index;
+		  });
+		};
+
+		var uniqueUnknown = sgPlacesWithoutGeoData.unique(),
+			str = '\n\n';
+
+		for (var i=0, len=uniqueUnknown.length; i<len; i++) {
+			str += uniqueUnknown[i] + '\n';
+		}
+
+		console.log(str);
+	};
+	
 
 
 	/**
@@ -756,7 +805,8 @@
 	var processEmployeeData = function(employees) {
 		var ages = [],
 			ageMin = 1000,
-			ageMax = 0;
+			ageMax = 0,
+			ageSum = 0;
 
 		for (var i=0, len=employees.length; i<len; i++) {
 			var e = employees[i],
@@ -782,9 +832,11 @@
 			var age = getYearsUntilToday(e.birthday),
 				ageRound = Math.floor(age);
 
-			// keep track of min and max ages
+
+			// keep track of min and max ages, and the sum
 			ageMin = Math.min(ageRound, ageMin);
 			ageMax = Math.max(ageRound, ageMax);
+			ageSum += age;
 
 			// put age data into array
 			if (!ages[ageRound]) {
@@ -811,6 +863,22 @@
 				employeeCount: ages[currAge] || 0
 			});
 		}
+
+		// calculate avarage age
+		sgAvarageAge = ageSum / employees.length;
+	};
+	
+
+	/**
+	* set the total number of employees
+	* @returns {undefined}
+	*/
+	var setEmployeeCount = function() {
+		var $box = $('#info-box--employees-general'),
+			$value = $box.find('.value--primary'),
+			numEmployees = sgEmployees.length;
+
+		$value.text(numEmployees);
 	};
 	
 
@@ -856,6 +924,7 @@
 		processHometownData();
 		processOfficeData();
 
+		setEmployeeCount();
 
 		// process employee data (disciplines)
 		processEmployeeData(employees);
@@ -865,12 +934,14 @@
 		addEmployeeNodes(employees);
 
 		createAgeChart();
+		calculateAgeInfo();
 
 		// initialize force simulation
 		sgSimulation.nodes(employees)
 			.on('tick', simulationTickHandler);
 
-		// createRandomBirthdays();
+		// report data missing in dataset (for dev purposes only)
+		reportMissingData();
 
 	}// loadHandler
 
@@ -887,29 +958,6 @@
 			.defer(d3.csv, 'data/city-lat-long.csv')
 			.await(loadHandler);
 	};
-
-
-	/**
-	* create random birtdays
-	* @returns {undefined}
-	*/
-	var createRandomBirthdays = function() {
-		// var startYear = 1965,
-		// 	endYear = 1997,
-		var startYear = 2001,
-			endYear = 2016,
-			yearRange = endYear - startYear;
-		for (var i=0, len=sgEmployees.length; i<len; i++) {
-			// var day = Math.ceil(28*Math.random()),
-			var day = 1,
-				month = Math.ceil(12*Math.random()),
-				year = Math.floor(yearRange*Math.random()) + startYear,
-				birthday = day + '-' + month + '-' + year;
-
-			console.log(birthday);
-		}
-	};
-	
 
 
 

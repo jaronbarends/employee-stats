@@ -1,0 +1,21 @@
+changed column titles:
+birthday,age,startDate,parttimePercentage,hometown,gender,discipline,office,organisationalUnit,fulltimeOrParttime,birthplace,birthcountry
+
+Getting new geo data:
+in employees.js:
+activate call to reportMissingData
+copy all places from the console
+
+batch convert: go to
+http://www.freegeocoding.com/batch.php
+paste all places
+remove entry "algemeen"
+
+copy all places into excel sheet
+copy all lat/long into excel sheet
+go to Data > text to columns
+copy all data
+
+open city-lat-long.csv
+paste the data
+
