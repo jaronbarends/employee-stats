@@ -5,10 +5,10 @@
 	var $sgBody = $('body');
 	
 	// vars for graph's svg
-	var sgSvg,
-		$sgSvg,
-		sgSvgWidth,
-		sgSvgHeight,
+	var sgBubbleChart,
+		$sgBubbleChart,
+		sgBubbleChartWidth,
+		sgBubbleChartHeight,
 		sgGroupTranslate = 'translate(0,0)';
 
 	// vars for svg-groups
@@ -50,10 +50,10 @@
 	* @returns {undefined}
 	*/
 	var initSvg = function() {
-		sgSvg = d3.select('#main-svg');
-		$sgSvg = $('#main-svg');
-		sgSvgWidth = $sgSvg.width();
-		sgSvgHeight = $sgSvg.height();
+		sgBubbleChart = d3.select('#bubble-chart');
+		$sgBubbleChart = $('#bubble-chart');
+		sgBubbleChartWidth = $sgBubbleChart.width();
+		sgBubbleChartHeight = $sgBubbleChart.height();
 	};
 
 
@@ -109,9 +109,9 @@
 			* @param {object} d current object's data
 			*/
 			var forceXGender = function(d) {
-				var x = sgSvgWidth/3;
+				var x = sgBubbleChartWidth/3;
 				if (d.gender === 'male') {
-					x = 2*sgSvgWidth/3;
+					x = 2*sgBubbleChartWidth/3;
 				}
 				return x;
 			};
@@ -123,11 +123,11 @@
 			* @param {object} d current object's data
 			*/
 			var forceXDiscipline = function(d) {
-				var x = sgSvgWidth/4;
+				var x = sgBubbleChartWidth/4;
 				if (d.discipline === 'frontend development' || d.discipline === 'visual design' || d.discipline === 'interaction design') {
-					x = sgSvgWidth/2;
+					x = sgBubbleChartWidth/2;
 				} else if (d.discipline === 'backend development') {
-					x = 4*sgSvgWidth / 5;
+					x = 4*sgBubbleChartWidth / 5;
 				}
 				return x;
 			};
@@ -139,7 +139,7 @@
 			* @param {object} d current object's data
 			*/
 			var forceXCenter = function(d) {
-				return sgSvgWidth / 2;
+				return sgBubbleChartWidth / 2;
 			};
 
 
@@ -149,7 +149,7 @@
 			* @param {object} d current object's data
 			*/
 			var forceYCenter = function(d) {
-				return sgSvgHeight / 2;
+				return sgBubbleChartHeight / 2;
 			};
 
 		//-- Start force definitions
@@ -212,7 +212,7 @@
 	* @returns {undefined}
 	*/
 	var addEmployeeNodes = function(datapoints) {
-		var employeeG = sgSvg.selectAll('#employee-group')
+		var employeeG = sgBubbleChart.selectAll('#employee-group')
 				.attr('transform', sgGroupTranslate);
 
 		sgNodes = employeeG.selectAll('.employee')
@@ -248,7 +248,7 @@
 	*/
 	var setNodeSize = function(size) {
 		sgNodeSize = size || sgDefaultNodeSize;
-		sgSvg.selectAll('.employee')
+		sgBubbleChart.selectAll('.employee')
 			.attr('r', sgNodeSize);
 	};
 
@@ -495,10 +495,10 @@
 		var drawMap = function(geojson) {
 			var provinces = geojson.features;
 
-			sgProjection = d3.geoMercator().fitSize([sgSvgWidth, sgSvgHeight], geojson);
+			sgProjection = d3.geoMercator().fitSize([sgBubbleChartWidth, sgBubbleChartHeight], geojson);
 			sgPath = d3.geoPath().projection(sgProjection);
 
-			sgMap = sgSvg.selectAll('#geo-group')
+			sgMap = sgBubbleChart.selectAll('#geo-group')
 				.attr('translate', sgGroupTranslate);
 
 			sgMap.selectAll('.province')

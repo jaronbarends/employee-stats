@@ -84,16 +84,16 @@ a:focus {
 	}
 
 
-	.chart {
+	.bubble-chart-container {
 		transform-style: preserve-3d;
 		transition: transform 1s;
 	}
 
-	.map-view .chart {
+	.map-view .bubble-chart-container {
 		transform: rotateX(45deg) rotateZ(10deg);
 	}
 
-	.main-svg {
+	.bubble-chart {
 		display: block;
 		margin: 0 auto;
 		width: 500px;
