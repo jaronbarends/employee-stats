@@ -29,7 +29,7 @@ body {
 }
 
 h1 {
-	font-size: 9rem;
+	font-size: 7.5rem;
 	font-weight: bold;
 	color: #ecedee;/* valtech light grey */;
 }
@@ -90,7 +90,7 @@ a:focus {
 	}
 
 	.map-view .chart {
-		/*transform: rotateX(45deg) rotateZ(10deg);*/
+		transform: rotateX(45deg) rotateZ(10deg);
 	}
 
 	.main-svg {
@@ -128,6 +128,10 @@ a:focus {
 	.map-view .info-box--hometown,
 	.map-view .info-box--offices {
 		opacity: 1;
+	}
+
+	.axis .domain {
+		stroke: transparent;
 	}
 
 /*-- End general styles --*/
@@ -192,6 +196,11 @@ a:focus {
 	transform: scaleY(0.4) translate(-9px, 10px) skewX(-30deg);
 }
 
+.emp__shadow::before,
+.emp__shadow::after {
+	display: none;
+}
+
 
 .highlight-gender .employee--female {
 	fill: pink;
@@ -245,7 +254,6 @@ a:focus {
 	.age-chart {
 		height: 200px;
 		width: 600px;
-		background: #ffc;
 	}
 
 	.age-chart rect {

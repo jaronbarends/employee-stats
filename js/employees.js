@@ -386,16 +386,16 @@
 				.rangeRound([0, chartW])
 				.padding(0.1);
 
-				console.log('ages:', sgAges);
+				// console.log('ages:', sgAges);
 
 		var yScale = d3.scaleLinear()
 				.domain([0, d3.max(sgAges, function(obj) {
 						return obj.employeeCount;
 					})])
-				.range([0, chartH]);
+				.range([chartH, 0]);
 
 		var xAxis = d3.axisBottom(xScale)
-				.ticks(5),
+				.tickValues([25, 30, 35, 40, 45]),
 			yAxis = d3.axisLeft(yScale)
 				.ticks(3);
 
@@ -410,11 +410,11 @@
 				return xScale(d.age);
 			})
 			.attr('y', function(d) {
-				return chartH - yScale(d.employeeCount);
+				return yScale(d.employeeCount);
 			})
 			.attr('width', xScale.bandwidth())
 			.attr('height', function(d) {
-				return yScale(d.employeeCount);
+				return chartH - yScale(d.employeeCount);
 			})
 
 		// render axes
