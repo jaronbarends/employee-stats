@@ -481,7 +481,7 @@
 				.enter()
 				.append('circle')
 				.attr('class', 'office')
-				.attr('r', 10)
+				.attr('r', 20)
 				.attr('cx', function(d) {
 					var coords = sgProjection([d.long, d.lat]);
 					return coords[0];
