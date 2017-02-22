@@ -19,8 +19,9 @@
 	var sgNodes,
 		sgDefaultNodeSize = 8,
 		sgNodeSize = sgDefaultNodeSize,
-		sgDefaultNodeSpacing = 2,
-		sgNodeSpacing = sgDefaultNodeSpacing;
+		sgDefaultNodeSpacing = 3,
+		sgNodeSpacing = sgDefaultNodeSpacing,
+		sgInfoProp;// property to be shown when clicking on node
 
 	// vars for datasets
 	var sgEmployees,
@@ -29,6 +30,8 @@
 		sgBirthPlaces = [],
 		sgPlacesWithoutGeoData = [],
 		sgDisciplines = [],
+		sgLevels = ['senior', 'stagiair', 'junior'],
+		sgOrganisationalUnits = [],
 		sgBirthdays = [],
 		sgAges = [],
 		sgAvarageAge,
@@ -67,11 +70,11 @@
 
 
 			/**
-			* get an x-force function for a location
+			* get a force function for a location
 			* @param {ob} coordsProp The object containing the coordinates for the location
 			* @returns {function} a force-function
 			*/
-			var getLocationForce = function(xOrY, coordsProp, defaultValue) {
+			var getGeoForce = function(xOrY, coordsProp, defaultValue) {
 				var forceFunction = function(d) {
 					var xOrYValue = d[coordsProp][xOrY] || defaultValue;
 					return xOrYValue;
@@ -249,9 +252,10 @@
 				return cls;
 			})
 			.attr('r', sgNodeSize)
-			// .attr('cx', centerX)
-			// .attr('cy', centerY)
 			.on('click', function(d) {
+				if (sgInfoProp) {
+					console.log(d[sgInfoProp]);
+				}
 			});
 	};
 
@@ -350,8 +354,10 @@
 			showMap();
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
-			changeForce('forceX', xForce(getLocationForce('x', coordsProp, 120)));
-			changeForce('forceY', yForce(getLocationForce('y', coordsProp, 20)));
+			sgInfoProp = $tgt.attr('data-info-property');
+
+			changeForce('forceX', xForce(getGeoForce('x', coordsProp, 120)));
+			changeForce('forceY', yForce(getGeoForce('y', coordsProp, 20)));
 			setDefaultCollisionForce();
 		});
 		
@@ -442,11 +448,7 @@
 				.enter()
 				.append('path')
 				.attr('class', 'province')
-				.attr('d', sgPath)
-				.on('click', function(d) {
-					// console.log(d.properties.OMSCHRIJVI);
-					// console.log(d.properties.name);
-				});
+				.attr('d', sgPath);
 		};
 
 
@@ -649,31 +651,41 @@
 		processBirthplaceData();
 		processOfficeData();
 	};
-	
-	
-	
 
 
 	/**
-	* process data of employees (like fetching disciplines)
+	* handle an employee's discipline data
+	* - fill disciplines array
+	* - put level into separate field
 	* @returns {undefined}
 	*/
-	var processEmployeeData = function() {
-		var ages = [],
-			ageMin = 1000,
-			ageMax = 0,
-			ageSum = 0;
-
+	var processEmployeeDisciplines = function() {
 		for (var i=0, len=sgEmployees.length; i<len; i++) {
-			var e = sgEmployees[i],
-				discipline = e.discipline,
+			var emp = sgEmployees[i],
+				discipline = emp.discipline,
 				disciplineFound = false;
 
+			// cut off level
+			for (var lv=0, lvLen = sgLevels.length; lv<lvLen; lv++) {
+				var level = sgLevels[lv];
+				// console.log(level);
+				if (discipline.toLowerCase().indexOf(level) === 0) {
+					var before = discipline;
+					discipline = discipline.substr(level.length + 1);
+					emp.level = level;
+					// set discipline to discipline without level
+					emp.discipline = discipline;
+				} else {
+					emp.level = '';
+				}
+			}
+
 			// discipline data
-			for (var j=0, len2=sgDisciplines.length; j<len2; j++) {
-				var d = sgDisciplines[j];
-				if (d.name === discipline) {
-					d.employeeCount++;
+			for (var ds=0, dsLen=sgDisciplines.length; ds<dsLen; ds++) {
+				var disc = sgDisciplines[ds];
+
+				if (disc.name === discipline) {
+					disc.employeeCount++;
 					disciplineFound = true;
 					break;
 				}
@@ -682,10 +694,31 @@
 			if (!disciplineFound) {
 				sgDisciplines.push({name: discipline, employeeCount: 1});
 			}
+		}
+
+		// now order disciplines by # of employees
+		sgDisciplines.sort(function(a, b) {
+			return b.employeeCount - a.employeeCount;
+		});
+	};
+
+
+	/**
+	* process age and startdate data of employee
+	* @returns {undefined}
+	*/
+	var processEmployeeAges = function() {
+		var ages = [],
+			ageMin = 1000,
+			ageMax = 0,
+			ageSum = 0;
+
+		for (var i=0, len=sgEmployees.length; i<len; i++) {
+			var emp = sgEmployees[i];
 
 			// process age data
-			sgBirthdays.push(e.birthday);
-			var age = getYearsUntilToday(e.birthday),
+			sgBirthdays.push(emp.birthday);
+			var age = getYearsUntilToday(emp.birthday),
 				ageRound = Math.floor(age);
 
 
@@ -705,11 +738,6 @@
 		
 		}// end loop employees
 
-		// now order disciplines by # of employees
-		sgDisciplines.sort(function(a, b) {
-			return b.employeeCount - a.employeeCount;
-		});
-
 		// check if every age between min and max is present
 		var ageRange = ageMax - ageMin;
 		for (var a = 0; a <= ageRange; a++) {
@@ -722,6 +750,17 @@
 
 		// calculate avarage age
 		sgAvarageAge = ageSum / sgEmployees.length;
+	};
+	
+	
+
+	/**
+	* process data of employees (like fetching disciplines)
+	* @returns {undefined}
+	*/
+	var processEmployeeData = function() {
+		processEmployeeDisciplines();
+		processEmployeeAges();
 	};
 
 
@@ -921,7 +960,7 @@
 			.on('tick', simulationTickHandler);
 
 		// report data missing in dataset (for dev purposes only)
-		reportMissingData();
+		// reportMissingData();
 
 	}// loadHandler
 
@@ -933,6 +972,7 @@
 	var loadData = function() {
 		d3.queue()
 			.defer(d3.csv, 'data/employees.csv')
+			// .defer(d3.csv, 'data/employees-excerpt.csv')
 			.defer(d3.json, 'data/provinces.topojson')
 			.defer(d3.csv, 'data/offices-netherlands.csv')
 			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
