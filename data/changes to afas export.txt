@@ -16,6 +16,6 @@ copy all lat/long into excel sheet
 go to Data > text to columns
 copy all data
 
-open city-lat-long.csv
+open hometowns-and-birthplaces.csv
 paste the data
 

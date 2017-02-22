@@ -25,7 +25,8 @@
 	// vars for datasets
 	var sgEmployees,
 		sgOffices,
-		sgCities,
+		sgHometowns = [],
+		sgBirthPlaces = [],
 		sgPlacesWithoutGeoData = [],
 		sgDisciplines = [],
 		sgBirthdays = [],
@@ -63,6 +64,21 @@
 
 
 		//-- Start force definitions
+
+
+			/**
+			* get an x-force function for a location
+			* @param {ob} coordsProp The object containing the coordinates for the location
+			* @returns {function} a force-function
+			*/
+			var getLocationForce = function(xOrY, coordsProp, defaultValue) {
+				var forceFunction = function(d) {
+					var xOrYValue = d[coordsProp][xOrY] || defaultValue;
+					return xOrYValue;
+				};
+				return forceFunction;
+			};
+		
 
 			/**
 			* x-force for hometown
@@ -213,12 +229,12 @@
 	* add nodes to screen
 	* @returns {undefined}
 	*/
-	var addEmployeeNodes = function(datapoints) {
+	var addEmployeeNodes = function() {
 		var employeeG = sgBubbleChart.selectAll('#employee-group')
 				.attr('transform', sgGroupTranslate);
 
 		sgNodes = employeeG.selectAll('.employee')
-			.data(datapoints)
+			.data(sgEmployees)
 			.enter()
 			.append('circle')
 			.attr('class', function(d) {
@@ -235,11 +251,7 @@
 			.attr('r', sgNodeSize)
 			// .attr('cx', centerX)
 			// .attr('cy', centerY)
-			.on('mouseover', function(d) {
-				// var name = d.firstName;
-				// name += d.preposition ? ' ' + d.preposition : '';
-				// name += ' ' + d.lastName
-				// console.log(name);
+			.on('click', function(d) {
 			});
 	};
 
@@ -329,26 +341,20 @@
 			changeForce('forceX', xForce(forceXDiscipline));
 			changeForce('forceY', yForce(forceYCenter));
 		});
-		
-		$('#sort-by-hometown').on('click', function(e) {
+
+		// geo sorting
+		$('[data-geo-sort]').on('click', function(e) {
 			e.preventDefault();
 			setNodeSize(2);
 			setNodeSpacing(0);
 			showMap();
-			changeForce('forceX', xForce(forceXHometown));
-			changeForce('forceY', yForce(forceYHometown));
+			var $tgt = $(e.currentTarget),
+				coordsProp = $tgt.attr('data-geo-sort');
+			changeForce('forceX', xForce(getLocationForce('x', coordsProp, 120)));
+			changeForce('forceY', yForce(getLocationForce('y', coordsProp, 20)));
 			setDefaultCollisionForce();
 		});
 		
-		$('#sort-by-office').on('click', function(e) {
-			e.preventDefault();
-			setNodeSize(2);
-			setNodeSpacing(0);
-			showMap();
-			changeForce('forceX', xForce(forceXOffice));
-			changeForce('forceY', yForce(forceYOffice));
-			setDefaultCollisionForce();
-		});
 
 		$('#combined').on('click', function(e) {
 			e.preventDefault();
@@ -356,97 +362,6 @@
 			changeForce('forceX', xForce(forceXCenter));
 			changeForce('forceY', yForce(forceYCenter));
 		});
-	};
-
-
-	/**
-	* create chart for age
-	* @returns {undefined}
-	*/
-	var createAgeChart = function() {
-		var ageChart = d3.select('#age-chart'),
-			w = parseInt(ageChart.style('width'), 10),
-			h = parseInt(ageChart.style('height'), 10),
-			margin = {
-				top: 10,
-				right: 10,
-				bottom: 30,
-				left: 50
-			},
-			chartW = w - margin.left - margin.right,
-			chartH = h - margin.top - margin.bottom,
-			minAge = d3.min(sgAges, function(obj) {
-				return obj.age;
-			}),
-			maxAge = d3.max(sgAges, function(obj) {
-				return obj.age + 1;// op de een of andere manier moet dit +1 zijn, anders komt laatste bar niet in schaal
-			});
-
-
-		var xScale = d3.scaleBand()
-				// .domain(d3.range(sgAges.length))
-				.domain(d3.range(minAge, maxAge))
-				.rangeRound([0, chartW])
-				.padding(0.1);
-
-				// console.log('ages:', sgAges);
-
-		var yScale = d3.scaleLinear()
-				.domain([0, d3.max(sgAges, function(obj) {
-						return obj.employeeCount;
-					})])
-				.range([chartH, 0]);
-
-		var xAxis = d3.axisBottom(xScale)
-				.tickValues([25, 30, 35, 40, 45]),
-			yAxis = d3.axisLeft(yScale)
-				.ticks(3);
-
-		// render bars
-		ageChart.append('g')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-			.selectAll('.age-bar')
-			.data(sgAges)
-			.enter()
-			.append('rect')
-			.attr('x', function(d, i) {
-				return xScale(d.age);
-			})
-			.attr('y', function(d) {
-				return yScale(d.employeeCount);
-			})
-			.attr('width', xScale.bandwidth())
-			.attr('height', function(d) {
-				return chartH - yScale(d.employeeCount);
-			})
-
-		// render axes
-		ageChart.append('g')
-			.attr('class', 'axis')
-			.attr('transform', 'translate(' + margin.left +',' + (margin.top + chartH) +')')
-			.call(xAxis);
-
-		ageChart.append('g')
-			.attr('class', 'axis')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-			.call(yAxis);
-	};
-
-
-	/**
-	* calculate and show age info
-	* @returns {undefined}
-	*/
-	var calculateAgeInfo = function() {
-		var avgYears = Math.floor(sgAvarageAge),
-			avgMonths = Math.floor(12 * (sgAvarageAge % avgYears));
-
-		console.log(sgAvarageAge, avgYears, avgMonths);
-
-		$('#age-info').find('.age-years')
-			.text(avgYears)
-			.end()
-			.find('.age-months').text(avgMonths);
 	};
 	
 	
@@ -554,19 +469,6 @@
 		
 
 
-
-		/**
-		* get a radius based on population
-		* @returns {undefined}
-		*/
-		var getRadiusByPopulation = function(population) {
-			var r = Math.round(population / 1000000);
-			r = Math.max(2, r);
-
-			return r;
-		};
-		
-
 		/**
 		* add circles for offices
 		* @returns {undefined}
@@ -577,9 +479,6 @@
 				.enter()
 				.append('circle')
 				.attr('class', 'office')
-				// .attr('r', function(d) {
-				// 	return getRadiusByPopulation(100000)
-				// })
 				.attr('r', 10)
 				.attr('cx', function(d) {
 					var coords = sgProjection([d.long, d.lat]);
@@ -609,90 +508,43 @@
 	//-- End geo functions --
 
 
-	/**
-	* do stuff with city data:
-	* enrich employee data based on other fetched data (like geo info)
-	* and keep track of # of employees per city
-	* @returns {undefined}
-	*/
-	var processCityData = function() {
-		var dataset = sgCities,
-			datasetLocationProp = 'name',
-			employeeLocationProp = 'hometown',
-			locationCoordsProp = 'hometownCoords';
-
-		// add prop for employee count to every location
-		for (var i=0, len=dataset.length; i<len; i++) {
-			dataset[i].employeeCount = 0;
-		}
-
-		for (i=0, len=sgEmployees.length; i<len; i++) {
-			var employee = sgEmployees[i],
-				locationName = employee[employeeLocationProp].toLowerCase();
-
-			// create a coordinates object
-			employee[locationCoordsProp] = {};
-
-			for (var j=0, len2=dataset.length; j<len2; j++) {
-				var location = dataset[j];
-
-				if (location.name.toLowerCase() === locationName) {
-					// calculate the location's coords in the map projection
-					var coords = sgProjection([location.long, location.lat]);
-					employee[locationCoordsProp] = {
-						x: coords[0],
-						y: coords[1]
-					};
-
-					// keep track of # of employees per location
-					location.employeeCount++;
-
-					break;
-				}
-			}
-
-			if (!employee[locationCoordsProp].x) {
-				// console.log('no geo for ', employee[employeeLocationProp]);
-				sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
-			}
-		}
-
-		// now order location by # of employees
-		dataset.sort(function(a, b) {
-			return b.employeeCount - a.employeeCount;
-		});
-
-	};
-
 
 
 	/**
-	* match employees with a set of locations (cities, offices)
+	* match employees with a set of locations (hometowns, birthplaces, offices)
+	* enrich location-dataset:
+	*	- add prop employeeCount to every location
+	* enrich every employee-object:
+	*	- add object with location coords to every employee object
+	* 
 	* @param {array} dataset The dataset containing the locations
 	* @returns {undefined}
 	*/
 	var matchEmployeesWithLocations = function(options) {
-		// console.log(cities);
-		var dataset = options.dataset,
+		var locationData = options.locationData,
 			datasetLocationProp = options.datasetLocationProp,
 			employeeLocationProp = options.employeeLocationProp,
 			locationCoordsProp = options.locationCoordsProp,
 			unknownPlaces = [];
 
-		// add prop for employee count to every location
-		for (var i=0, len=dataset.length; i<len; i++) {
-			dataset[i].employeeCount = 0;
+		// enrich location-data: add prop for employee count to every location
+		for (var i=0, locationCount=locationData.length; i<locationCount; i++) {
+			locationData[i].employeeCount = 0;
 		}
 
-		for (i=0, len=sgEmployees.length; i<len; i++) {
-			var employee = sgEmployees[i],
-				locationName = employee[employeeLocationProp].toLowerCase();
+		// enrich employee-data
+		for (var j=0, len=sgEmployees.length; j<len; j++) {
+			var employee = sgEmployees[j],
+				locationName = employee[employeeLocationProp].toLowerCase(),
+				locationFound = false;
 
 			// create a coordinates object
 			employee[locationCoordsProp] = {};
 
-			for (var j=0, len2=dataset.length; j<len2; j++) {
-				var location = dataset[j];
+			// check if location is within dataset
+			// if so, get its lat/long and augment its employeeCount
+			for (var k=0; k<locationCount; k++) {
+				var location = locationData[k];
 
 				if (location[datasetLocationProp].toLowerCase() === locationName) {
 					// calculate the location's coords in the map projection
@@ -702,6 +554,8 @@
 						y: coords[1]
 					};
 
+					locationFound = true;
+
 					// keep track of # of employees per location
 					location.employeeCount++;
 
@@ -709,40 +563,16 @@
 				}
 			}
 
-			if (!employee[locationCoordsProp].x) {
-				// console.log('no geo for ', employee[employeeLocationProp]);
+			if (!locationFound) {
 				sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
 			}
 		}
 
 		// now order location by # of employees
-		dataset.sort(function(a, b) {
+		locationData.sort(function(a, b) {
 			return b.employeeCount - a.employeeCount;
 		});
 
-	};
-
-
-	/**
-	* report missing data in the dataset
-	* @returns {undefined}
-	*/
-	var reportMissingData = function() {
-		
-		Array.prototype.unique = function() {
-		  return this.filter(function (value, index, self) { 
-		    return self.indexOf(value) === index;
-		  });
-		};
-
-		var uniqueUnknown = sgPlacesWithoutGeoData.unique(),
-			str = '\n\n';
-
-		for (var i=0, len=uniqueUnknown.length; i<len; i++) {
-			str += uniqueUnknown[i] + '\n';
-		}
-
-		console.log(str);
 	};
 	
 
@@ -752,22 +582,37 @@
 	* @returns {undefined}
 	*/
 	var processHometownData = function() {
-		var cityOptions = {
-			dataset: sgCities,
+		var options = {
+			locationData: sgHometowns,
 			datasetLocationProp: 'name',
 			employeeLocationProp: 'hometown',
 			locationCoordsProp: 'hometownCoords'
 		};
-		matchEmployeesWithLocations(cityOptions);
+		matchEmployeesWithLocations(options);
 
 		var $list = $('#hometown-list'),
 			items = '';
 		for (var i=0; i<5; i++) {
-			var hometown = sgCities[i];
+			var hometown = sgHometowns[i];
 			items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
 		}
 
 		$list.append(items);
+	};
+
+
+	/**
+	* process birthplace data
+	* @returns {undefined}
+	*/
+	var processBirthplaceData = function() {
+		var options = {
+			locationData: sgHometowns,
+			datasetLocationProp: 'name',
+			employeeLocationProp: 'birthplace',
+			locationCoordsProp: 'birthplaceCoords'
+		};
+		matchEmployeesWithLocations(options);
 	};
 
 
@@ -777,7 +622,7 @@
 	*/
 	var processOfficeData = function() {
 		var officeOptions = {
-			dataset: sgOffices,
+			locationData: sgOffices,
 			datasetLocationProp: 'city',
 			employeeLocationProp: 'office',
 			locationCoordsProp: 'officeCoords'
@@ -793,23 +638,34 @@
 
 		$list.append(items);
 	};
+
+
+	/**
+	* process data about locations
+	* @returns {undefined}
+	*/
+	var processGeoData = function() {
+		processHometownData();
+		processBirthplaceData();
+		processOfficeData();
+	};
+	
 	
 	
 
 
 	/**
 	* process data of employees (like fetching disciplines)
-	* @param {object} employees Object with employee data
 	* @returns {undefined}
 	*/
-	var processEmployeeData = function(employees) {
+	var processEmployeeData = function() {
 		var ages = [],
 			ageMin = 1000,
 			ageMax = 0,
 			ageSum = 0;
 
-		for (var i=0, len=employees.length; i<len; i++) {
-			var e = employees[i],
+		for (var i=0, len=sgEmployees.length; i<len; i++) {
+			var e = sgEmployees[i],
 				discipline = e.discipline,
 				disciplineFound = false;
 
@@ -865,8 +721,123 @@
 		}
 
 		// calculate avarage age
-		sgAvarageAge = ageSum / employees.length;
+		sgAvarageAge = ageSum / sgEmployees.length;
 	};
+
+
+	//-- Start age fucntions --
+
+
+
+		/**
+		* create chart for age
+		* @returns {undefined}
+		*/
+		var createAgeChart = function() {
+			var ageChart = d3.select('#age-chart'),
+				w = parseInt(ageChart.style('width'), 10),
+				h = parseInt(ageChart.style('height'), 10),
+				margin = {
+					top: 10,
+					right: 10,
+					bottom: 30,
+					left: 50
+				},
+				chartW = w - margin.left - margin.right,
+				chartH = h - margin.top - margin.bottom,
+				minAge = d3.min(sgAges, function(obj) {
+					return obj.age;
+				}),
+				maxAge = d3.max(sgAges, function(obj) {
+					return obj.age + 1;// op de een of andere manier moet dit +1 zijn, anders komt laatste bar niet in schaal
+				});
+
+
+			var xScale = d3.scaleBand()
+					// .domain(d3.range(sgAges.length))
+					.domain(d3.range(minAge, maxAge))
+					.rangeRound([0, chartW])
+					.padding(0.1);
+
+					// console.log('ages:', sgAges);
+
+			var yScale = d3.scaleLinear()
+					.domain([0, d3.max(sgAges, function(obj) {
+							return obj.employeeCount;
+						})])
+					.range([chartH, 0]);
+
+			var xAxis = d3.axisBottom(xScale)
+					.tickValues([25, 30, 35, 40, 45]),
+				yAxis = d3.axisLeft(yScale)
+					.ticks(3);
+
+			// render bars
+			ageChart.append('g')
+				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+				.selectAll('.age-bar')
+				.data(sgAges)
+				.enter()
+				.append('rect')
+				.attr('x', function(d, i) {
+					return xScale(d.age);
+				})
+				.attr('y', function(d) {
+					return yScale(d.employeeCount);
+				})
+				.attr('width', xScale.bandwidth())
+				.attr('height', function(d) {
+					return chartH - yScale(d.employeeCount);
+				})
+
+			// render axes
+			ageChart.append('g')
+				.attr('class', 'axis')
+				.attr('transform', 'translate(' + margin.left +',' + (margin.top + chartH) +')')
+				.call(xAxis);
+
+			ageChart.append('g')
+				.attr('class', 'axis')
+				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+				.call(yAxis);
+		};
+
+
+		/**
+		* calculate and show age info
+		* @returns {undefined}
+		*/
+		var calculateAgeInfo = function() {
+			var avgYears = Math.floor(sgAvarageAge),
+				avgMonths = Math.floor(12 * (sgAvarageAge % avgYears));
+
+			$('#age-info').find('.age-years')
+				.text(avgYears)
+				.end()
+				.find('.age-months').text(avgMonths);
+		};
+
+
+		/**
+		* calculate the years passed between a certain date and today
+		* @param {string} pastDateStr Date in the past, format d/m/y
+		* @returns {number} The number of years (not rounded)
+		*/
+		var getYearsUntilToday = function(pastDateStr) {
+			var now = new Date(),
+				dateArr = pastDateStr.split('/'),
+				pastDate = new Date(dateArr[2], dateArr[1]-1, dateArr[0]),// month is 0-based, hence -1
+				nowMsecs = now.getTime(),
+				pastDateMsecs = pastDate.getTime(),
+				diffMsecs = nowMsecs - pastDateMsecs,// diff between dates in milliseconds
+				diffYear = diffMsecs / (1000 * 60 * 60 * 24 * 365);// not entirely accurate (no leap years) but good enough for now
+
+			return diffYear;
+		};
+
+
+	//-- End age fucntions --
+
 	
 
 	/**
@@ -882,22 +853,34 @@
 	};
 	
 
-	/**
-	* calculate the years passed between a certain date and today
-	* @param {string} pastDateStr Date in the past, format d/m/y
-	* @returns {number} The number of years (not rounded)
-	*/
-	var getYearsUntilToday = function(pastDateStr) {
-		var now = new Date(),
-			dateArr = pastDateStr.split('/'),
-			pastDate = new Date(dateArr[2], dateArr[1]-1, dateArr[0]),// month is 0-based, hence -1
-			nowMsecs = now.getTime(),
-			pastDateMsecs = pastDate.getTime(),
-			diffMsecs = nowMsecs - pastDateMsecs,// diff between dates in milliseconds
-			diffYear = diffMsecs / (1000 * 60 * 60 * 24 * 365);// not entirely accurate (no leap years) but good enough for now
 
-		return diffYear;
-	};
+	//-- Start debugging functions
+
+
+		/**
+		* report missing data in the dataset
+		* @returns {undefined}
+		*/
+		var reportMissingData = function() {
+			
+			Array.prototype.unique = function() {
+			  return this.filter(function (value, index, self) { 
+			    return self.indexOf(value) === index;
+			  });
+			};
+
+			var uniqueUnknown = sgPlacesWithoutGeoData.unique(),
+				str = '\n\n';
+
+			for (var i=0, len=uniqueUnknown.length; i<len; i++) {
+				str += uniqueUnknown[i] + '\n';
+			}
+
+			console.log(str);
+		};
+
+
+	//-- End debugging functions
 	
 	
 	
@@ -915,29 +898,26 @@
 		// create semi globals for datasets
 		sgEmployees = employees;
 		sgOffices = offices;
-		sgCities = cities;
+		sgHometowns = cities;
 
 		// initialize geo stuff
 		initGeo(mapData);
 
-		// process data
-		processHometownData();
-		processOfficeData();
-
-		setEmployeeCount();
+		// process all geo-related data
+		processGeoData();
 
 		// process employee data (disciplines)
-		processEmployeeData(employees);
-
+		setEmployeeCount();
+		processEmployeeData();
 
 		// add shapes for nodes
-		addEmployeeNodes(employees);
+		addEmployeeNodes();
 
 		createAgeChart();
 		calculateAgeInfo();
 
 		// initialize force simulation
-		sgSimulation.nodes(employees)
+		sgSimulation.nodes(sgEmployees)
 			.on('tick', simulationTickHandler);
 
 		// report data missing in dataset (for dev purposes only)
@@ -955,7 +935,7 @@
 			.defer(d3.csv, 'data/employees.csv')
 			.defer(d3.json, 'data/provinces.topojson')
 			.defer(d3.csv, 'data/offices-netherlands.csv')
-			.defer(d3.csv, 'data/city-lat-long.csv')
+			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
 			.await(loadHandler);
 	};
 
