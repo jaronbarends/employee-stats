@@ -200,8 +200,8 @@
 				// .force('center', d3.forceCenter(200,200))
 			setDefaultCollisionForce()
 				.nodes(sgEmployees);	
-		};
-
+		}
+;
 
 	//-- End force / simulation functions
 
@@ -912,6 +912,75 @@
 
 	//-- End age fucntions --
 
+
+
+	//-- Start Pie chart fucntions --
+
+
+		/**
+		* create a pie chart
+		* @returns {undefined}
+		*/
+		var createPieChart = function(dataset) {
+			console.log(dataset);
+
+			var pie = d3.pie().value(function(d) {return d.value})(dataset),
+				svg = d3.select('#overall-pie-chart'),
+				innerRadius = 0,
+				outerRadius = parseInt(svg.style('width'), 10)/2,
+				arc = d3.arc()
+						.innerRadius(innerRadius)
+						.outerRadius(outerRadius);
+
+			var arcs = svg.selectAll('g.pie-segment')
+				.data(pie)
+				.enter()
+				.append('g')
+				.attr('class', 'pie-segment')
+				.attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
+
+			arcs.append('path')
+				.attr('class', function(d) {
+					return 'pie-'+d.data.className;
+				})
+				.attr('d', arc)
+		};
+
+
+		/**
+		* create a pie chart for gender
+		* @returns {undefined}
+		*/
+		var createGenderPieChart = function() {
+			var maleCount = 0,
+				femaleCount = 0,
+				malePerc,
+				femalePerc;
+
+			for (var i=0, len=sgEmployees.length; i<len; i++) {
+				var g = sgEmployees[i].gender.toLowerCase();
+
+				if (g === 'vrouw') {
+					femaleCount++;
+				} else {
+					maleCount++;
+				}
+			}
+
+			var femalePerc = 100*femaleCount / len,
+				malePerc = 100*maleCount / len;
+
+			var dataset = [
+				{ value: femaleCount, className:'female', percentage: femalePerc},
+				{ value: maleCount, className:'male', percentage: malePerc}
+			];
+			createPieChart(dataset);
+		};
+		
+		
+
+	//-- End Pie chart fucntions --
+
 	
 
 	/**
@@ -996,6 +1065,8 @@
 			// this kicks off the animation
 			sgSimulation.on('tick', simulationTickHandler);
 		// }, 1000);
+
+		createGenderPieChart();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingData();

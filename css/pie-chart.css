@@ -1,0 +1,14 @@
+.pie-chart {
+	width: 100px;
+	height: 100px;
+}
+
+.pie-female {
+	fill: pink;
+	fill: rgba(0, 0, 0, 0.2);
+}
+
+.pie-male {
+	fill: #00bdfa;/* valtech blue */
+	fill: rgba(0, 0, 0, 0.3);
+}

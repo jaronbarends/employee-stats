@@ -10,6 +10,7 @@
 	
 	<link rel="stylesheet" href="css/elements.css">
 	<link rel="stylesheet" href="css/employee-stats.css">
+	<link rel="stylesheet" href="css/pie-chart.css">
 </head>
 <body>
 	<div class="o-content-width">
@@ -38,6 +39,8 @@
 
 
 		<div id="wrapper">
+
+			<svg id="overall-pie-chart" class="pie-chart"></svg>
 
 			<div id="legends" class="legends">
 			
@@ -78,11 +81,16 @@
 					<g id="geo-group" class="map"></g>
 					<g id="employee-group"></g>
 				</svg>
-			</div>
+
+			</div><!-- /.bubble-chart-container -->
+
+
+
+			<!-- Start overall charts -->
 
 			<div id="overall-charts-container" class="overall-charts-container">
-				<svg id="age-chart" class="age-chart">
-				</svg>
+
+				<svg id="age-chart" class="age-chart"></svg>
 				<div id="age-info">
 					The avarage age is
 					<div>
@@ -90,7 +98,12 @@
 						<span class="value value--primary age-months">..</span> months
 					</div>
 				</div>
-			</div>
+
+				<!-- <svg id="overall-pie-chart" class="pie-chart"></svg> -->
+				<div id="overall-pie-info">
+				</div>
+
+			</div><!-- /.overall-charts-container -->
 
 			<div id="office-charts-container--amersfoort" class="office-charts-container">
 			</div>
