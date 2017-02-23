@@ -84,47 +84,6 @@
 		
 
 			/**
-			* x-force for hometown
-			* @returns {number}	the x coordinate to move to
-			* @param {object} d current object's data
-			*/
-			var forceXHometown = function(d) {
-				var x = d.hometownCoords.x || 20;
-				return x;
-			};
-
-			/**
-			* y-force for hometown
-			* @returns {number}	the y coordinate to move to
-			* @param {object} d current object's data
-			*/
-			var forceYHometown = function(d) {
-				var y = d.hometownCoords.y || 120;
-				return y;
-			};
-
-			/**
-			* x-force for office
-			* @returns {number}	the x coordinate to move to
-			* @param {object} d current object's data
-			*/
-			var forceXOffice = function(d) {
-				var x = d.officeCoords.x || 20;
-				return x;
-			};
-
-			/**
-			* y-force for office
-			* @returns {number}	the y coordinate to move to
-			* @param {object} d current object's data
-			*/
-			var forceYOffice = function(d) {
-				var y = d.officeCoords.y || 120;
-				return y;
-			};
-
-
-			/**
 			* x-force for filter by gender
 			* @returns {number}	the x coordinate to move to
 			* @param {object} d current object's data
@@ -155,7 +114,26 @@
 
 
 			/**
-			* x-force for all nodes combined
+			* x-force for positioning all nodes on a grid
+			* @returns {undefined}
+			*/
+			var forceXGrid = function(d, i) {
+				return getNodeGridPosition(i)[0];
+			};
+
+
+			/**
+			* y-force for positioning all nodes on a grid
+			* @returns {undefined}
+			*/
+			var forceYGrid = function(d, i) {
+				return getNodeGridPosition(i)[1];
+			};
+			
+
+
+			/**
+			* x-force for all nodes centered
 			* @returns {number}	the x coordinate to move to
 			* @param {object} d current object's data
 			*/
@@ -165,7 +143,7 @@
 
 
 			/**
-			* y-force for all nodes combined
+			* y-force for all nodes centered
 			* @returns {number}	the y coordinate to move to
 			* @param {object} d current object's data
 			*/
@@ -201,14 +179,11 @@
 
 		/**
 		* reset the collision force
-		* @returns {undefined}
+		* @returns {d3 simulation} the simulation object
 		*/
 		var setDefaultCollisionForce = function() {
-			sgSimulation.force('collide', d3.forceCollide(sgNodeSize + sgNodeSpacing));
+			return sgSimulation.force('collide', d3.forceCollide(sgNodeSize + sgNodeSpacing));
 		};
-		
-		
-		
 
 
 		/**
@@ -217,15 +192,57 @@
 		*/
 		var initSimulation = function() {
 			sgSimulation = d3.forceSimulation()
-				.force('forceX', xForce(forceXCenter))
-				.force('forceY', yForce(forceYCenter));
-			setDefaultCollisionForce();	
+				.force('forceX', xForce(forceXGrid))
+				.force('forceY', yForce(forceYGrid))
+				// .force('forceX', xForce(forceXCenter))
+				// .force('forceY', yForce(forceYCenter))
+				// .force('charge', d3.forceManyBody().strength(0.5))
+				// .force('center', d3.forceCenter(200,200))
+			setDefaultCollisionForce()
+				.nodes(sgEmployees);	
 		};
 
 
 	//-- End force / simulation functions
 
 
+
+	/**
+	* get the position for a node on a grid (default 10x10)
+	* @param {number} idx The index of the node
+	* @param {object} options Config options for grid
+	* @returns {Array} [x, y]
+	*/
+	var getNodeGridPosition = function(idx, options) {
+		var defaults = {
+			gridOrigin: {x: 140, y: 20 },
+			gridSpacing: sgNodeSize,
+			gridSize: 10,// number of nodes in each row and col
+			gridIsHorizontal: true,
+		},
+		col,
+		row,
+		x,
+		y;
+
+		var c = $.extend(defaults, options);// config object
+
+		if (c.gridIsHorizontal) {
+			col = idx % c.gridSize + ( c.gridSize + 0.5 ) * Math.floor( idx / (c.gridSize*c.gridSize) );
+			row = Math.floor( idx / c.gridSize ) - c.gridSize * Math.floor( idx / (c.gridSize*c.gridSize) );
+			x = ( 2 * sgNodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
+			y = ( 2 * sgNodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
+		} else {
+			c.gridSpacing = sgNodeSize;
+			col = idx % c.gridSize;
+			row = Math.floor(idx / c.gridSize) + 0.5 * Math.floor(idx / (c.gridSize*c.gridSize));
+			x = ( 2 * sgNodeSize + c.gridSpacing) * col + c.gridOrigin.x;
+			y = ( 2 * sgNodeSize + c.gridSpacing) * row + c.gridOrigin.y;
+		}
+
+		return [x,y];
+	};
+	
 
 
 	/**
@@ -252,11 +269,27 @@
 				return cls;
 			})
 			.attr('r', sgNodeSize)
+			.attr('cx', function(d, i) {
+				var x = getNodeGridPosition(i)[0];
+				d.x = x; 
+				return x;
+			})
+			.attr('cy', function(d, i) {
+				var y = getNodeGridPosition(i)[1];
+				d.y = y;
+				return y;
+			})
+			.attr('x', function(d, i) {
+				return getNodeGridPosition(i)[0];
+			})
+			.attr('y', function(d, i) {
+				return getNodeGridPosition(i)[1];
+			})
 			.on('click', function(d) {
 				if (sgInfoProp) {
 					console.log(d[sgInfoProp]);
 				}
-			});
+			})
 	};
 
 
@@ -362,11 +395,13 @@
 		});
 		
 
-		$('#combined').on('click', function(e) {
+		$('#no-sorting').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			changeForce('forceX', xForce(forceXCenter));
-			changeForce('forceY', yForce(forceYCenter));
+			changeForce('forceX', xForce(forceXGrid));
+			changeForce('forceY', yForce(forceYGrid));
+			// changeForce('forceX', xForce(forceXCenter));
+			// changeForce('forceY', yForce(forceYCenter));
 		});
 	};
 	
@@ -956,8 +991,11 @@
 		calculateAgeInfo();
 
 		// initialize force simulation
-		sgSimulation.nodes(sgEmployees)
-			.on('tick', simulationTickHandler);
+		initSimulation();
+		// setTimeout(function() {
+			// this kicks off the animation
+			sgSimulation.on('tick', simulationTickHandler);
+		// }, 1000);
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingData();
@@ -989,7 +1027,7 @@
 	*/
 	var init = function() {
 		initSvg();
-		initSimulation();
+		// initSimulation();
 		initSortingLinks();
 		initHighlightLinks();
 
