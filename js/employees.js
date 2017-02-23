@@ -441,7 +441,7 @@
 			sgPath = d3.geoPath().projection(sgProjection);
 
 			sgMap = sgBubbleChart.selectAll('#geo-group')
-				.attr('translate', sgGroupTranslate);
+				.attr('transform', sgGroupTranslate);
 
 			sgMap.selectAll('.province')
 				.data(provinces)
