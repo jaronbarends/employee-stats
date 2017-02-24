@@ -253,6 +253,8 @@
 		var employeeG = sgBubbleChart.selectAll('#employee-group')
 				.attr('transform', sgGroupTranslate);
 
+			console.log(sgEmployees.length);
+
 		sgNodes = employeeG.selectAll('.employee')
 			.data(sgEmployees)
 			.enter()
