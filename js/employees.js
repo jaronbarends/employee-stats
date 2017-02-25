@@ -25,7 +25,9 @@
 
 	// vars for datasets
 	var sgEmployees,
+		sgEmployeeProps = [],
 		sgOffices,
+		sgEmployeeGroups,
 		sgHometowns = [],
 		sgBirthPlaces = [],
 		sgPlacesWithoutGeoData = [],
@@ -691,6 +693,18 @@
 
 
 	/**
+	* put comparable employee properties into array
+	* @returns {undefined}
+	*/
+	var initEmployeeProperties = function() {
+		for (var prop in sgEmployees[0]) {
+			sgEmployeeProps.push(prop);
+		}
+	};
+	
+
+
+	/**
 	* handle an employee's discipline data
 	* - fill disciplines array
 	* - put level into separate field
@@ -788,6 +802,22 @@
 		// calculate avarage age
 		sgAvarageAge = ageSum / sgEmployees.length;
 	};
+
+
+
+	/**
+	* add employee to group which specific prop
+	* @param {string} employee The current employee
+	* @param {string} groupName The property-name of the group
+	* @returns {undefined}
+	*/
+	var addEmployeeToGroup = function(employee, groupName) {
+		if (groupName === 'discipline') {
+			// separate discipline and functionLevel
+		}
+		sgEmployeeGroups[groupName].dataset.push(employee);
+	};
+	
 	
 	
 
@@ -796,9 +826,36 @@
 	* @returns {undefined}
 	*/
 	var processEmployeeData = function() {
+		for (var i=0, len=sgEmployees.length; i<len; i++) {
+			var employee = sgEmployees[i];
+
+			// loop through employee groups and add this employee's data
+			for (var groupName in sgEmployeeGroups) {
+				addEmployeeToGroup(employee, groupName);
+			}
+		}
+
+		// 
 		processEmployeeDisciplines();
 		processEmployeeAges();
 	};
+
+
+	/**
+	* define main groups we want to distinguish employees in
+	* @returns {undefined}
+	*/
+	var defineEmployeeGroups = function() {
+		// use field name in .csv as property name
+		sgEmployeeGroups = {
+			gender: { guiName: 'Gender', dataset: []},
+			discipline: { guiName: 'Discipline', dataset: []},
+			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
+			office: { guiName: 'Office', dataset: []},
+			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
+		};
+	};
+	
 
 
 	//-- Start age fucntions --
@@ -924,7 +981,7 @@
 		* @returns {undefined}
 		*/
 		var createPieChart = function(dataset) {
-			console.log(dataset);
+			// console.log(dataset);
 
 			var pie = d3.pie().value(function(d) {return d.value})(dataset),
 				svg = d3.select('#overall-pie-chart'),
@@ -947,6 +1004,33 @@
 				})
 				.attr('d', arc)
 		};
+
+
+
+		/**
+		* create multiple pie charts
+		* @returns {undefined}
+		*/
+		var createPieCharts = function(group, prop) {
+			// set up chart for every group
+			var groupsData = sgEmployeeGroups[group],
+				groups = {};
+
+			for (var i=0, len=groupsData.length; i<len; i++) {
+				// set up object for all employees within this group
+				var groupName = groupsData[i];
+				groups[groupName] = [];
+
+				// create a chart for this group
+
+				// add indicator which group this is
+			}
+
+			// now create a pie chart for this group
+			// loop through all employees, and put them into the proper array
+			// chache the arrays.
+		};
+		
 
 
 		/**
@@ -982,6 +1066,59 @@
 		
 
 	//-- End Pie chart fucntions --
+
+
+
+	/**
+	* show a new comparison
+	* @returns {undefined}
+	*/
+	var showComparison = function(e) {
+		e.preventDefault();
+
+		var $form = $(e.currentTarget),
+			group = $form.find('#pie-groups').val(),
+			prop = $form.find('#pie-comparison-property').val();
+
+		createPieCharts(group, prop);
+	};
+	
+
+
+	/**
+	* initialize comparison tool
+	* @returns {undefined}
+	*/
+	var initCompareTool = function() {
+		// var $groupSelect = $('#pie-groups'),
+		// 	$propertiesSelect = $('#pie-comparison-property'),
+		// 	groupOptionsStr = '',
+		// 	propertyOptionsStr = '';
+
+		// // manually decide which groups can be compared
+		// sgEmployeeGroups = {
+		// 	'office': sgOffices,
+		// 	'discipline': sgDisciplines,
+		// 	'organisational unit': sgOrganisationalUnits
+		// };
+
+		// // for (var i=0, eLen=sgEmployeeGroups.length; i<eLen; i++) {
+		// for (var group in sgEmployeeGroups) {
+		// 	// var group = sgEmployeeGroups[i].group;
+		// 	groupOptionsStr += '<option value="' + group + '">' + group + '</option>';
+		// }
+		// $groupSelect.append(groupOptionsStr);
+
+		// // generate props to show
+		// for (var j=0, pLen=sgEmployeeProps.length; j<pLen; j++) {
+		// 	var prop = sgEmployeeProps[j];
+		// 	propertyOptionsStr += '<option value="' + prop + '">' + prop + '</option>';	
+		// }
+		// $propertiesSelect.append(propertyOptionsStr);
+
+		// $('#pie-chart-form').on('submit', showComparison);
+	};
+	
 
 	
 
@@ -1045,6 +1182,9 @@
 		sgOffices = offices;
 		sgHometowns = cities;
 
+		// put original employee properties into array before we add all kind of helper props
+		initEmployeeProperties()
+
 		// initialize geo stuff
 		initGeo(mapData);
 
@@ -1069,6 +1209,8 @@
 		// }, 1000);
 
 		createGenderPieChart();
+
+		initCompareTool();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingData();
@@ -1103,6 +1245,8 @@
 		// initSimulation();
 		initSortingLinks();
 		initHighlightLinks();
+
+		defineEmployeeGroups();
 
 		// load data and kick things off
 		loadData();

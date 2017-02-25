@@ -40,7 +40,19 @@
 
 		<div id="wrapper">
 
-			<svg id="overall-pie-chart" class="pie-chart"></svg>
+			<div>
+				<form id="pie-chart-form">
+					<label for="pie-entities">For every&hellip;</label>
+					<select id="pie-entities"></select>
+					Show&hellip;
+					<select id="pie-comparison-property"></select>
+					<button type="submit">Show!</button>
+				</form>
+			</div>
+
+			<div id="pie-charts-container">
+				<svg id="overall-pie-chart" class="pie-chart"></svg>
+			</div>
 
 			<div id="legends" class="legends">
 			
@@ -107,11 +119,6 @@
 
 			<div id="office-charts-container--amersfoort" class="office-charts-container">
 			</div>
-		</div>
-
-		
-		<div id="element-lib" class="element-lib u-is-invisible">
-			<div class="bubble"></div>
 		</div>
 
 	</div><!-- /.o-content-width -->
