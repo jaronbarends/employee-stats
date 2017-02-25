@@ -815,7 +815,15 @@
 		if (groupName === 'discipline') {
 			// separate discipline and functionLevel
 		}
-		sgEmployeeGroups[groupName].dataset.push(employee);
+
+		// check if this group already contains this employee's type
+		var type = employee[groupName],
+			dataset = sgEmployeeGroups[groupName].dataset;
+
+		if (! (type in dataset)) {
+			dataset[type] = [];
+		}
+		dataset[type].push(employee);
 	};
 	
 	
@@ -1090,33 +1098,28 @@
 	* @returns {undefined}
 	*/
 	var initCompareTool = function() {
-		// var $groupSelect = $('#pie-groups'),
-		// 	$propertiesSelect = $('#pie-comparison-property'),
-		// 	groupOptionsStr = '',
-		// 	propertyOptionsStr = '';
+		var $groupSelect = $('#employee-groups'),
+			$propertiesSelect = $('#employee-properties'),
+			groupOptions = '',
+			propertyOptions = '';
 
-		// // manually decide which groups can be compared
-		// sgEmployeeGroups = {
-		// 	'office': sgOffices,
-		// 	'discipline': sgDisciplines,
-		// 	'organisational unit': sgOrganisationalUnits
-		// };
+		for (var groupName in sgEmployeeGroups) {
+			var guiName = sgEmployeeGroups[groupName].guiName;
+			// console.log(sgEmployeeGroups[groupName]);
 
-		// // for (var i=0, eLen=sgEmployeeGroups.length; i<eLen; i++) {
-		// for (var group in sgEmployeeGroups) {
-		// 	// var group = sgEmployeeGroups[i].group;
-		// 	groupOptionsStr += '<option value="' + group + '">' + group + '</option>';
-		// }
-		// $groupSelect.append(groupOptionsStr);
+			groupOptions += '<option value="' + groupName + '">' + guiName + '</option>';
+		}
+		$groupSelect.append(groupOptions);
 
-		// // generate props to show
-		// for (var j=0, pLen=sgEmployeeProps.length; j<pLen; j++) {
-		// 	var prop = sgEmployeeProps[j];
-		// 	propertyOptionsStr += '<option value="' + prop + '">' + prop + '</option>';	
-		// }
-		// $propertiesSelect.append(propertyOptionsStr);
 
-		// $('#pie-chart-form').on('submit', showComparison);
+		// generate props to show
+		for (var j=0, pLen=sgEmployeeProps.length; j<pLen; j++) {
+			var prop = sgEmployeeProps[j];
+			propertyOptions += '<option value="' + prop + '">' + prop + '</option>';	
+		}
+		$propertiesSelect.append(propertyOptions);
+
+		$('#pie-chart-form').on('submit', showComparison);
 	};
 	
 
