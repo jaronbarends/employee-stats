@@ -989,9 +989,26 @@
 		* @returns {undefined}
 		*/
 		var createPieChart = function(dataset) {
-			// console.log(dataset);
+			console.log(dataset);
+			var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-			var pie = d3.pie().value(function(d) {return d.value})(dataset),
+			// var dataset = [
+			// 	{ value: femaleCount, className:'female', percentage: femalePerc},
+			// 	{ value: maleCount, className:'male', percentage: malePerc}
+			// ];
+
+			// var pie = d3.pie().value(function(d) {
+			// 	console.log(d);
+			// 	return d.value;
+			// })(dataset);
+
+			var dataAccessor = function(d) {
+				return d.count;
+			}
+			
+			var pie = d3.pie().value(dataAccessor)(dataset),
+			// var pie = d3.pie()(dataset.map(function(d) { return d.count; })),
+			// var pie = d3.pie().value(function(d) {return d.length})(dataset),
 				svg = d3.select('#overall-pie-chart'),
 				innerRadius = 0,
 				outerRadius = parseInt(svg.style('width'), 10)/2,
@@ -1011,6 +1028,9 @@
 					return 'pie-'+d.data.className;
 				})
 				.attr('d', arc)
+				.attr('fill', function(d,i) {
+					return color(i);
+				})
 		};
 
 
@@ -1021,18 +1041,31 @@
 		*/
 		var createPieCharts = function(group, prop) {
 			// set up chart for every group
-			var groupsData = sgEmployeeGroups[group],
-				groups = {};
+			// console.log(group, prop, sgEmployeeGroups[group]);
+			var dataset = sgEmployeeGroups[group].dataset;
 
-			for (var i=0, len=groupsData.length; i<len; i++) {
-				// set up object for all employees within this group
-				var groupName = groupsData[i];
-				groups[groupName] = [];
-
-				// create a chart for this group
-
-				// add indicator which group this is
+			var modifiedDataset = [];
+			for (var prop in dataset) {
+				var typeData = dataset[prop],
+					obj = {
+						type: prop,
+						count: typeData.length,
+						employees: typeData
+					};
+				modifiedDataset.push(obj);
 			}
+
+			createPieChart(modifiedDataset);
+
+			// for (var i=0, len=groupsData.length; i<len; i++) {
+			// 	// set up object for all employees within this group
+			// 	var groupName = groupsData[i];
+			// 	groups[groupName] = [];
+
+			// 	// create a chart for this group
+
+			// 	// add indicator which group this is
+			// }
 
 			// now create a pie chart for this group
 			// loop through all employees, and put them into the proper array
@@ -1065,10 +1098,10 @@
 				malePerc = 100*maleCount / len;
 
 			var dataset = [
-				{ value: femaleCount, className:'female', percentage: femalePerc},
-				{ value: maleCount, className:'male', percentage: malePerc}
+				{ count: femaleCount, className:'female', percentage: femalePerc},
+				{ count: maleCount, className:'male', percentage: malePerc}
 			];
-			createPieChart(dataset);
+			// createPieChart(dataset);
 		};
 		
 		
@@ -1085,8 +1118,8 @@
 		e.preventDefault();
 
 		var $form = $(e.currentTarget),
-			group = $form.find('#pie-groups').val(),
-			prop = $form.find('#pie-comparison-property').val();
+			group = $form.find('#employee-groups').val(),
+			prop = $form.find('#employee-properties').val();
 
 		createPieCharts(group, prop);
 	};
