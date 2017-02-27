@@ -989,7 +989,7 @@
 		* @returns {undefined}
 		*/
 		var createPieChart = function(dataset) {
-			console.log(dataset);
+			// console.log(dataset);
 			var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 			// var dataset = [
@@ -1007,9 +1007,9 @@
 			}
 			
 			var pie = d3.pie().value(dataAccessor)(dataset),
-			// var pie = d3.pie()(dataset.map(function(d) { return d.count; })),
-			// var pie = d3.pie().value(function(d) {return d.length})(dataset),
-				svg = d3.select('#overall-pie-chart'),
+				svg = d3.select('#pie-charts-container')
+					.append('svg')
+					.attr('class', 'pie-chart'),
 				innerRadius = 0,
 				outerRadius = parseInt(svg.style('width'), 10)/2,
 				arc = d3.arc()
@@ -1031,6 +1031,15 @@
 				.attr('fill', function(d,i) {
 					return color(i);
 				})
+
+			// now add some info
+			var info = '<p>' + dataset[0].type;
+			for (var i=0, len=dataset.length; i<len; i++) {
+				info += '<br>' + dataset[i].prop + ':' + dataset[i].count
+			}
+			info += '</p>';
+			$('#pie-charts-container').append(info);
+
 		};
 
 
@@ -1040,36 +1049,62 @@
 		* @returns {undefined}
 		*/
 		var createPieCharts = function(group, prop) {
+			// we'll distinguish groups and types: a group consists of several types,
+			// like the group offices consists of types utrecht, amersfoors, ...
+
+			// remove other charts
+			$('#pie-charts-container').empty();
+
 			// set up chart for every group
 			// console.log(group, prop, sgEmployeeGroups[group]);
-			var dataset = sgEmployeeGroups[group].dataset;
+			var propDataset = sgEmployeeGroups[prop].dataset;
 
-			var modifiedDataset = [];
-			for (var prop in dataset) {
-				var typeData = dataset[prop],
-					obj = {
-						type: prop,
-						count: typeData.length,
-						employees: typeData
+			// check for which types we need to show charts
+			// this is the "for every..." part
+			var group = sgEmployeeGroups[group].dataset;
+
+			// loop through every type in this group
+			for (var typeName in group) {
+
+				var typeEmployees = group[typeName];// array for all employees for a given type, like a specific office
+
+				// now we have arrays for all employees for a given type, like a specific office
+				// loop through those employees and sort them into the different prop-types
+				var employeesPerProp = [];
+
+				for (var i=0, empLen=typeEmployees.length; i<empLen; i++) {
+
+					// for every employee in this type, check which chosen prop he has
+					var employee = typeEmployees[i],
+						propType = employee[prop];
+
+					if (!(propType in employeesPerProp)) {
+						employeesPerProp[propType] = 0;
+					}
+					employeesPerProp[propType]++;
+
+				}// end looping through employees
+
+				// now create dataset to send to chart
+				var dataset = [];
+				for (var p in employeesPerProp) {
+					var obj = {
+						type: typeName,
+						prop: p,
+						count: employeesPerProp[p]
 					};
-				modifiedDataset.push(obj);
-			}
+					dataset.push(obj);
+				}
+				createPieChart(dataset);
 
-			createPieChart(modifiedDataset);
 
-			// for (var i=0, len=groupsData.length; i<len; i++) {
-			// 	// set up object for all employees within this group
-			// 	var groupName = groupsData[i];
-			// 	groups[groupName] = [];
+			}// end looping through types
 
-			// 	// create a chart for this group
 
-			// 	// add indicator which group this is
-			// }
 
-			// now create a pie chart for this group
-			// loop through all employees, and put them into the proper array
-			// chache the arrays.
+
+
+
 		};
 		
 
@@ -1118,9 +1153,10 @@
 		e.preventDefault();
 
 		var $form = $(e.currentTarget),
-			group = $form.find('#employee-groups').val(),
+			group = $form.find('#group-filter').val(),
 			prop = $form.find('#employee-properties').val();
 
+		// decide which type of chart to show
 		createPieCharts(group, prop);
 	};
 	
@@ -1131,7 +1167,7 @@
 	* @returns {undefined}
 	*/
 	var initCompareTool = function() {
-		var $groupSelect = $('#employee-groups'),
+		var $groupSelect = $('#group-filter'),
 			$propertiesSelect = $('#employee-properties'),
 			groupOptions = '',
 			propertyOptions = '';
