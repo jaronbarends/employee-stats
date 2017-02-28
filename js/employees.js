@@ -255,8 +255,6 @@
 		var employeeG = sgBubbleChart.selectAll('#employee-group')
 				.attr('transform', sgGroupTranslate);
 
-			console.log(sgEmployees.length);
-
 		sgNodes = employeeG.selectAll('.employee')
 			.data(sgEmployees)
 			.enter()
@@ -988,26 +986,16 @@
 		* create a pie chart
 		* @returns {undefined}
 		*/
-		var createPieChart = function(dataset) {
+		var createPieChart = function(dataset, id) {
 			// console.log(dataset);
 			var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-			// var dataset = [
-			// 	{ value: femaleCount, className:'female', percentage: femalePerc},
-			// 	{ value: maleCount, className:'male', percentage: malePerc}
-			// ];
-
-			// var pie = d3.pie().value(function(d) {
-			// 	console.log(d);
-			// 	return d.value;
-			// })(dataset);
 
 			var dataAccessor = function(d) {
 				return d.count;
 			}
 			
 			var pie = d3.pie().value(dataAccessor)(dataset),
-				svg = d3.select('#pie-charts-container')
+				svg = d3.select('#'+id)
 					.append('svg')
 					.attr('class', 'pie-chart'),
 				innerRadius = 0,
@@ -1033,27 +1021,47 @@
 				})
 
 			// now add some info
-			var info = '<p>' + dataset[0].type;
+			var $chartBox = $('#'+id),
+				info = '<p>' + dataset[0].type;
 			for (var i=0, len=dataset.length; i<len; i++) {
 				info += '<br>' + dataset[i].prop + ':' + dataset[i].count
 			}
 			info += '</p>';
-			$('#pie-charts-container').append(info);
+			$chartBox.append(info);
 
 		};
 
 
-
 		/**
-		* create multiple pie charts
+		* create a chart for a type-instance of specific group-filter
 		* @returns {undefined}
 		*/
-		var createPieCharts = function(group, prop) {
+		var createFilterChart = function(dataset, chartType, chartIdx) {
+			var $container = $('#filter-charts-container'),
+				id = 'chart-box-' + chartIdx,
+				html = '<div id="' + id +'" class="chart-box chart-box--' + chartType + '"></div>';
+
+			$container.append(html);
+
+			if (chartType === 'pie') {
+				createPieChart(dataset, id);
+			}
+
+		};
+		
+
+
+
+		/**
+		* create charts based upon filters
+		* @returns {undefined}
+		*/
+		var createChartsByFilter = function(group, prop) {
 			// we'll distinguish groups and types: a group consists of several types,
 			// like the group offices consists of types utrecht, amersfoors, ...
 
-			// remove other charts
-			$('#pie-charts-container').empty();
+			// remove any previous charts
+			$('#filter-charts-container').empty();
 
 			// set up chart for every group
 			// console.log(group, prop, sgEmployeeGroups[group]);
@@ -1061,7 +1069,8 @@
 
 			// check for which types we need to show charts
 			// this is the "for every..." part
-			var group = sgEmployeeGroups[group].dataset;
+			var group = sgEmployeeGroups[group].dataset,
+				chartIdx = 0;
 
 			// loop through every type in this group
 			for (var typeName in group) {
@@ -1095,7 +1104,11 @@
 					};
 					dataset.push(obj);
 				}
-				createPieChart(dataset);
+
+				// create right type of chart based on prop
+				var chartType = 'pie';
+				createFilterChart(dataset, chartType, chartIdx);
+				chartIdx++;
 
 
 			}// end looping through types
@@ -1157,7 +1170,7 @@
 			prop = $form.find('#employee-properties').val();
 
 		// decide which type of chart to show
-		createPieCharts(group, prop);
+		createChartsByFilter(group, prop);
 	};
 	
 
