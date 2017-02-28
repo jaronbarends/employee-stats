@@ -3,12 +3,12 @@
 	height: 100px;
 }
 
-.pie-female {
+.pie-vrouw {
 	fill: pink;
-	fill: rgba(0, 0, 0, 0.2);
+	/*fill: rgba(0, 0, 0, 0.2);*/
 }
 
-.pie-male {
+.pie-man {
 	fill: #00bdfa;/* valtech blue */
-	fill: rgba(0, 0, 0, 0.3);
+	/*fill: rgba(0, 0, 0, 0.3);*/
 }

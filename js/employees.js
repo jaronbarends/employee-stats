@@ -1013,12 +1013,13 @@
 
 			arcs.append('path')
 				.attr('class', function(d) {
-					return 'pie-'+d.data.className;
+					// console.log(d.data);
+					return 'pie-'+ convertToClassName(d.data.prop);
 				})
 				.attr('d', arc)
-				.attr('fill', function(d,i) {
-					return color(i);
-				})
+				// .attr('fill', function(d,i) {
+				// 	return color(i);
+				// })
 
 			// now add some info
 			var $chartBox = $('#'+id),
@@ -1203,6 +1204,18 @@
 
 		$('#pie-chart-form').on('submit', showComparison);
 	};
+
+
+	/**
+	* convert a string to format that can be used as classname
+	* @returns {undefined}
+	*/
+	var convertToClassName = function(str) {
+		str = str.toLowerCase().replace(' ', '-');
+
+		return str;
+	};
+	
 	
 
 	
