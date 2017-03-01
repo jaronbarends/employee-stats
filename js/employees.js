@@ -27,11 +27,9 @@
 	var sgEmployees,
 		sgEmployeeProps = [],
 		sgOffices,
-		sgEmployeeGroups,
 		sgHometowns = [],
 		sgBirthPlaces = [],
 		sgPlacesWithoutGeoData = [],
-		sgDisciplines = [],
 		sgLevels = ['senior', 'stagiair', 'junior'],
 		sgOrganisationalUnits = [],
 		sgBirthdays = [],
@@ -39,6 +37,9 @@
 		sgAvarageAge,
 		sgStartDates = [],
 		sgNationalities;
+
+	var sgFilterGroups,
+		sgFilterProps;
 
 	// vars for geo stuff
 	var sgProjection,
@@ -49,6 +50,8 @@
 	var sgSimulation,
 		sgForceStrength = 0.04,
 		sgAlphaTarget = 0.4;
+
+	var sgColors = ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee'];
 
 
 
@@ -711,44 +714,32 @@
 	var processEmployeeDisciplines = function() {
 		for (var i=0, len=sgEmployees.length; i<len; i++) {
 			var emp = sgEmployees[i],
-				discipline = emp.discipline,
-				disciplineFound = false;
+				discipline = emp.disciplineWithLevel,
+				disciplineFound = false,
+				level = '';
 
 			// cut off level
 			for (var lv=0, lvLen = sgLevels.length; lv<lvLen; lv++) {
-				var level = sgLevels[lv];
-				// console.log(level);
-				if (discipline.toLowerCase().indexOf(level) === 0) {
-					var before = discipline;
-					discipline = discipline.substr(level.length + 1);
-					emp.level = level;
-					// set discipline to discipline without level
-					emp.discipline = discipline;
-				} else {
-					emp.level = '';
-				}
-			}
+				var currLevel = sgLevels[lv];
+				
+				if (discipline.toLowerCase().indexOf(currLevel) === 0) {
+					discipline = discipline.substr(currLevel.length + 1);
+					level = currLevel;
 
-			// discipline data
-			for (var ds=0, dsLen=sgDisciplines.length; ds<dsLen; ds++) {
-				var disc = sgDisciplines[ds];
-
-				if (disc.name === discipline) {
-					disc.employeeCount++;
-					disciplineFound = true;
+					// stagiairs often don't have discipline in their data
+					// And I prefer not to count them within discipline anyhow
+					if (level === 'stagiair') {
+						discipline = 'stagiair';
+					}
 					break;
 				}
 			}
-			
-			if (!disciplineFound) {
-				sgDisciplines.push({name: discipline, employeeCount: 1});
-			}
-		}
 
-		// now order disciplines by # of employees
-		sgDisciplines.sort(function(a, b) {
-			return b.employeeCount - a.employeeCount;
-		});
+			// we've looped through the levels, so any level is cut of now
+			// add the cleaned (or unchanged) discipline as a new property
+			emp.discipline = discipline;
+			emp.level = level;
+		}
 	};
 
 
@@ -816,7 +807,7 @@
 
 		// check if this group already contains this employee's type
 		var type = employee[groupName],
-			dataset = sgEmployeeGroups[groupName].dataset;
+			dataset = sgFilterGroups[groupName].dataset;
 
 		if (! (type in dataset)) {
 			dataset[type] = [];
@@ -832,33 +823,49 @@
 	* @returns {undefined}
 	*/
 	var processEmployeeData = function() {
+		// process data we want to manipulate before use
+		processEmployeeDisciplines();
+		processEmployeeAges();
+
+		// now popuplate filterGroups
 		for (var i=0, len=sgEmployees.length; i<len; i++) {
 			var employee = sgEmployees[i];
 
 			// loop through employee groups and add this employee's data
-			for (var groupName in sgEmployeeGroups) {
+			for (var groupName in sgFilterGroups) {
 				addEmployeeToGroup(employee, groupName);
 			}
 		}
 
-		// 
-		processEmployeeDisciplines();
-		processEmployeeAges();
+		console.log(sgFilterGroups['discipline']);
+
 	};
 
 
 	/**
-	* define main groups we want to distinguish employees in
+	* define groups we want to distinguish employees in and props to compare
 	* @returns {undefined}
 	*/
-	var defineEmployeeGroups = function() {
+	var defineFilterGroupsAndProps = function() {
 		// use field name in .csv as property name
-		sgEmployeeGroups = {
+		// use the same property-names we use in sgEmployees
+		sgFilterGroups = {
 			gender: { guiName: 'Gender', dataset: []},
 			discipline: { guiName: 'Discipline', dataset: []},
 			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
 			office: { guiName: 'Office', dataset: []},
 			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
+		};
+
+		// props we want to show for filter group instances
+		sgFilterProps = {
+			age: { guiName: 'Age'},
+			startDate: { guiName: 'Start date'},
+			gender: { guiName: 'Gender'},
+			discipline: { guiName: 'Discipline'},
+			organisationalUnit: { guiName: 'Organisational unit'},
+			office: { guiName: 'Office'},
+			parttimePercentage: { guiName: 'Parttime percentage'},
 		};
 	};
 	
@@ -927,7 +934,7 @@
 				.attr('width', xScale.bandwidth())
 				.attr('height', function(d) {
 					return chartH - yScale(d.employeeCount);
-				})
+				});
 
 			// render axes
 			ageChart.append('g')
@@ -975,7 +982,9 @@
 		};
 
 
-	//-- End age fucntions --
+	//-- End age functions --
+
+	
 
 
 
@@ -988,11 +997,11 @@
 		*/
 		var createPieChart = function(dataset, id) {
 			// console.log(dataset);
-			var color = d3.scaleOrdinal(d3.schemeCategory10);
+			var colorArray = randomizeArray(sgColors.slice());//slice makes copy
 
 			var dataAccessor = function(d) {
 				return d.count;
-			}
+			};
 			
 			var pie = d3.pie().value(dataAccessor)(dataset),
 				svg = d3.select('#'+id)
@@ -1008,24 +1017,25 @@
 				.data(pie)
 				.enter()
 				.append('g')
-				.attr('class', 'pie-segment')
+				// .attr('class', 'pie-segment')
 				.attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
 
 			arcs.append('path')
 				.attr('class', function(d) {
 					// console.log(d.data);
-					return 'pie-'+ convertToClassName(d.data.prop);
+					return 'pie-segment pie-segment--'+ convertToClassName(d.data.prop);
 				})
 				.attr('d', arc)
-				// .attr('fill', function(d,i) {
-				// 	return color(i);
-				// })
+				.attr('fill', function(d,i) {
+					var idx = i % colorArray.length;
+					return colorArray[idx];
+				})
 
 			// now add some info
 			var $chartBox = $('#'+id),
 				info = '<p>' + dataset[0].type;
 			for (var i=0, len=dataset.length; i<len; i++) {
-				info += '<br>' + dataset[i].prop + ':' + dataset[i].count
+				info += '<br>' + dataset[i].prop + ':' + dataset[i].count;
 			}
 			info += '</p>';
 			$chartBox.append(info);
@@ -1065,13 +1075,13 @@
 			$('#filter-charts-container').empty();
 
 			// set up chart for every group
-			// console.log(group, prop, sgEmployeeGroups[group]);
-			var propDataset = sgEmployeeGroups[prop].dataset;
+			// console.log(group, prop, sgFilterGroups[group]);
+			var propDataset = sgFilterGroups[prop].dataset;
 
 			// check for which types we need to show charts
 			// this is the "for every..." part
-			var group = sgEmployeeGroups[group].dataset,
-				chartIdx = 0;
+			group = sgFilterGroups[group].dataset;
+			var chartIdx = 0;
 
 			// loop through every type in this group
 			for (var typeName in group) {
@@ -1186,9 +1196,9 @@
 			groupOptions = '',
 			propertyOptions = '';
 
-		for (var groupName in sgEmployeeGroups) {
-			var guiName = sgEmployeeGroups[groupName].guiName;
-			// console.log(sgEmployeeGroups[groupName]);
+		for (var groupName in sgFilterGroups) {
+			var guiName = sgFilterGroups[groupName].guiName;
+			// console.log(sgFilterGroups[groupName]);
 
 			groupOptions += '<option value="' + groupName + '">' + guiName + '</option>';
 		}
@@ -1196,9 +1206,9 @@
 
 
 		// generate props to show
-		for (var j=0, pLen=sgEmployeeProps.length; j<pLen; j++) {
-			var prop = sgEmployeeProps[j];
-			propertyOptions += '<option value="' + prop + '">' + prop + '</option>';	
+		console.log(sgFilterProps);
+		for (var propName in sgFilterProps) {
+			propertyOptions += '<option value="' + propName + '">' + sgFilterProps[propName].guiName + '</option>';	
 		}
 		$propertiesSelect.append(propertyOptions);
 
@@ -1206,18 +1216,42 @@
 	};
 
 
-	/**
-	* convert a string to format that can be used as classname
-	* @returns {undefined}
-	*/
-	var convertToClassName = function(str) {
-		str = str.toLowerCase().replace(' ', '-');
+	//-- Start helper functions --
 
-		return str;
-	};
+
+		/**
+		* convert a string to format that can be used as classname
+		* @returns {undefined}
+		*/
+		var convertToClassName = function(str) {
+			str = str.toLowerCase().replace(/[ \.]/, '-');
+
+			return str;
+		};
+
+
+
+		/**
+		* randomize the objects in an array
+		* @param {array} arr The array to randomize
+		* @returns {array} The randomized array
+		*/
+		var randomizeArray = function(arr) {
+			var randomArr = [],
+				len = arr.length;
+			
+			while(arr.length) {
+				var idx = Math.floor(arr.length*Math.random());
+				randomArr.push(arr.splice(idx,1)[0]);
+			}
+
+			return randomArr;
+		};
+
+
 	
 	
-
+	//-- End helper functions --
 	
 
 	/**
@@ -1291,7 +1325,9 @@
 
 		// process employee data (disciplines)
 		setEmployeeCount();
+		defineFilterGroupsAndProps();
 		processEmployeeData();
+
 
 		// add shapes for nodes
 		addEmployeeNodes();
@@ -1344,7 +1380,7 @@
 		initSortingLinks();
 		initHighlightLinks();
 
-		defineEmployeeGroups();
+		// defineFilterGroupsAndProps();
 
 		// load data and kick things off
 		loadData();

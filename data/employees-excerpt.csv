@@ -1,4 +1,4 @@
-birthday,age,startDate,parttimePercentage,hometown,gender,discipline,office,organisationalUnit,fulltimeOrParttime,birthplace,birthcountry
+birthday,age,startDate,parttimePercentage,hometown,gender,disciplineWithLevel,office,organisationalUnit,fulltimeOrParttime,birthplace,birthcountry
 04/11/1967,32,01/1/2012,40,De Bilt,Man,Senior Front-end Developer,Amersfoort,Creatie Amersfoort eFocus,Parttimer,Dordrecht,Nederland
 24/11/1989,37,07/3/2016,95,Eindhoven,Man,Digital Marketeer,Amsterdam,Sales & accountmanagement,Fulltimer,Utrecht,Nederland
 17/6/1985,19,01/9/2014,100,Amsterdam,Man,Senior developer,Eindhoven,Creatie Eindhoven eFocus,Stagiair,Amsterdam,Nederland
