@@ -40,9 +40,11 @@ window.app = window.app || {};
 		sgFilterProps;
 
 	// vars for geo stuff
-	var sgProjection,
-		sgPath,
-		sgMap;
+	app.map = {
+		sgProjection: null,
+		sgPath: null,
+		sgMap: null
+	};
 
 	// vars for simulation
 	var sgSimulation,
@@ -453,18 +455,18 @@ window.app = window.app || {};
 		var drawMap = function(geojson) {
 			var provinces = geojson.features;
 
-			sgProjection = d3.geoMercator().fitSize([sgBubbleChartWidth, sgBubbleChartHeight], geojson);
-			sgPath = d3.geoPath().projection(sgProjection);
+			app.map.sgProjection = d3.geoMercator().fitSize([sgBubbleChartWidth, sgBubbleChartHeight], geojson);
+			app.map.sgPath = d3.geoPath().projection(app.map.sgProjection);
 
-			sgMap = sgBubbleChart.selectAll('#geo-group')
+			app.map.sgMap = sgBubbleChart.selectAll('#geo-group')
 				.attr('transform', sgGroupTranslate);
 
-			sgMap.selectAll('.province')
+			app.map.sgMap.selectAll('.province')
 				.data(provinces)
 				.enter()
 				.append('path')
 				.attr('class', 'province')
-				.attr('d', sgPath);
+				.attr('d', app.map.sgPath);
 		};
 
 
@@ -492,18 +494,18 @@ window.app = window.app || {};
 		* @returns {undefined}
 		*/
 		var addOffices = function() {
-			sgMap.selectAll('.office')
+			app.map.sgMap.selectAll('.office')
 				.data(app.data.sgOffices)
 				.enter()
 				.append('circle')
 				.attr('class', 'office')
 				.attr('r', 20)
 				.attr('cx', function(d) {
-					var coords = sgProjection([d.long, d.lat]);
+					var coords = app.map.sgProjection([d.long, d.lat]);
 					return coords[0];
 				})
 				.attr('cy', function(d) {
-					var coords = sgProjection([d.long, d.lat]);
+					var coords = app.map.sgProjection([d.long, d.lat]);
 					return coords[1];
 				})
 		};
@@ -511,10 +513,10 @@ window.app = window.app || {};
 	
 
 		/**
-		* initialize geo stuff
+		* initialize map stuff
 		* @returns {undefined}
 		*/
-		var initGeo = function(mapData) {
+		var initMap = function(mapData) {
 			
 			var geojson = topojson.feature(mapData, mapData.objects.collection);
 
@@ -527,140 +529,7 @@ window.app = window.app || {};
 
 
 
-	//-- Start geo functions
 
-		/**
-		* match employees with a set of locations (hometowns, birthplaces, offices)
-		* enrich location-dataset:
-		*	- add prop employeeCount to every location
-		* enrich every employee-object:
-		*	- add object with location coords to every employee object
-		* 
-		* @param {array} dataset The dataset containing the locations
-		* @returns {undefined}
-		*/
-		var matchEmployeesWithLocations = function(options) {
-			var locationData = options.locationData,
-				datasetLocationProp = options.datasetLocationProp,
-				employeeLocationProp = options.employeeLocationProp,
-				locationCoordsProp = options.locationCoordsProp,
-				unknownPlaces = [];
-
-			// enrich location-data: add prop for employee count to every location
-			for (var i=0, locationCount=locationData.length; i<locationCount; i++) {
-				locationData[i].employeeCount = 0;
-			}
-
-			// enrich employee-data
-			for (var j=0, len=app.data.sgEmployees.length; j<len; j++) {
-				var employee = app.data.sgEmployees[j],
-					locationName = employee[employeeLocationProp].toLowerCase(),
-					locationFound = false;
-
-				// create a coordinates object
-				employee[locationCoordsProp] = {};
-
-				// check if location is within dataset
-				// if so, get its lat/long and augment its employeeCount
-				for (var k=0; k<locationCount; k++) {
-					var location = locationData[k];
-
-					if (location[datasetLocationProp].toLowerCase() === locationName) {
-						// calculate the location's coords in the map projection
-						var coords = sgProjection([location.long, location.lat]);
-						employee[locationCoordsProp] = {
-							x: coords[0],
-							y: coords[1]
-						};
-
-						locationFound = true;
-
-						// keep track of # of employees per location
-						location.employeeCount++;
-
-						break;
-					}
-				}
-
-				if (!locationFound) {
-					app.data.sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
-				}
-			}
-
-			// now order location by # of employees
-			locationData.sort(function(a, b) {
-				return b.employeeCount - a.employeeCount;
-			});
-
-		};
-		
-
-
-		/**
-		* process hometown data
-		* @returns {undefined}
-		*/
-		var processHometownData = function() {
-			var options = {
-				locationData: app.data.sgHometowns,
-				datasetLocationProp: 'name',
-				employeeLocationProp: 'hometown',
-				locationCoordsProp: 'hometownCoords'
-			};
-			matchEmployeesWithLocations(options);
-
-			var $list = $('#hometown-list'),
-				items = '';
-			for (var i=0; i<5; i++) {
-				var hometown = app.data.sgHometowns[i];
-				items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
-			}
-
-			$list.append(items);
-		};
-
-
-		/**
-		* process birthplace data
-		* @returns {undefined}
-		*/
-		var processBirthplaceData = function() {
-			var options = {
-				locationData: app.data.sgHometowns,
-				datasetLocationProp: 'name',
-				employeeLocationProp: 'birthplace',
-				locationCoordsProp: 'birthplaceCoords'
-			};
-			matchEmployeesWithLocations(options);
-		};
-
-
-		/**
-		* process hometown data
-		* @returns {undefined}
-		*/
-		var processOfficeData = function() {
-			var officeOptions = {
-				locationData: app.data.sgOffices,
-				datasetLocationProp: 'city',
-				employeeLocationProp: 'office',
-				locationCoordsProp: 'officeCoords'
-			};
-			matchEmployeesWithLocations(officeOptions);
-		};
-
-
-		/**
-		* process data about locations
-		* @returns {undefined}
-		*/
-		var processGeoData = function() {
-			processHometownData();
-			processBirthplaceData();
-			processOfficeData();
-		};
-
-	//-- End geo functions --
 
 
 	/**
@@ -1204,63 +1073,6 @@ window.app = window.app || {};
 	};
 
 
-	//-- Start helper functions --
-
-
-		/**
-		* remove classes from the body element based on a pattern
-		* @returns {undefined}
-		*/
-		// var removeBodyClasses = function(pattern) {
-		// 	var classStr = $sgBody.attr('class');
-
-		// 	if (classStr) {
-		// 		var classes = classStr.split(' ');
-		// 		for (var i=classes.length-1; i>=0; i--) {
-		// 			var clss = classes[i];
-		// 			if (clss.match(pattern)) {
-		// 				$sgBody.removeClass(clss);
-		// 				classes.splice(i, 1);
-		// 			}
-		// 		}
-
-		// 	}
-		// };
-
-
-		/**
-		* convert a string to format that can be used as classname
-		* @returns {undefined}
-		*/
-		// var convertToClassName = function(str) {
-		// 	str = str.toLowerCase().replace(/[ \.]/, '-');
-
-		// 	return str;
-		// };
-
-
-
-		/**
-		* randomize the objects in an array
-		* @param {array} arr The array to randomize
-		* @returns {array} The randomized array
-		*/
-		// var randomizeArray = function(arr) {
-		// 	var randomArr = [],
-		// 		len = arr.length;
-			
-		// 	while(arr.length) {
-		// 		var idx = Math.floor(arr.length*Math.random());
-		// 		randomArr.push(arr.splice(idx,1)[0]);
-		// 	}
-
-		// 	return randomArr;
-		// };
-
-
-	
-	
-	//-- End helper functions --
 	
 
 	/**
@@ -1276,34 +1088,6 @@ window.app = window.app || {};
 	};
 	
 
-
-	//-- Start debugging functions
-
-
-		/**
-		* report missing data in the dataset
-		* @returns {undefined}
-		*/
-		var reportMissingData = function() {
-			
-			Array.prototype.unique = function() {
-			  return this.filter(function (value, index, self) { 
-			    return self.indexOf(value) === index;
-			  });
-			};
-
-			var uniqueUnknown = app.data.sgPlacesWithoutGeoData.unique(),
-				str = '\n\n';
-
-			for (var i=0, len=uniqueUnknown.length; i<len; i++) {
-				str += uniqueUnknown[i] + '\n';
-			}
-
-			console.log(str);
-		};
-
-
-	//-- End debugging functions
 	
 	
 	
@@ -1327,10 +1111,11 @@ window.app = window.app || {};
 		initEmployeeProperties()
 
 		// initialize geo stuff
-		initGeo(mapData);
+		initMap(mapData);
 
 		// process all geo-related data
-		processGeoData();
+		// processGeoData();
+		app.dataprocessorGeo.init();
 
 		// process employee data (disciplines)
 		setEmployeeCount();
@@ -1358,7 +1143,7 @@ window.app = window.app || {};
 		initCompareTool();
 
 		// report data missing in dataset (for dev purposes only)
-		// reportMissingData();
+		// reportMissingGeoData();
 
 	}// loadHandler
 
