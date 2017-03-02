@@ -1,6 +1,9 @@
+window.app = window.app || {};
+
 (function($) {
 
 	'use strict';
+
 
 	var $sgBody = $('body');
 	
@@ -11,10 +14,6 @@
 		sgBubbleChartHeight,
 		sgGroupTranslate = 'translate(0,0)';
 
-	// vars for svg-groups
-	var sgEmployeesG,
-		sgGeoG;
-
 	// vars for employee nodes
 	var sgNodes,
 		sgDefaultNodeSize = 8,
@@ -24,19 +23,18 @@
 		sgInfoProp;// property to be shown when clicking on node
 
 	// vars for datasets
-	var sgEmployees,
-		sgEmployeeProps = [],
-		sgOffices,
-		sgHometowns = [],
-		sgBirthPlaces = [],
-		sgPlacesWithoutGeoData = [],
-		sgLevels = ['senior', 'stagiair', 'junior'],
-		sgOrganisationalUnits = [],
-		sgBirthdays = [],
-		sgAges = [],
-		sgAvarageAge,
-		sgStartDates = [],
-		sgNationalities;
+
+	app.data = {
+		sgEmployees: [],
+		sgEmployeeProps: [],
+		sgOffices: [],
+		sgHometowns: [],
+		sgPlacesWithoutGeoData: [],
+		sgLevels: ['senior', 'stagiair', 'junior'],
+		sgBirthdays: [],
+		sgAges: [],
+		sgAvarageAge: 0
+	};
 
 	var sgFilterGroups,
 		sgFilterProps;
@@ -60,7 +58,7 @@
 	* create svg for graph
 	* @returns {undefined}
 	*/
-	var initSvg = function() {
+	var initBubbleChart = function() {
 		sgBubbleChart = d3.select('#bubble-chart');
 		$sgBubbleChart = $('#bubble-chart');
 		sgBubbleChartWidth = $sgBubbleChart.width();
@@ -198,13 +196,10 @@
 		var initSimulation = function() {
 			sgSimulation = d3.forceSimulation()
 				.force('forceX', xForce(forceXGrid))
-				.force('forceY', yForce(forceYGrid))
-				// .force('forceX', xForce(forceXCenter))
-				// .force('forceY', yForce(forceYCenter))
-				// .force('charge', d3.forceManyBody().strength(0.5))
-				// .force('center', d3.forceCenter(200,200))
+				.force('forceY', yForce(forceYGrid));
+
 			setDefaultCollisionForce()
-				.nodes(sgEmployees);	
+				.nodes(app.data.sgEmployees);	
 		}
 ;
 
@@ -259,7 +254,7 @@
 				.attr('transform', sgGroupTranslate);
 
 		sgNodes = employeeG.selectAll('.employee')
-			.data(sgEmployees)
+			.data(app.data.sgEmployees)
 			.enter()
 			.append('circle')
 			.attr('class', function(d) {
@@ -333,7 +328,7 @@
 			})
 			.attr('cy', function(d) {
 				return d.y;
-			})
+			});
 	};
 
 
@@ -390,6 +385,7 @@
 			setNodeSize(2);
 			setNodeSpacing(0);
 			showMap();
+			
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
 			sgInfoProp = $tgt.attr('data-info-property');
@@ -413,33 +409,13 @@
 	
 
 
-	/**
-	* remove classes from the body element based on a pattern
-	* @returns {undefined}
-	*/
-	var removeBodyClasses = function(pattern) {
-		var classStr = $sgBody.attr('class');
-
-		if (classStr) {
-			var classes = classStr.split(' ');
-			for (var i=classes.length-1; i>=0; i--) {
-				var clss = classes[i];
-				if (clss.match(pattern)) {
-					$sgBody.removeClass(clss);
-					classes.splice(i, 1);
-				}
-			}
-
-		}
-	};
-
 
 	/**
 	* remove all highlight classes from the body element
 	* @returns {undefined}
 	*/
 	var removeHighlightClasses = function() {
-		removeBodyClasses(/^highlight-/);
+		app.util.removeBodyClasses(/^highlight-/);
 	};
 	
 	
@@ -466,7 +442,7 @@
 
 
 
-	//-- Start geo functions --
+	//-- Start map functions --
 
 
 
@@ -517,7 +493,7 @@
 		*/
 		var addOffices = function() {
 			sgMap.selectAll('.office')
-				.data(sgOffices)
+				.data(app.data.sgOffices)
 				.enter()
 				.append('circle')
 				.attr('class', 'office')
@@ -547,150 +523,162 @@
 		};
 	
 
-	//-- End geo functions --
+	//-- End map functions --
 
 
 
+	//-- Start geo functions
 
-	/**
-	* match employees with a set of locations (hometowns, birthplaces, offices)
-	* enrich location-dataset:
-	*	- add prop employeeCount to every location
-	* enrich every employee-object:
-	*	- add object with location coords to every employee object
-	* 
-	* @param {array} dataset The dataset containing the locations
-	* @returns {undefined}
-	*/
-	var matchEmployeesWithLocations = function(options) {
-		var locationData = options.locationData,
-			datasetLocationProp = options.datasetLocationProp,
-			employeeLocationProp = options.employeeLocationProp,
-			locationCoordsProp = options.locationCoordsProp,
-			unknownPlaces = [];
+		/**
+		* match employees with a set of locations (hometowns, birthplaces, offices)
+		* enrich location-dataset:
+		*	- add prop employeeCount to every location
+		* enrich every employee-object:
+		*	- add object with location coords to every employee object
+		* 
+		* @param {array} dataset The dataset containing the locations
+		* @returns {undefined}
+		*/
+		var matchEmployeesWithLocations = function(options) {
+			var locationData = options.locationData,
+				datasetLocationProp = options.datasetLocationProp,
+				employeeLocationProp = options.employeeLocationProp,
+				locationCoordsProp = options.locationCoordsProp,
+				unknownPlaces = [];
 
-		// enrich location-data: add prop for employee count to every location
-		for (var i=0, locationCount=locationData.length; i<locationCount; i++) {
-			locationData[i].employeeCount = 0;
-		}
+			// enrich location-data: add prop for employee count to every location
+			for (var i=0, locationCount=locationData.length; i<locationCount; i++) {
+				locationData[i].employeeCount = 0;
+			}
 
-		// enrich employee-data
-		for (var j=0, len=sgEmployees.length; j<len; j++) {
-			var employee = sgEmployees[j],
-				locationName = employee[employeeLocationProp].toLowerCase(),
-				locationFound = false;
+			// enrich employee-data
+			for (var j=0, len=app.data.sgEmployees.length; j<len; j++) {
+				var employee = app.data.sgEmployees[j],
+					locationName = employee[employeeLocationProp].toLowerCase(),
+					locationFound = false;
 
-			// create a coordinates object
-			employee[locationCoordsProp] = {};
+				// create a coordinates object
+				employee[locationCoordsProp] = {};
 
-			// check if location is within dataset
-			// if so, get its lat/long and augment its employeeCount
-			for (var k=0; k<locationCount; k++) {
-				var location = locationData[k];
+				// check if location is within dataset
+				// if so, get its lat/long and augment its employeeCount
+				for (var k=0; k<locationCount; k++) {
+					var location = locationData[k];
 
-				if (location[datasetLocationProp].toLowerCase() === locationName) {
-					// calculate the location's coords in the map projection
-					var coords = sgProjection([location.long, location.lat]);
-					employee[locationCoordsProp] = {
-						x: coords[0],
-						y: coords[1]
-					};
+					if (location[datasetLocationProp].toLowerCase() === locationName) {
+						// calculate the location's coords in the map projection
+						var coords = sgProjection([location.long, location.lat]);
+						employee[locationCoordsProp] = {
+							x: coords[0],
+							y: coords[1]
+						};
 
-					locationFound = true;
+						locationFound = true;
 
-					// keep track of # of employees per location
-					location.employeeCount++;
+						// keep track of # of employees per location
+						location.employeeCount++;
 
-					break;
+						break;
+					}
+				}
+
+				if (!locationFound) {
+					app.data.sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
 				}
 			}
 
-			if (!locationFound) {
-				sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
+			// now order location by # of employees
+			locationData.sort(function(a, b) {
+				return b.employeeCount - a.employeeCount;
+			});
+
+		};
+		
+
+
+		/**
+		* process hometown data
+		* @returns {undefined}
+		*/
+		var processHometownData = function() {
+			var options = {
+				locationData: app.data.sgHometowns,
+				datasetLocationProp: 'name',
+				employeeLocationProp: 'hometown',
+				locationCoordsProp: 'hometownCoords'
+			};
+			matchEmployeesWithLocations(options);
+
+			var $list = $('#hometown-list'),
+				items = '';
+			for (var i=0; i<5; i++) {
+				var hometown = app.data.sgHometowns[i];
+				items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
 			}
-		}
 
-		// now order location by # of employees
-		locationData.sort(function(a, b) {
-			return b.employeeCount - a.employeeCount;
-		});
+			$list.append(items);
+		};
 
-	};
-	
+
+		/**
+		* process birthplace data
+		* @returns {undefined}
+		*/
+		var processBirthplaceData = function() {
+			var options = {
+				locationData: app.data.sgHometowns,
+				datasetLocationProp: 'name',
+				employeeLocationProp: 'birthplace',
+				locationCoordsProp: 'birthplaceCoords'
+			};
+			matchEmployeesWithLocations(options);
+		};
+
+
+		/**
+		* process hometown data
+		* @returns {undefined}
+		*/
+		var processOfficeData = function() {
+			var officeOptions = {
+				locationData: app.data.sgOffices,
+				datasetLocationProp: 'city',
+				employeeLocationProp: 'office',
+				locationCoordsProp: 'officeCoords'
+			};
+			matchEmployeesWithLocations(officeOptions);
+		};
+
+
+		/**
+		* process data about locations
+		* @returns {undefined}
+		*/
+		var processGeoData = function() {
+			processHometownData();
+			processBirthplaceData();
+			processOfficeData();
+		};
+
+	//-- End geo functions --
 
 
 	/**
-	* process hometown data
+	* initialize list with employees per office
 	* @returns {undefined}
 	*/
-	var processHometownData = function() {
-		var options = {
-			locationData: sgHometowns,
-			datasetLocationProp: 'name',
-			employeeLocationProp: 'hometown',
-			locationCoordsProp: 'hometownCoords'
-		};
-		matchEmployeesWithLocations(options);
-
-		var $list = $('#hometown-list'),
-			items = '';
-		for (var i=0; i<5; i++) {
-			var hometown = sgHometowns[i];
-			items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
-		}
-
-		$list.append(items);
-	};
-
-
-	/**
-	* process birthplace data
-	* @returns {undefined}
-	*/
-	var processBirthplaceData = function() {
-		var options = {
-			locationData: sgHometowns,
-			datasetLocationProp: 'name',
-			employeeLocationProp: 'birthplace',
-			locationCoordsProp: 'birthplaceCoords'
-		};
-		matchEmployeesWithLocations(options);
-	};
-
-
-	/**
-	* process hometown data
-	* @returns {undefined}
-	*/
-	var processOfficeData = function() {
-		var officeOptions = {
-			locationData: sgOffices,
-			datasetLocationProp: 'city',
-			employeeLocationProp: 'office',
-			locationCoordsProp: 'officeCoords'
-		};
-		matchEmployeesWithLocations(officeOptions);
+	var initEmployeesPerOfficeList = function() {
 
 		var $list = $('#office-list'),
 			items = '';
-		for (var i=0, len=sgOffices.length; i<len; i++) {
-			var office = sgOffices[i];
+		for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
+			var office = app.data.sgOffices[i];
 			items += '<li>'+office.city + '(' + office.employeeCount + ')</li>';
 		}
 
 		$list.append(items);
 	};
-
-
-	/**
-	* process data about locations
-	* @returns {undefined}
-	*/
-	var processGeoData = function() {
-		processHometownData();
-		processBirthplaceData();
-		processOfficeData();
-	};
+	
 
 
 	/**
@@ -698,8 +686,8 @@
 	* @returns {undefined}
 	*/
 	var initEmployeeProperties = function() {
-		for (var prop in sgEmployees[0]) {
-			sgEmployeeProps.push(prop);
+		for (var prop in app.data.sgEmployees[0]) {
+			app.data.sgEmployeeProps.push(prop);
 		}
 	};
 	
@@ -712,15 +700,15 @@
 	* @returns {undefined}
 	*/
 	var processEmployeeDisciplines = function() {
-		for (var i=0, len=sgEmployees.length; i<len; i++) {
-			var emp = sgEmployees[i],
+		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
+			var emp = app.data.sgEmployees[i],
 				discipline = emp.disciplineWithLevel,
 				disciplineFound = false,
 				level = '';
 
 			// cut off level
-			for (var lv=0, lvLen = sgLevels.length; lv<lvLen; lv++) {
-				var currLevel = sgLevels[lv];
+			for (var lv=0, lvLen = app.data.sgLevels.length; lv<lvLen; lv++) {
+				var currLevel = app.data.sgLevels[lv];
 				
 				if (discipline.toLowerCase().indexOf(currLevel) === 0) {
 					discipline = discipline.substr(currLevel.length + 1);
@@ -753,11 +741,11 @@
 			ageMax = 0,
 			ageSum = 0;
 
-		for (var i=0, len=sgEmployees.length; i<len; i++) {
-			var emp = sgEmployees[i];
+		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
+			var emp = app.data.sgEmployees[i];
 
 			// process age data
-			sgBirthdays.push(emp.birthday);
+			app.data.sgBirthdays.push(emp.birthday);
 			var age = getYearsUntilToday(emp.birthday),
 				ageRound = Math.floor(age);
 
@@ -782,14 +770,14 @@
 		var ageRange = ageMax - ageMin;
 		for (var a = 0; a <= ageRange; a++) {
 			var currAge = ageMin + a;
-			sgAges.push({
+			app.data.sgAges.push({
 				age: currAge,
 				employeeCount: ages[currAge] || 0
 			});
 		}
 
 		// calculate avarage age
-		sgAvarageAge = ageSum / sgEmployees.length;
+		app.data.sgAverageAge = ageSum / app.data.sgEmployees.length;
 	};
 
 
@@ -828,8 +816,8 @@
 		processEmployeeAges();
 
 		// now popuplate filterGroups
-		for (var i=0, len=sgEmployees.length; i<len; i++) {
-			var employee = sgEmployees[i];
+		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
+			var employee = app.data.sgEmployees[i];
 
 			// loop through employee groups and add this employee's data
 			for (var groupName in sgFilterGroups) {
@@ -848,7 +836,7 @@
 	*/
 	var defineFilterGroupsAndProps = function() {
 		// use field name in .csv as property name
-		// use the same property-names we use in sgEmployees
+		// use the same property-names we use in app.data.sgEmployees
 		sgFilterGroups = {
 			gender: { guiName: 'Gender', dataset: []},
 			discipline: { guiName: 'Discipline', dataset: []},
@@ -891,24 +879,24 @@
 				},
 				chartW = w - margin.left - margin.right,
 				chartH = h - margin.top - margin.bottom,
-				minAge = d3.min(sgAges, function(obj) {
+				minAge = d3.min(app.data.sgAges, function(obj) {
 					return obj.age;
 				}),
-				maxAge = d3.max(sgAges, function(obj) {
+				maxAge = d3.max(app.data.sgAges, function(obj) {
 					return obj.age + 1;// op de een of andere manier moet dit +1 zijn, anders komt laatste bar niet in schaal
 				});
 
 
 			var xScale = d3.scaleBand()
-					// .domain(d3.range(sgAges.length))
+					// .domain(d3.range(app.data.sgAges.length))
 					.domain(d3.range(minAge, maxAge))
 					.rangeRound([0, chartW])
 					.padding(0.1);
 
-					// console.log('ages:', sgAges);
+					// console.log('ages:', app.data.sgAges);
 
 			var yScale = d3.scaleLinear()
-					.domain([0, d3.max(sgAges, function(obj) {
+					.domain([0, d3.max(app.data.sgAges, function(obj) {
 							return obj.employeeCount;
 						})])
 					.range([chartH, 0]);
@@ -922,7 +910,7 @@
 			ageChart.append('g')
 				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 				.selectAll('.age-bar')
-				.data(sgAges)
+				.data(app.data.sgAges)
 				.enter()
 				.append('rect')
 				.attr('x', function(d, i) {
@@ -954,8 +942,8 @@
 		* @returns {undefined}
 		*/
 		var calculateAgeInfo = function() {
-			var avgYears = Math.floor(sgAvarageAge),
-				avgMonths = Math.floor(12 * (sgAvarageAge % avgYears));
+			var avgYears = Math.floor(app.data.sgAverageAge),
+				avgMonths = Math.floor(12 * (app.data.sgAverageAge % avgYears));
 
 			$('#age-info').find('.age-years')
 				.text(avgYears)
@@ -997,7 +985,7 @@
 		*/
 		var createPieChart = function(dataset, id) {
 			// console.log(dataset);
-			var colorArray = randomizeArray(sgColors.slice());//slice makes copy
+			var colorArray = app.util.randomizeArray(sgColors.slice());//slice makes copy
 
 			var dataAccessor = function(d) {
 				return d.count;
@@ -1023,7 +1011,7 @@
 			arcs.append('path')
 				.attr('class', function(d) {
 					// console.log(d.data);
-					return 'pie-segment pie-segment--'+ convertToClassName(d.data.prop);
+					return 'pie-segment pie-segment--'+ app.util.convertToClassName(d.data.prop);
 				})
 				.attr('d', arc)
 				.attr('fill', function(d,i) {
@@ -1143,8 +1131,8 @@
 				malePerc,
 				femalePerc;
 
-			for (var i=0, len=sgEmployees.length; i<len; i++) {
-				var g = sgEmployees[i].gender.toLowerCase();
+			for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
+				var g = app.data.sgEmployees[i].gender.toLowerCase();
 
 				if (g === 'vrouw') {
 					femaleCount++;
@@ -1220,14 +1208,35 @@
 
 
 		/**
+		* remove classes from the body element based on a pattern
+		* @returns {undefined}
+		*/
+		// var removeBodyClasses = function(pattern) {
+		// 	var classStr = $sgBody.attr('class');
+
+		// 	if (classStr) {
+		// 		var classes = classStr.split(' ');
+		// 		for (var i=classes.length-1; i>=0; i--) {
+		// 			var clss = classes[i];
+		// 			if (clss.match(pattern)) {
+		// 				$sgBody.removeClass(clss);
+		// 				classes.splice(i, 1);
+		// 			}
+		// 		}
+
+		// 	}
+		// };
+
+
+		/**
 		* convert a string to format that can be used as classname
 		* @returns {undefined}
 		*/
-		var convertToClassName = function(str) {
-			str = str.toLowerCase().replace(/[ \.]/, '-');
+		// var convertToClassName = function(str) {
+		// 	str = str.toLowerCase().replace(/[ \.]/, '-');
 
-			return str;
-		};
+		// 	return str;
+		// };
 
 
 
@@ -1236,17 +1245,17 @@
 		* @param {array} arr The array to randomize
 		* @returns {array} The randomized array
 		*/
-		var randomizeArray = function(arr) {
-			var randomArr = [],
-				len = arr.length;
+		// var randomizeArray = function(arr) {
+		// 	var randomArr = [],
+		// 		len = arr.length;
 			
-			while(arr.length) {
-				var idx = Math.floor(arr.length*Math.random());
-				randomArr.push(arr.splice(idx,1)[0]);
-			}
+		// 	while(arr.length) {
+		// 		var idx = Math.floor(arr.length*Math.random());
+		// 		randomArr.push(arr.splice(idx,1)[0]);
+		// 	}
 
-			return randomArr;
-		};
+		// 	return randomArr;
+		// };
 
 
 	
@@ -1261,7 +1270,7 @@
 	var setEmployeeCount = function() {
 		var $box = $('#info-box--employees-general'),
 			$value = $box.find('.value--primary'),
-			numEmployees = sgEmployees.length;
+			numEmployees = app.data.sgEmployees.length;
 
 		$value.text(numEmployees);
 	};
@@ -1283,7 +1292,7 @@
 			  });
 			};
 
-			var uniqueUnknown = sgPlacesWithoutGeoData.unique(),
+			var uniqueUnknown = app.data.sgPlacesWithoutGeoData.unique(),
 				str = '\n\n';
 
 			for (var i=0, len=uniqueUnknown.length; i<len; i++) {
@@ -1310,9 +1319,9 @@
 	*/
 	var loadHandler = function(error, employees, mapData, offices, cities) {
 		// create semi globals for datasets
-		sgEmployees = employees;
-		sgOffices = offices;
-		sgHometowns = cities;
+		app.data.sgEmployees = employees;
+		app.data.sgOffices = offices;
+		app.data.sgHometowns = cities;
 
 		// put original employee properties into array before we add all kind of helper props
 		initEmployeeProperties()
@@ -1327,6 +1336,8 @@
 		setEmployeeCount();
 		defineFilterGroupsAndProps();
 		processEmployeeData();
+
+		initEmployeesPerOfficeList();
 
 
 		// add shapes for nodes
@@ -1375,12 +1386,9 @@
 	* @returns {undefined}
 	*/
 	var init = function() {
-		initSvg();
-		// initSimulation();
+		initBubbleChart();
 		initSortingLinks();
 		initHighlightLinks();
-
-		// defineFilterGroupsAndProps();
 
 		// load data and kick things off
 		loadData();
