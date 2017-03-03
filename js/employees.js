@@ -679,7 +679,7 @@ window.app = window.app || {};
 			}
 		}
 
-		console.log(sgFilterGroups['discipline']);
+		// console.log(sgFilterGroups['discipline']);
 
 	};
 
@@ -1048,7 +1048,7 @@ window.app = window.app || {};
 
 
 		// generate props to show
-		console.log(sgFilterProps);
+		// console.log(sgFilterProps);
 		for (var propName in sgFilterProps) {
 			propertyOptions += '<option value="' + propName + '">' + sgFilterProps[propName].guiName + '</option>';	
 		}
@@ -1124,7 +1124,7 @@ window.app = window.app || {};
 
 		// createGenderPieChart();
 
-		// initCompareTool();
+		initCompareTool();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();

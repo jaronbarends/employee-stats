@@ -20,9 +20,6 @@ app.nodes = (function($) {
 	};
 
 
-
-
-
 	/**
 	* get the position for a node on a grid (default 10x10)
 	* @param {number} idx The index of the node
@@ -42,15 +39,12 @@ app.nodes = (function($) {
 		y;
 
 		var c = $.extend(defaults, options);// config object
-		// console.log(c);
 
 		if (c.gridIsHorizontal) {
 			col = idx % c.gridSize + ( c.gridSize + 0.5 ) * Math.floor( idx / (c.gridSize*c.gridSize) );
 			row = Math.floor( idx / c.gridSize ) - c.gridSize * Math.floor( idx / (c.gridSize*c.gridSize) );
 			x = ( 2 * elements.sgNodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
 			y = ( 2 * elements.sgNodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
-			// console.log(col, row);
-			console.log(elements.sgNodeSize);
 		} else {
 			c.gridSpacing = elements.sgNodeSize;
 			col = idx % c.gridSize;
@@ -117,7 +111,6 @@ app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	var setNodeSize = function(size) {
-		console.log('setNodeSize:', size);
 		elements.sgNodeSize = size || elements.sgDefaultNodeSize;
 		elements.sgNodesChart.selectAll('.employee')
 			.attr('r', elements.sgNodeSize);
@@ -129,11 +122,10 @@ app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	var setNodeSpacing = function(spacing) {
-		console.log('setNodeSpacing:', spacing);
 		if (typeof spacing === 'undefined') {
 			spacing = elements.sgDefaultNodeSpacing;
 		}
-		app.nodes.sgNodeSpacing = spacing;
+		elements.sgNodeSpacing = spacing;
 	};
 
 	/**
@@ -152,7 +144,7 @@ app.nodes = (function($) {
 		init: init,
 		setNodeSize: setNodeSize,
 		setNodeSpacing: setNodeSpacing,
-		getNodeGridPosition: getNodeGridPosition
+		getNodeGridPosition: getNodeGridPosition,
 	};
 
 	return publicMethodsAndProps;
