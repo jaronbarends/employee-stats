@@ -7,21 +7,6 @@ window.app = window.app || {};
 
 	var $sgBody = $('body');
 	
-	// vars for graph's svg
-	var sgBubbleChart,
-		$sgBubbleChart,
-		sgBubbleChartWidth,
-		sgBubbleChartHeight,
-		sgGroupTranslate = 'translate(0,0)';
-
-	// vars for employee nodes
-	var sgNodes,
-		sgDefaultNodeSize = 8,
-		sgNodeSize = sgDefaultNodeSize,
-		sgDefaultNodeSpacing = 3,
-		sgNodeSpacing = sgDefaultNodeSpacing,
-		sgInfoProp;// property to be shown when clicking on node
-
 	// vars for datasets
 
 	app.data = {
@@ -61,10 +46,10 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initBubbleChart = function() {
-		sgBubbleChart = d3.select('#bubble-chart');
-		$sgBubbleChart = $('#bubble-chart');
-		sgBubbleChartWidth = $sgBubbleChart.width();
-		sgBubbleChartHeight = $sgBubbleChart.height();
+		app.nodes.elements.sgNodesChart = d3.select('#bubble-chart');
+		app.nodes.elements.$sgNodesChart = $('#bubble-chart');
+		app.nodes.elements.sgNodesChartWidth = app.nodes.elements.$sgNodesChart.width();
+		app.nodes.elements.sgNodesChartHeight = app.nodes.elements.$sgNodesChart.height();
 	};
 
 
@@ -94,9 +79,9 @@ window.app = window.app || {};
 			* @param {object} d current object's data
 			*/
 			var forceXGender = function(d) {
-				var x = sgBubbleChartWidth/4;
+				var x = app.nodes.elements.sgNodesChartWidth/4;
 				if (d.gender.toLowerCase() === 'man') {
-					x = 3*sgBubbleChartWidth/4;
+					x = 3*app.nodes.elements.sgNodesChartWidth/4;
 				}
 				return x;
 			};
@@ -108,11 +93,11 @@ window.app = window.app || {};
 			* @param {object} d current object's data
 			*/
 			var forceXDiscipline = function(d) {
-				var x = sgBubbleChartWidth/4;
+				var x = app.nodes.elements.sgNodesChartWidth/4;
 				if (d.discipline === 'frontend development' || d.discipline === 'visual design' || d.discipline === 'interaction design') {
-					x = sgBubbleChartWidth/2;
+					x = app.nodes.elements.sgNodesChartWidth/2;
 				} else if (d.discipline === 'backend development') {
-					x = 4*sgBubbleChartWidth / 5;
+					x = 4*app.nodes.elements.sgNodesChartWidth / 5;
 				}
 				return x;
 			};
@@ -123,7 +108,7 @@ window.app = window.app || {};
 			* @returns {undefined}
 			*/
 			var forceXGrid = function(d, i) {
-				return getNodeGridPosition(i)[0];
+				return app.nodes.getNodeGridPosition(i)[0];
 			};
 
 
@@ -132,7 +117,7 @@ window.app = window.app || {};
 			* @returns {undefined}
 			*/
 			var forceYGrid = function(d, i) {
-				return getNodeGridPosition(i)[1];
+				return app.nodes.getNodeGridPosition(i)[1];
 			};
 			
 
@@ -143,7 +128,7 @@ window.app = window.app || {};
 			* @param {object} d current object's data
 			*/
 			var forceXCenter = function(d) {
-				return sgBubbleChartWidth / 2;
+				return app.nodes.elements.sgNodesChartWidth / 2;
 			};
 
 
@@ -153,7 +138,7 @@ window.app = window.app || {};
 			* @param {object} d current object's data
 			*/
 			var forceYCenter = function(d) {
-				return sgBubbleChartHeight / 2;
+				return app.nodes.elements.sgNodesChartHeight / 2;
 			};
 
 		//-- Start force definitions
@@ -187,7 +172,7 @@ window.app = window.app || {};
 		* @returns {d3 simulation} the simulation object
 		*/
 		var setDefaultCollisionForce = function() {
-			return sgSimulation.force('collide', d3.forceCollide(sgNodeSize + sgNodeSpacing));
+			return sgSimulation.force('collide', d3.forceCollide(app.nodes.elements.sgNodeSize + app.nodes.elements.sgNodeSpacing));
 		};
 
 
@@ -209,113 +194,113 @@ window.app = window.app || {};
 
 
 
-	/**
-	* get the position for a node on a grid (default 10x10)
-	* @param {number} idx The index of the node
-	* @param {object} options Config options for grid
-	* @returns {Array} [x, y]
-	*/
-	var getNodeGridPosition = function(idx, options) {
-		var defaults = {
-			gridOrigin: {x: 140, y: 20 },
-			gridSpacing: sgNodeSize,
-			gridSize: 10,// number of nodes in each row and col
-			gridIsHorizontal: true,
-		},
-		col,
-		row,
-		x,
-		y;
+	// /**
+	// * get the position for a node on a grid (default 10x10)
+	// * @param {number} idx The index of the node
+	// * @param {object} options Config options for grid
+	// * @returns {Array} [x, y]
+	// */
+	// var getNodeGridPosition = function(idx, options) {
+	// 	var defaults = {
+	// 		gridOrigin: {x: 140, y: 20 },
+	// 		gridSpacing: app.nodes.sgNodeSize,
+	// 		gridSize: 10,// number of nodes in each row and col
+	// 		gridIsHorizontal: true,
+	// 	},
+	// 	col,
+	// 	row,
+	// 	x,
+	// 	y;
 
-		var c = $.extend(defaults, options);// config object
+	// 	var c = $.extend(defaults, options);// config object
 
-		if (c.gridIsHorizontal) {
-			col = idx % c.gridSize + ( c.gridSize + 0.5 ) * Math.floor( idx / (c.gridSize*c.gridSize) );
-			row = Math.floor( idx / c.gridSize ) - c.gridSize * Math.floor( idx / (c.gridSize*c.gridSize) );
-			x = ( 2 * sgNodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
-			y = ( 2 * sgNodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
-		} else {
-			c.gridSpacing = sgNodeSize;
-			col = idx % c.gridSize;
-			row = Math.floor(idx / c.gridSize) + 0.5 * Math.floor(idx / (c.gridSize*c.gridSize));
-			x = ( 2 * sgNodeSize + c.gridSpacing) * col + c.gridOrigin.x;
-			y = ( 2 * sgNodeSize + c.gridSpacing) * row + c.gridOrigin.y;
-		}
+	// 	if (c.gridIsHorizontal) {
+	// 		col = idx % c.gridSize + ( c.gridSize + 0.5 ) * Math.floor( idx / (c.gridSize*c.gridSize) );
+	// 		row = Math.floor( idx / c.gridSize ) - c.gridSize * Math.floor( idx / (c.gridSize*c.gridSize) );
+	// 		x = ( 2 * app.nodes.sgNodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
+	// 		y = ( 2 * app.nodes.sgNodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
+	// 	} else {
+	// 		c.gridSpacing = app.nodes.sgNodeSize;
+	// 		col = idx % c.gridSize;
+	// 		row = Math.floor(idx / c.gridSize) + 0.5 * Math.floor(idx / (c.gridSize*c.gridSize));
+	// 		x = ( 2 * app.nodes.sgNodeSize + c.gridSpacing) * col + c.gridOrigin.x;
+	// 		y = ( 2 * app.nodes.sgNodeSize + c.gridSpacing) * row + c.gridOrigin.y;
+	// 	}
 
-		return [x,y];
-	};
+	// 	return [x,y];
+	// };
 	
 
 
-	/**
-	* add nodes to screen
-	* @returns {undefined}
-	*/
-	var addEmployeeNodes = function() {
-		var employeeG = sgBubbleChart.selectAll('#employee-group')
-				.attr('transform', sgGroupTranslate);
+	// /**
+	// * add nodes to screen
+	// * @returns {undefined}
+	// */
+	// var addEmployeeNodes = function() {
+	// 	var employeeG = sgBubbleChart.selectAll('#employee-group')
+	// 			.attr('transform', sgGroupTranslate);
 
-		sgNodes = employeeG.selectAll('.employee')
-			.data(app.data.sgEmployees)
-			.enter()
-			.append('circle')
-			.attr('class', function(d) {
-				var clsNames = [
-					'employee',
-					'employee--'+d.gender.toLowerCase(),
-					'employee--office-'+d.office.toLowerCase(),
-					'employee--discipline-'+d.discipline.toLowerCase().replace(' ','-')
-				],
-				cls = clsNames.join(' ');
+	// 	app.nodes.sgNodes = employeeG.selectAll('.employee')
+	// 		.data(app.data.sgEmployees)
+	// 		.enter()
+	// 		.append('circle')
+	// 		.attr('class', function(d) {
+	// 			var clsNames = [
+	// 				'employee',
+	// 				'employee--'+d.gender.toLowerCase(),
+	// 				'employee--office-'+d.office.toLowerCase(),
+	// 				'employee--discipline-'+d.discipline.toLowerCase().replace(' ','-')
+	// 			],
+	// 			cls = clsNames.join(' ');
 
-				return cls;
-			})
-			.attr('r', sgNodeSize)
-			.attr('cx', function(d, i) {
-				var x = getNodeGridPosition(i)[0];
-				d.x = x; 
-				return x;
-			})
-			.attr('cy', function(d, i) {
-				var y = getNodeGridPosition(i)[1];
-				d.y = y;
-				return y;
-			})
-			.attr('x', function(d, i) {
-				return getNodeGridPosition(i)[0];
-			})
-			.attr('y', function(d, i) {
-				return getNodeGridPosition(i)[1];
-			})
-			.on('click', function(d) {
-				if (sgInfoProp) {
-					console.log(d[sgInfoProp]);
-				}
-			})
-	};
-
-
-	/**
-	* set size of employee nodes
-	* @returns {undefined}
-	*/
-	var setNodeSize = function(size) {
-		sgNodeSize = size || sgDefaultNodeSize;
-		sgBubbleChart.selectAll('.employee')
-			.attr('r', sgNodeSize);
-	};
+	// 			return cls;
+	// 		})
+	// 		.attr('r', app.nodes.sgNodeSize)
+	// 		.attr('cx', function(d, i) {
+	// 			var x = getNodeGridPosition(i)[0];
+	// 			d.x = x; 
+	// 			return x;
+	// 		})
+	// 		.attr('cy', function(d, i) {
+	// 			var y = getNodeGridPosition(i)[1];
+	// 			d.y = y;
+	// 			return y;
+	// 		})
+	// 		.attr('x', function(d, i) {
+	// 			return getNodeGridPosition(i)[0];
+	// 		})
+	// 		.attr('y', function(d, i) {
+	// 			return getNodeGridPosition(i)[1];
+	// 		})
+	// 		.on('click', function(d) {
+	// 			if (app.nodes.sgInfoProp) {
+	// 				console.log(d[app.nodes.sgInfoProp]);
+	// 			}
+	// 		})
+	// };
 
 
-	/**
-	* set spacing between employee nodes
-	* @returns {undefined}
-	*/
-	var setNodeSpacing = function(spacing) {
-		if (typeof spacing === 'undefined') {
-			spacing = sgDefaultNodeSpacing;
-		}
-		sgNodeSpacing = spacing;
-	};
+	// /**
+	// * set size of employee nodes
+	// * @returns {undefined}
+	// */
+	// var setNodeSize = function(size) {
+	// 	app.nodes.sgNodeSize = size || app.nodes.sgDefaultNodeSize;
+	// 	sgBubbleChart.selectAll('.employee')
+	// 		.attr('r', app.nodes.sgNodeSize);
+	// };
+
+
+	// /**
+	// * set spacing between employee nodes
+	// * @returns {undefined}
+	// */
+	// var setNodeSpacing = function(spacing) {
+	// 	if (typeof spacing === 'undefined') {
+	// 		spacing = app.nodes.sgDefaultNodeSpacing;
+	// 	}
+	// 	app.nodes.sgNodeSpacing = spacing;
+	// };
 	
 
 
@@ -324,7 +309,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var simulationTickHandler = function() {
-		sgNodes
+		app.nodes.elements.sgNodes
 			.attr('cx', function(d) {
 				return d.x;
 			})
@@ -353,8 +338,8 @@ window.app = window.app || {};
 	*/
 	var enableDefaultFilterView = function() {
 		hideMap();
-		setNodeSize();
-		setNodeSpacing();
+		app.nodes.setNodeSize();
+		app.nodes.setNodeSpacing();
 		setDefaultCollisionForce();
 	};
 	
@@ -384,13 +369,13 @@ window.app = window.app || {};
 		// geo sorting
 		$('[data-geo-sort]').on('click', function(e) {
 			e.preventDefault();
-			setNodeSize(2);
-			setNodeSpacing(0);
+			app.nodes.setNodeSize(2);
+			app.nodes.setNodeSpacing(0);
 			showMap();
 			
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
-			sgInfoProp = $tgt.attr('data-info-property');
+			app.nodes.elements.sgInfoProp = $tgt.attr('data-info-property');
 
 			changeForce('forceX', xForce(getGeoForce('x', coordsProp, 120)));
 			changeForce('forceY', yForce(getGeoForce('y', coordsProp, 20)));
@@ -455,11 +440,11 @@ window.app = window.app || {};
 		var drawMap = function(geojson) {
 			var provinces = geojson.features;
 
-			app.map.sgProjection = d3.geoMercator().fitSize([sgBubbleChartWidth, sgBubbleChartHeight], geojson);
+			app.map.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.sgNodesChartWidth, app.nodes.elements.sgNodesChartHeight], geojson);
 			app.map.sgPath = d3.geoPath().projection(app.map.sgProjection);
 
-			app.map.sgMap = sgBubbleChart.selectAll('#geo-group')
-				.attr('transform', sgGroupTranslate);
+			app.map.sgMap = app.nodes.elements.sgNodesChart.selectAll('#geo-group')
+				.attr('transform', app.nodes.elements.sgGroupTranslate);
 
 			app.map.sgMap.selectAll('.province')
 				.data(provinces)
@@ -1126,21 +1111,20 @@ window.app = window.app || {};
 
 
 		// add shapes for nodes
-		addEmployeeNodes();
+		// addEmployeeNodes();
+		app.nodes.init();
 
 		createAgeChart();
 		calculateAgeInfo();
 
 		// initialize force simulation
 		initSimulation();
-		// setTimeout(function() {
-			// this kicks off the animation
-			sgSimulation.on('tick', simulationTickHandler);
-		// }, 1000);
+		// this kicks off the animation
+		sgSimulation.on('tick', simulationTickHandler);
 
-		createGenderPieChart();
+		// createGenderPieChart();
 
-		initCompareTool();
+		// initCompareTool();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();
@@ -1154,8 +1138,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			.defer(d3.csv, 'data/employees.csv')
-			// .defer(d3.csv, 'data/employees-excerpt.csv')
+			// .defer(d3.csv, 'data/employees.csv')
+			.defer(d3.csv, 'data/employees-excerpt.csv')
 			.defer(d3.json, 'data/provinces.topojson')
 			.defer(d3.csv, 'data/offices-netherlands.csv')
 			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
