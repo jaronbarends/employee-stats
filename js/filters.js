@@ -93,7 +93,7 @@ app.filters = (function($) {
 			$container.append(html);
 
 			if (chartType === 'pie') {
-				createPieChart(dataset, id);
+				app.pieChart.drawChart(dataset, id);
 			}
 
 		};
