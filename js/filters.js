@@ -4,7 +4,8 @@ app.filters = (function($) {
 
 	'use strict';
 
-
+	// filters variable naming:
+	// for every [group] show [prop]
 
 	var groups = {
 		// use field name in .csv as property name

@@ -45,7 +45,7 @@ app.dataprocessorGeo = (function($) {
 
 					if (location[datasetLocationProp].toLowerCase() === locationName) {
 						// calculate the location's coords in the map projection
-						var coords = app.map.sgProjection([location.long, location.lat]);
+						var coords = app.map.elements.sgProjection([location.long, location.lat]);
 						employee[locationCoordsProp] = {
 							x: coords[0],
 							y: coords[1]

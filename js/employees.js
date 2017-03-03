@@ -22,13 +22,6 @@ window.app = window.app || {};
 	};
 
 
-	// vars for geo stuff
-	app.map = {
-		sgProjection: null,
-		sgPath: null,
-		sgMap: null
-	};
-
 	// vars for simulation
 	var sgSimulation,
 		sgForceStrength = 0.04,
@@ -215,7 +208,6 @@ window.app = window.app || {};
 				.alphaDecay(0.4)
 				.restart();
 		};
-;
 
 	//-- End force / simulation functions
 
@@ -227,7 +219,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var enableDefaultFilterView = function() {
-		hideMap();
+		app.map.hide();
 		app.nodes.setNodeSize();
 		app.nodes.setNodeSpacing();
 		setDefaultCollisionForce();
@@ -261,7 +253,7 @@ window.app = window.app || {};
 			e.preventDefault();
 			app.nodes.setNodeSize(2);
 			app.nodes.setNodeSpacing(0);
-			showMap();
+			app.map.show();
 			
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
@@ -319,88 +311,6 @@ window.app = window.app || {};
 
 
 
-	//-- Start map functions --
-
-
-
-		/**
-		* draw map of The Netherlands
-		* @returns {undefined}
-		*/
-		var drawMap = function(geojson) {
-			var provinces = geojson.features;
-
-			app.map.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.sgNodesChartWidth, app.nodes.elements.sgNodesChartHeight], geojson);
-			app.map.sgPath = d3.geoPath().projection(app.map.sgProjection);
-
-			app.map.sgMap = app.nodes.elements.sgNodesChart.selectAll('#geo-group')
-				.attr('transform', app.nodes.elements.sgGroupTranslate);
-
-			app.map.sgMap.selectAll('.province')
-				.data(provinces)
-				.enter()
-				.append('path')
-				.attr('class', 'province')
-				.attr('d', app.map.sgPath);
-		};
-
-
-		/**
-		* show the map
-		* @returns {undefined}
-		*/
-		var showMap = function() {
-			$sgBody.addClass('map-view');
-		};
-
-
-		/**
-		* hide the map
-		* @returns {undefined}
-		*/
-		var hideMap = function() {
-			$sgBody.removeClass('map-view');
-		};
-		
-
-
-		/**
-		* add circles for offices
-		* @returns {undefined}
-		*/
-		var addOffices = function() {
-			app.map.sgMap.selectAll('.office')
-				.data(app.data.sgOffices)
-				.enter()
-				.append('circle')
-				.attr('class', 'office')
-				.attr('r', 20)
-				.attr('cx', function(d) {
-					var coords = app.map.sgProjection([d.long, d.lat]);
-					return coords[0];
-				})
-				.attr('cy', function(d) {
-					var coords = app.map.sgProjection([d.long, d.lat]);
-					return coords[1];
-				})
-		};
-	
-	
-
-		/**
-		* initialize map stuff
-		* @returns {undefined}
-		*/
-		var initMap = function(mapData) {
-			
-			var geojson = topojson.feature(mapData, mapData.objects.collection);
-
-			drawMap(geojson);
-			addOffices();
-		};
-	
-
-	//-- End map functions --
 
 
 
@@ -729,7 +639,8 @@ window.app = window.app || {};
 		initEmployeeProperties();
 
 		// initialize geo stuff
-		initMap(mapData);
+		// initMap(mapData);
+		app.map.init(mapData);
 
 		// process all geo-related data
 		// processGeoData();
