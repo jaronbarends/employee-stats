@@ -139,7 +139,7 @@ app.nodes = (function($) {
 
 
 	// define public methods that are available through app
-	var publicMethodsAndProps = {
+	var publicMethodsAndPropsAndProps = {
 		elements: elements,
 		init: init,
 		setNodeSize: setNodeSize,
@@ -147,6 +147,6 @@ app.nodes = (function($) {
 		getNodeGridPosition: getNodeGridPosition,
 	};
 
-	return publicMethodsAndProps;
+	return publicMethodsAndPropsAndProps;
 
 })(jQuery);

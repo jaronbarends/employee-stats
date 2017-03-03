@@ -60,12 +60,12 @@ app.util = (function($) {
 
 	
 	// define public methods that are available through app
-	var publicMethods = {
+	var publicMethodsAndProps = {
 		removeBodyClasses: removeBodyClasses,
 		convertToClassName: convertToClassName,
 		randomizeArray: randomizeArray,
 	};
 
-	return publicMethods;
+	return publicMethodsAndProps;
 
 })(jQuery);

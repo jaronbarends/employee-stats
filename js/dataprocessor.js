@@ -14,10 +14,10 @@ app.dataprocessor = (function($) {
 
 
 	// define public methods that are available through app
-	var publicMethods = {
+	var publicMethodsAndProps = {
 		init: init
 	};
 
-	return publicMethods;
+	return publicMethodsAndProps;
 
 })(jQuery);

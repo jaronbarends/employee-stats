@@ -21,8 +21,6 @@ window.app = window.app || {};
 		sgAvarageAge: 0
 	};
 
-	var sgFilterGroups,
-		sgFilterProps;
 
 	// vars for geo stuff
 	app.map = {
@@ -36,8 +34,9 @@ window.app = window.app || {};
 		sgForceStrength = 0.04,
 		sgAlphaTarget = 0.4;
 
-	var sgColors = ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee'];
-
+	app.colors = {
+		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
+	}
 
 
 
@@ -188,148 +187,39 @@ window.app = window.app || {};
 			setDefaultCollisionForce()
 				.nodes(app.data.sgEmployees);	
 		}
+
+
+		/**
+		* define what happens on simulation's ticked event
+		* @returns {undefined}
+		*/
+		var simulationTickHandler = function() {
+			app.nodes.elements.sgNodes
+				.attr('cx', function(d) {
+					return d.x;
+				})
+				.attr('cy', function(d) {
+					return d.y;
+				});
+		};
+
+
+		/**
+		* change a simulation force
+		* @returns {undefined}
+		*/
+		var changeForce = function(forceId, newForce) {
+			sgSimulation
+				.force(forceId, newForce)
+				.alphaTarget(sgAlphaTarget)
+				.alphaDecay(0.4)
+				.restart();
+		};
 ;
 
 	//-- End force / simulation functions
 
 
-
-	// /**
-	// * get the position for a node on a grid (default 10x10)
-	// * @param {number} idx The index of the node
-	// * @param {object} options Config options for grid
-	// * @returns {Array} [x, y]
-	// */
-	// var getNodeGridPosition = function(idx, options) {
-	// 	var defaults = {
-	// 		gridOrigin: {x: 140, y: 20 },
-	// 		gridSpacing: app.nodes.sgNodeSize,
-	// 		gridSize: 10,// number of nodes in each row and col
-	// 		gridIsHorizontal: true,
-	// 	},
-	// 	col,
-	// 	row,
-	// 	x,
-	// 	y;
-
-	// 	var c = $.extend(defaults, options);// config object
-
-	// 	if (c.gridIsHorizontal) {
-	// 		col = idx % c.gridSize + ( c.gridSize + 0.5 ) * Math.floor( idx / (c.gridSize*c.gridSize) );
-	// 		row = Math.floor( idx / c.gridSize ) - c.gridSize * Math.floor( idx / (c.gridSize*c.gridSize) );
-	// 		x = ( 2 * app.nodes.sgNodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
-	// 		y = ( 2 * app.nodes.sgNodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
-	// 	} else {
-	// 		c.gridSpacing = app.nodes.sgNodeSize;
-	// 		col = idx % c.gridSize;
-	// 		row = Math.floor(idx / c.gridSize) + 0.5 * Math.floor(idx / (c.gridSize*c.gridSize));
-	// 		x = ( 2 * app.nodes.sgNodeSize + c.gridSpacing) * col + c.gridOrigin.x;
-	// 		y = ( 2 * app.nodes.sgNodeSize + c.gridSpacing) * row + c.gridOrigin.y;
-	// 	}
-
-	// 	return [x,y];
-	// };
-	
-
-
-	// /**
-	// * add nodes to screen
-	// * @returns {undefined}
-	// */
-	// var addEmployeeNodes = function() {
-	// 	var employeeG = sgBubbleChart.selectAll('#employee-group')
-	// 			.attr('transform', sgGroupTranslate);
-
-	// 	app.nodes.sgNodes = employeeG.selectAll('.employee')
-	// 		.data(app.data.sgEmployees)
-	// 		.enter()
-	// 		.append('circle')
-	// 		.attr('class', function(d) {
-	// 			var clsNames = [
-	// 				'employee',
-	// 				'employee--'+d.gender.toLowerCase(),
-	// 				'employee--office-'+d.office.toLowerCase(),
-	// 				'employee--discipline-'+d.discipline.toLowerCase().replace(' ','-')
-	// 			],
-	// 			cls = clsNames.join(' ');
-
-	// 			return cls;
-	// 		})
-	// 		.attr('r', app.nodes.sgNodeSize)
-	// 		.attr('cx', function(d, i) {
-	// 			var x = getNodeGridPosition(i)[0];
-	// 			d.x = x; 
-	// 			return x;
-	// 		})
-	// 		.attr('cy', function(d, i) {
-	// 			var y = getNodeGridPosition(i)[1];
-	// 			d.y = y;
-	// 			return y;
-	// 		})
-	// 		.attr('x', function(d, i) {
-	// 			return getNodeGridPosition(i)[0];
-	// 		})
-	// 		.attr('y', function(d, i) {
-	// 			return getNodeGridPosition(i)[1];
-	// 		})
-	// 		.on('click', function(d) {
-	// 			if (app.nodes.sgInfoProp) {
-	// 				console.log(d[app.nodes.sgInfoProp]);
-	// 			}
-	// 		})
-	// };
-
-
-	// /**
-	// * set size of employee nodes
-	// * @returns {undefined}
-	// */
-	// var setNodeSize = function(size) {
-	// 	app.nodes.sgNodeSize = size || app.nodes.sgDefaultNodeSize;
-	// 	sgBubbleChart.selectAll('.employee')
-	// 		.attr('r', app.nodes.sgNodeSize);
-	// };
-
-
-	// /**
-	// * set spacing between employee nodes
-	// * @returns {undefined}
-	// */
-	// var setNodeSpacing = function(spacing) {
-	// 	if (typeof spacing === 'undefined') {
-	// 		spacing = app.nodes.sgDefaultNodeSpacing;
-	// 	}
-	// 	app.nodes.sgNodeSpacing = spacing;
-	// };
-	
-
-
-	/**
-	* define what happens on simulation's ticked event
-	* @returns {undefined}
-	*/
-	var simulationTickHandler = function() {
-		app.nodes.elements.sgNodes
-			.attr('cx', function(d) {
-				return d.x;
-			})
-			.attr('cy', function(d) {
-				return d.y;
-			});
-	};
-
-
-	/**
-	* change a simulation force
-	* @returns {undefined}
-	*/
-	var changeForce = function(forceId, newForce) {
-		sgSimulation
-			.force(forceId, newForce)
-			.alphaTarget(sgAlphaTarget)
-			.alphaDecay(0.4)
-			.restart();
-	};
 
 
 	/**
@@ -649,7 +539,7 @@ window.app = window.app || {};
 
 		// check if this group already contains this employee's type
 		var type = employee[groupName],
-			dataset = sgFilterGroups[groupName].dataset;
+			dataset = app.filters.groups[groupName].dataset;
 
 		if (! (type in dataset)) {
 			dataset[type] = [];
@@ -674,43 +564,15 @@ window.app = window.app || {};
 			var employee = app.data.sgEmployees[i];
 
 			// loop through employee groups and add this employee's data
-			for (var groupName in sgFilterGroups) {
+			for (var groupName in app.filters.groups) {
 				addEmployeeToGroup(employee, groupName);
 			}
 		}
 
-		// console.log(sgFilterGroups['discipline']);
+		// console.log(app.filters.groups['discipline']);
 
 	};
 
-
-	/**
-	* define groups we want to distinguish employees in and props to compare
-	* @returns {undefined}
-	*/
-	var defineFilterGroupsAndProps = function() {
-		// use field name in .csv as property name
-		// use the same property-names we use in app.data.sgEmployees
-		sgFilterGroups = {
-			gender: { guiName: 'Gender', dataset: []},
-			discipline: { guiName: 'Discipline', dataset: []},
-			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
-			office: { guiName: 'Office', dataset: []},
-			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
-		};
-
-		// props we want to show for filter group instances
-		sgFilterProps = {
-			age: { guiName: 'Age'},
-			startDate: { guiName: 'Start date'},
-			gender: { guiName: 'Gender'},
-			discipline: { guiName: 'Discipline'},
-			organisationalUnit: { guiName: 'Organisational unit'},
-			office: { guiName: 'Office'},
-			parttimePercentage: { guiName: 'Parttime percentage'},
-		};
-	};
-	
 
 
 	//-- Start age fucntions --
@@ -829,235 +691,6 @@ window.app = window.app || {};
 	
 
 
-
-	//-- Start Pie chart fucntions --
-
-
-		/**
-		* create a pie chart
-		* @returns {undefined}
-		*/
-		var createPieChart = function(dataset, id) {
-			// console.log(dataset);
-			var colorArray = app.util.randomizeArray(sgColors.slice());//slice makes copy
-
-			var dataAccessor = function(d) {
-				return d.count;
-			};
-			
-			var pie = d3.pie().value(dataAccessor)(dataset),
-				svg = d3.select('#'+id)
-					.append('svg')
-					.attr('class', 'pie-chart'),
-				innerRadius = 0,
-				outerRadius = parseInt(svg.style('width'), 10)/2,
-				arc = d3.arc()
-						.innerRadius(innerRadius)
-						.outerRadius(outerRadius);
-
-			var arcs = svg.selectAll('g.pie-segment')
-				.data(pie)
-				.enter()
-				.append('g')
-				// .attr('class', 'pie-segment')
-				.attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
-
-			arcs.append('path')
-				.attr('class', function(d) {
-					// console.log(d.data);
-					return 'pie-segment pie-segment--'+ app.util.convertToClassName(d.data.prop);
-				})
-				.attr('d', arc)
-				.attr('fill', function(d,i) {
-					var idx = i % colorArray.length;
-					return colorArray[idx];
-				})
-
-			// now add some info
-			var $chartBox = $('#'+id),
-				info = '<p>' + dataset[0].type;
-			for (var i=0, len=dataset.length; i<len; i++) {
-				info += '<br>' + dataset[i].prop + ':' + dataset[i].count;
-			}
-			info += '</p>';
-			$chartBox.append(info);
-
-		};
-
-
-		/**
-		* create a chart for a type-instance of specific group-filter
-		* @returns {undefined}
-		*/
-		var createFilterChart = function(dataset, chartType, chartIdx) {
-			var $container = $('#filter-charts-container'),
-				id = 'chart-box-' + chartIdx,
-				html = '<div id="' + id +'" class="chart-box chart-box--' + chartType + '"></div>';
-
-			$container.append(html);
-
-			if (chartType === 'pie') {
-				createPieChart(dataset, id);
-			}
-
-		};
-		
-
-
-
-		/**
-		* create charts based upon filters
-		* @returns {undefined}
-		*/
-		var createChartsByFilter = function(group, prop) {
-			// we'll distinguish groups and types: a group consists of several types,
-			// like the group offices consists of types utrecht, amersfoors, ...
-
-			// remove any previous charts
-			$('#filter-charts-container').empty();
-
-			// set up chart for every group
-			// console.log(group, prop, sgFilterGroups[group]);
-			var propDataset = sgFilterGroups[prop].dataset;
-
-			// check for which types we need to show charts
-			// this is the "for every..." part
-			group = sgFilterGroups[group].dataset;
-			var chartIdx = 0;
-
-			// loop through every type in this group
-			for (var typeName in group) {
-
-				var typeEmployees = group[typeName];// array for all employees for a given type, like a specific office
-
-				// now we have arrays for all employees for a given type, like a specific office
-				// loop through those employees and sort them into the different prop-types
-				var employeesPerProp = [];
-
-				for (var i=0, empLen=typeEmployees.length; i<empLen; i++) {
-
-					// for every employee in this type, check which chosen prop he has
-					var employee = typeEmployees[i],
-						propType = employee[prop];
-
-					if (!(propType in employeesPerProp)) {
-						employeesPerProp[propType] = 0;
-					}
-					employeesPerProp[propType]++;
-
-				}// end looping through employees
-
-				// now create dataset to send to chart
-				var dataset = [];
-				for (var p in employeesPerProp) {
-					var obj = {
-						type: typeName,
-						prop: p,
-						count: employeesPerProp[p]
-					};
-					dataset.push(obj);
-				}
-
-				// create right type of chart based on prop
-				var chartType = 'pie';
-				createFilterChart(dataset, chartType, chartIdx);
-				chartIdx++;
-
-
-			}// end looping through types
-
-
-
-
-
-
-		};
-		
-
-
-		/**
-		* create a pie chart for gender
-		* @returns {undefined}
-		*/
-		var createGenderPieChart = function() {
-			var maleCount = 0,
-				femaleCount = 0,
-				malePerc,
-				femalePerc;
-
-			for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-				var g = app.data.sgEmployees[i].gender.toLowerCase();
-
-				if (g === 'vrouw') {
-					femaleCount++;
-				} else {
-					maleCount++;
-				}
-			}
-
-			var femalePerc = 100*femaleCount / len,
-				malePerc = 100*maleCount / len;
-
-			var dataset = [
-				{ count: femaleCount, className:'female', percentage: femalePerc},
-				{ count: maleCount, className:'male', percentage: malePerc}
-			];
-			// createPieChart(dataset);
-		};
-		
-		
-
-	//-- End Pie chart fucntions --
-
-
-
-	/**
-	* show a new comparison
-	* @returns {undefined}
-	*/
-	var showComparison = function(e) {
-		e.preventDefault();
-
-		var $form = $(e.currentTarget),
-			group = $form.find('#group-filter').val(),
-			prop = $form.find('#employee-properties').val();
-
-		// decide which type of chart to show
-		createChartsByFilter(group, prop);
-	};
-	
-
-
-	/**
-	* initialize comparison tool
-	* @returns {undefined}
-	*/
-	var initCompareTool = function() {
-		var $groupSelect = $('#group-filter'),
-			$propertiesSelect = $('#employee-properties'),
-			groupOptions = '',
-			propertyOptions = '';
-
-		for (var groupName in sgFilterGroups) {
-			var guiName = sgFilterGroups[groupName].guiName;
-			// console.log(sgFilterGroups[groupName]);
-
-			groupOptions += '<option value="' + groupName + '">' + guiName + '</option>';
-		}
-		$groupSelect.append(groupOptions);
-
-
-		// generate props to show
-		// console.log(sgFilterProps);
-		for (var propName in sgFilterProps) {
-			propertyOptions += '<option value="' + propName + '">' + sgFilterProps[propName].guiName + '</option>';	
-		}
-		$propertiesSelect.append(propertyOptions);
-
-		$('#pie-chart-form').on('submit', showComparison);
-	};
-
-
 	
 
 	/**
@@ -1093,7 +726,7 @@ window.app = window.app || {};
 		app.data.sgHometowns = cities;
 
 		// put original employee properties into array before we add all kind of helper props
-		initEmployeeProperties()
+		initEmployeeProperties();
 
 		// initialize geo stuff
 		initMap(mapData);
@@ -1104,7 +737,7 @@ window.app = window.app || {};
 
 		// process employee data (disciplines)
 		setEmployeeCount();
-		defineFilterGroupsAndProps();
+		// defineFilterGroupsAndProps();
 		processEmployeeData();
 
 		initEmployeesPerOfficeList();
@@ -1122,14 +755,13 @@ window.app = window.app || {};
 		// this kicks off the animation
 		sgSimulation.on('tick', simulationTickHandler);
 
-		// createGenderPieChart();
-
-		initCompareTool();
+		// initCompareTool();
+		app.filters.init();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();
 
-	}// loadHandler
+	};// loadHandler
 
 
 	/**
