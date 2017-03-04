@@ -58,12 +58,31 @@ app.util = (function($) {
 	};
 
 
+		/**
+		* calculate the years passed between a certain date and today
+		* @param {string} pastDateStr Date in the past, format d/m/y
+		* @returns {number} The number of years (not rounded)
+		*/
+		var getYearsUntilToday = function(pastDateStr) {
+			var now = new Date(),
+				dateArr = pastDateStr.split('/'),
+				pastDate = new Date(dateArr[2], dateArr[1]-1, dateArr[0]),// month is 0-based, hence -1
+				nowMsecs = now.getTime(),
+				pastDateMsecs = pastDate.getTime(),
+				diffMsecs = nowMsecs - pastDateMsecs,// diff between dates in milliseconds
+				diffYear = diffMsecs / (1000 * 60 * 60 * 24 * 365);// not entirely accurate (no leap years) but good enough for now
+
+			return diffYear;
+		};
+
+
 	
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
 		removeBodyClasses: removeBodyClasses,
 		convertToClassName: convertToClassName,
 		randomizeArray: randomizeArray,
+		getYearsUntilToday: getYearsUntilToday,
 	};
 
 	return publicMethodsAndProps;

@@ -21,28 +21,9 @@ window.app = window.app || {};
 		sgAvarageAge: 0
 	};
 
-
-	// vars for simulation
-	// var sgSimulation,
-	// 	sgForceStrength = 0.04,
-	// 	sgAlphaTarget = 0.4;
-
 	app.colors = {
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
 	}
-
-
-
-	/**
-	* create svg for graph
-	* @returns {undefined}
-	*/
-	var initBubbleChart = function() {
-		app.nodes.elements.sgNodesChart = d3.select('#bubble-chart');
-		app.nodes.elements.$sgNodesChart = $('#bubble-chart');
-		app.nodes.elements.sgNodesChartWidth = app.nodes.elements.$sgNodesChart.width();
-		app.nodes.elements.sgNodesChartHeight = app.nodes.elements.$sgNodesChart.height();
-	};
 
 
 
@@ -70,15 +51,17 @@ window.app = window.app || {};
 		$('#sort-by-gender').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXGender));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYCenter));
+			// app.bubbleChart.changeForce('forceX', xForce(forceXGender));
+			// app.bubbleChart.changeForce('forceY', yForce(forceYCenter));
+			app.bubbleChart.changeForces('gender');
 		});
 		
 		$('#sort-by-discipline').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXDiscipline));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYCenter));
+			// app.bubbleChart.changeForce('forceX', xForce(forceXDiscipline));
+			// app.bubbleChart.changeForce('forceY', yForce(forceYCenter));
+			app.bubbleChart.changeForces('discipline');
 		});
 
 		// geo sorting
@@ -90,10 +73,15 @@ window.app = window.app || {};
 			
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
+
+			app.bubbleChart.geoCoordsProp = coordsProp;
+			app.bubbleChart.setGeoType(coordsProp);
+			console.log('set app.bubbleChart.geoCoordsProp to', coordsProp);
 			app.nodes.elements.sgInfoProp = $tgt.attr('data-info-property');
 
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(app.bubbleChart.getGeoForce('x', coordsProp, 120)));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(app.bubbleChart.getGeoForce('y', coordsProp, 20)));
+			// app.bubbleChart.changeForce('forceX', xForce(getGeoForce('x', coordsProp, 120)));
+			// app.bubbleChart.changeForce('forceY', yForce(getGeoForce('y', coordsProp, 20)));
+			app.bubbleChart.changeForces('geo');
 			app.bubbleChart.setDefaultCollisionForce();
 		});
 		
@@ -101,31 +89,15 @@ window.app = window.app || {};
 		$('#no-sorting').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXGrid));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYGrid));
+			app.bubbleChart.changeForces('default');
+			// app.bubbleChart.changeForce('forceX', xForce(forceXGrid));
+			// app.bubbleChart.changeForce('forceY', yForce(forceYGrid));
 		});
 	};
-
-
-
-
-	/**
-	* x-force for positioning all nodes on a grid
-	* @returns {undefined}
-	*/
-	var forceXGrid = function(d, i) {
-		return app.nodes.getNodeGridPosition(i)[0];
-	};
-
-
-	/**
-	* y-force for positioning all nodes on a grid
-	* @returns {undefined}
-	*/
-	var forceYGrid = function(d, i) {
-		return app.nodes.getNodeGridPosition(i)[1];
-	};
 	
+	
+
+
 
 	/**
 	* remove all highlight classes from the body element
@@ -134,6 +106,8 @@ window.app = window.app || {};
 	var removeHighlightClasses = function() {
 		app.util.removeBodyClasses(/^highlight-/);
 	};
+	
+	
 
 
 	/**
@@ -492,11 +466,8 @@ window.app = window.app || {};
 		// initialize force simulation
 		app.bubbleChart.initSimulation();
 		// this kicks off the animation
-		var sim = app.bubbleChart.getSimulation();
-		// console.log('app.bubbleChart.sgSimulation:', sim);
-		// console.log('app.bubbleChart.sgSimulation:', app.bubbleChart.sgSimulation);
-		// app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
-		sim.on('tick', app.bubbleChart.simulationTickHandler);
+		// sgSimulation.on('tick', simulationTickHandler);
+		app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
 
 		// initCompareTool();
 		app.filters.init();
@@ -530,7 +501,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var init = function() {
-		initBubbleChart();
+		app.bubbleChart.init();
 		initSortingLinks();
 		initHighlightLinks();
 

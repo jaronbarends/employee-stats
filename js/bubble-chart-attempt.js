@@ -6,9 +6,14 @@ app.bubbleChart = (function($) {
 
 	var $sgBody = $('body');
 
+
+	// vars for simulation
 	var sgSimulation,
 		sgForceStrength = 0.04,
-		sgAlphaTarget = 0.4;
+		sgAlphaTarget = 0.4,
+		sgForces = {},
+		sgGeoCoordsProp;// employee property to use for geo force
+	
 
 	//-- Start force / simulation functions
 
@@ -22,7 +27,9 @@ app.bubbleChart = (function($) {
 			* @returns {function} a force-function
 			*/
 			var getGeoForce = function(xOrY, coordsProp, defaultValue) {
+				console.log(coordsProp);
 				var forceFunction = function(d) {
+					return 150;
 					var xOrYValue = d[coordsProp][xOrY] || defaultValue;
 					return xOrYValue;
 				};
@@ -98,6 +105,21 @@ app.bubbleChart = (function($) {
 				return app.nodes.elements.sgNodesChartHeight / 2;
 			};
 
+
+			/**
+			* 
+			* @returns {undefined}
+			*/
+			var defineForces = function() {
+				sgForces = {
+					default: [forceXGrid, forceYGrid],
+					discipline: [forceXDiscipline, forceYCenter],
+					gender: [forceXGender, forceYCenter],
+					// geo: [getGeoForce('x', sgGeoCoordsProp, 120), getGeoForce('y', sgGeoCoordsProp, 20)],
+				};
+			};
+			
+
 		//-- End force definitions
 		
 
@@ -138,17 +160,18 @@ app.bubbleChart = (function($) {
 		* @returns {undefined}
 		*/
 		var initSimulation = function() {
-			console.log('init');
 			sgSimulation = d3.forceSimulation()
 				.force('forceX', xForce(forceXGrid))
 				.force('forceY', yForce(forceYGrid));
 
-			setDefaultCollisionForce()
-				.nodes(app.data.sgEmployees);	
-		}
+				console.log(setDefaultCollisionForce());
 
-		var getSimulation = function() {
-			return sgSimulation;
+			setDefaultCollisionForce()
+				.nodes(app.data.sgEmployees);
+
+			console.log('e:', app.data.sgEmployees);
+
+			// sgSimulation.on('tick', simulationTickHandler);
 		}
 
 
@@ -181,42 +204,71 @@ app.bubbleChart = (function($) {
 
 
 		/**
-		* 
+		* change both x and y forces for simulation
 		* @returns {undefined}
 		*/
 		var changeForces = function(forceName) {
+			var newXForce,
+				newYForce;
+
 			if (forceName === 'geo') {
-				
+				console.log('geo', sgGeoCoordsProp);
+				// console.log('geo', geoCoordsProp);
+				// geo: [getGeoForce('x', sgGeoCoordsProp, 120), getGeoForce('y', sgGeoCoordsProp, 20)],
+				newXForce = getGeoForce('x', sgGeoCoordsProp, 120);
+				newYForce = getGeoForce('y', sgGeoCoordsProp, 20);
+				console.log(typeof newXForce);
+			} else {
+				newXForce = sgForces[forceName][0];
+				newYForce = sgForces[forceName][1];
 			}
+
+			changeForce('forceX', newXForce);
+			changeForce('forceY', newYForce);
 		};
 		
 
 	//-- End force / simulation functions
+
+
+	/**
+	* set the type of geo data to show
+	* @returns {undefined}
+	*/
+	var setGeoType = function(geoType) {
+		console.log(geoType);
+		sgGeoCoordsProp = geoType;
+	};
 	
+
+
+
+	/**
+	* create svg for graph
+	* @returns {undefined}
+	*/
+	var init = function() {
+		app.nodes.elements.sgNodesChart = d3.select('#bubble-chart');
+		app.nodes.elements.$sgNodesChart = $('#bubble-chart');
+		app.nodes.elements.sgNodesChartWidth = app.nodes.elements.$sgNodesChart.width();
+		app.nodes.elements.sgNodesChartHeight = app.nodes.elements.$sgNodesChart.height();
+
+		defineForces();
+	};
 
 
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		// init: init
-		getGeoForce: getGeoForce,
-		forceXGender: forceXGender,
-		forceXDiscipline: forceXDiscipline,
-		forceXGender: forceXGender,
-		forceYGrid: forceYGrid,
-		forceXCenter: forceXCenter,
-		forceYCenter: forceYCenter,
-		xForce: xForce,
-		yForce: yForce,
-		setDefaultCollisionForce: setDefaultCollisionForce,
+		init: init,
 		initSimulation: initSimulation,
-		getSimulation: getSimulation,
-		simulationTickHandler: simulationTickHandler,
-		changeForce: changeForce,
-
+		// changeForce: changeForce,
+		changeForces: changeForces,
+		setDefaultCollisionForce: setDefaultCollisionForce,
+		geoCoordsProp: sgGeoCoordsProp,
+		setGeoType: setGeoType,
 		sgSimulation: sgSimulation,
-		sgForceStrength: sgForceStrength,
-		sgAlphaTarget: sgAlphaTarget,
+		simulationTickHandler: simulationTickHandler,
 	};
 
 	return publicMethodsAndProps;
