@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="css/employee-stats.css">
 	<link rel="stylesheet" href="css/filter-charts.css">
 	<link rel="stylesheet" href="css/pie-chart.css">
+	<link rel="stylesheet" href="css/line-chart.css">
 	<link rel="stylesheet" href="css/info-box--employees.css">
 </head>
 <body>
@@ -58,6 +59,9 @@
 				</div>
 
 			</div>
+
+
+			<svg id="line-chart" class="line-chart"></svg>
 
 			<div id="legends" class="legends">
 			
@@ -117,14 +121,8 @@
 					</div>
 				</div>
 
-				<!-- <svg id="overall-pie-chart" class="pie-chart"></svg> -->
-				<div id="overall-pie-info">
-				</div>
-
 			</div><!-- /.overall-charts-container -->
 
-			<div id="office-charts-container--amersfoort" class="office-charts-container">
-			</div>
 		</div>
 
 	</div><!-- /.o-content-width -->
@@ -143,6 +141,7 @@
 	<script src="js/employee-nodes.js"></script>
 	<script src="js/bubble-chart.js"></script>
 	<script src="js/pie-chart.js"></script>
+	<script src="js/line-chart.js"></script>
 	<script src="js/filters.js"></script>
 	<script src="js/employees.js"></script>
 	<script src="js/employee-stats-init.js"></script>

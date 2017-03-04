@@ -138,7 +138,6 @@ app.bubbleChart = (function($) {
 		* @returns {undefined}
 		*/
 		var initSimulation = function() {
-			console.log('init');
 			sgSimulation = d3.forceSimulation()
 				.force('forceX', xForce(forceXGrid))
 				.force('forceY', yForce(forceYGrid));

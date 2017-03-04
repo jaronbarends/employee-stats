@@ -157,12 +157,6 @@ window.app = window.app || {};
 
 
 
-
-
-
-
-
-
 	/**
 	* initialize list with employees per office
 	* @returns {undefined}
@@ -457,33 +451,30 @@ window.app = window.app || {};
 	* @param {object} offices Data for offices (lat long etc)
 	* @param {object} cities Data for cities (lat long etc)
 	*/
-	var loadHandler = function(error, employees, mapData, offices, cities) {
+	var loadHandler = function(error, employees, mapData, offices, cities, employeesPerYear) {
 		// create semi globals for datasets
 		app.data.sgEmployees = employees;
 		app.data.sgOffices = offices;
 		app.data.sgHometowns = cities;
+		app.data.employeeHistory = employeesPerYear;
 
 		// put original employee properties into array before we add all kind of helper props
 		initEmployeeProperties();
 
 		// initialize geo stuff
-		// initMap(mapData);
 		app.map.init(mapData);
 
 		// process all geo-related data
-		// processGeoData();
 		app.dataprocessorGeo.init();
 
 		// process employee data (disciplines)
 		setEmployeeCount();
-		// defineFilterGroupsAndProps();
 		processEmployeeData();
 
 		initEmployeesPerOfficeList();
 
 
 		// add shapes for nodes
-		// addEmployeeNodes();
 		app.nodes.init();
 
 		createAgeChart();
@@ -498,8 +489,9 @@ window.app = window.app || {};
 		// app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
 		sim.on('tick', app.bubbleChart.simulationTickHandler);
 
-		// initCompareTool();
 		app.filters.init();
+
+		app.lineChart.init2();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();
@@ -518,6 +510,8 @@ window.app = window.app || {};
 			.defer(d3.json, 'data/provinces.topojson')
 			.defer(d3.csv, 'data/offices-netherlands.csv')
 			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
+			// .defer(d3.csv, 'data/employee-count-per-year.csv')
+			.defer(d3.csv, 'data/close.csv')
 			.await(loadHandler);
 	};
 
