@@ -34,7 +34,6 @@ app.lineChart = (function($) {
 		var data = app.data.employeeHistory;
 
 		xScale.domain(d3.extent(data, function(d) {
-			console.log(d);
 			return d.year;
 		}));
 		yScale.domain(d3.extent(data, function(d) {
@@ -114,7 +113,7 @@ app.lineChart = (function($) {
 		      .attr("stroke", "steelblue")
 		      .attr("stroke-linejoin", "round")
 		      .attr("stroke-linecap", "round")
-		      .attr("stroke-width", 1.5)
+		      .attr("stroke-width", 3)
 		      .attr("d", line);
 		});
 	};
