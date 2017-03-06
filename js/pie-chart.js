@@ -21,8 +21,8 @@ app.pieChart = (function($) {
 			svg = d3.select('#'+id)
 				.append('svg')
 				.attr('class', 'pie-chart'),
-			innerRadius = 0,
 			outerRadius = parseInt(svg.style('width'), 10)/2,
+			innerRadius = outerRadius/3,
 			arc = d3.arc()
 					.innerRadius(innerRadius)
 					.outerRadius(outerRadius);

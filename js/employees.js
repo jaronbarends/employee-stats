@@ -491,7 +491,7 @@ window.app = window.app || {};
 
 		app.filters.init();
 
-		app.lineChart.init2();
+		app.lineChart.init();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();
@@ -510,8 +510,8 @@ window.app = window.app || {};
 			.defer(d3.json, 'data/provinces.topojson')
 			.defer(d3.csv, 'data/offices-netherlands.csv')
 			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
-			// .defer(d3.csv, 'data/employee-count-per-year.csv')
-			.defer(d3.csv, 'data/close.csv')
+			.defer(d3.csv, 'data/employee-count-per-year.csv')
+			// .defer(d3.csv, 'data/close.csv')
 			.await(loadHandler);
 	};
 
