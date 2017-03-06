@@ -511,7 +511,6 @@ window.app = window.app || {};
 			.defer(d3.csv, 'data/offices-netherlands.csv')
 			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
 			.defer(d3.csv, 'data/employee-count-per-year.csv')
-			// .defer(d3.csv, 'data/close.csv')
 			.await(loadHandler);
 	};
 
