@@ -175,156 +175,6 @@ window.app = window.app || {};
 	
 
 
-	/**
-	* put comparable employee properties into array
-	* @returns {undefined}
-	*/
-	var initEmployeeProperties = function() {
-		for (var prop in app.data.sgEmployees[0]) {
-			app.data.sgEmployeeProps.push(prop);
-		}
-	};
-	
-
-
-	/**
-	* handle an employee's discipline data
-	* - fill disciplines array
-	* - put level into separate field
-	* @returns {undefined}
-	*/
-	var processEmployeeDisciplines = function() {
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var emp = app.data.sgEmployees[i],
-				discipline = emp.disciplineWithLevel,
-				disciplineFound = false,
-				level = '';
-
-			// cut off level
-			for (var lv=0, lvLen = app.data.sgLevels.length; lv<lvLen; lv++) {
-				var currLevel = app.data.sgLevels[lv];
-				
-				if (discipline.toLowerCase().indexOf(currLevel) === 0) {
-					discipline = discipline.substr(currLevel.length + 1);
-					level = currLevel;
-
-					// stagiairs often don't have discipline in their data
-					// And I prefer not to count them within discipline anyhow
-					if (level === 'stagiair') {
-						discipline = 'stagiair';
-					}
-					break;
-				}
-			}
-
-			// we've looped through the levels, so any level is cut of now
-			// add the cleaned (or unchanged) discipline as a new property
-			emp.discipline = discipline;
-			emp.level = level;
-		}
-	};
-
-
-	/**
-	* process age and startdate data of employee
-	* @returns {undefined}
-	*/
-	var processEmployeeAges = function() {
-		var ages = [],
-			ageMin = 1000,
-			ageMax = 0,
-			ageSum = 0;
-
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var emp = app.data.sgEmployees[i];
-
-			// process age data
-			app.data.sgBirthdays.push(emp.birthday);
-			var age = app.util.getYearsUntilToday(emp.birthday),
-				ageRound = Math.floor(age);
-
-
-			// keep track of min and max ages, and the sum
-			ageMin = Math.min(ageRound, ageMin);
-			ageMax = Math.max(ageRound, ageMax);
-			ageSum += age;
-
-			// put age data into array
-			if (!ages[ageRound]) {
-				ages[ageRound] = 1;
-				// this creates an array like ages[22], ages[15]
-				// this is somehow different from a normal array like ages[0], [1] etc
-			} else {
-				ages[ageRound]++;
-			}
-		
-		}// end loop employees
-
-		// check if every age between min and max is present
-		var ageRange = ageMax - ageMin;
-		for (var a = 0; a <= ageRange; a++) {
-			var currAge = ageMin + a;
-			app.data.sgAges.push({
-				age: currAge,
-				employeeCount: ages[currAge] || 0
-			});
-		}
-
-		// calculate avarage age
-		app.data.sgAverageAge = ageSum / app.data.sgEmployees.length;
-	};
-
-
-
-	/**
-	* add employee to group which specific prop
-	* @param {string} employee The current employee
-	* @param {string} groupName The property-name of the group
-	* @returns {undefined}
-	*/
-	var addEmployeeToGroup = function(employee, groupName) {
-		if (groupName === 'discipline') {
-			// separate discipline and functionLevel
-		}
-
-		// check if this group already contains this employee's type
-		var type = employee[groupName],
-			dataset = app.filters.groups[groupName].dataset;
-
-		if (! (type in dataset)) {
-			dataset[type] = [];
-		}
-		dataset[type].push(employee);
-	};
-	
-	
-	
-
-	/**
-	* process data of employees (like fetching disciplines)
-	* @returns {undefined}
-	*/
-	var processEmployeeData = function() {
-		// process data we want to manipulate before use
-		processEmployeeDisciplines();
-		processEmployeeAges();
-
-		// now popuplate filterGroups
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var employee = app.data.sgEmployees[i];
-
-			// loop through employee groups and add this employee's data
-			for (var groupName in app.filters.groups) {
-				addEmployeeToGroup(employee, groupName);
-			}
-		}
-
-		// console.log(app.filters.groups['discipline']);
-
-	};
-
-
-
 	//-- Start age fucntions --
 
 
@@ -335,16 +185,16 @@ window.app = window.app || {};
 		*/
 		var createAgeChart = function() {
 			var ageChart = d3.select('#age-chart'),
-				w = parseInt(ageChart.style('width'), 10),
-				h = parseInt(ageChart.style('height'), 10),
+				svgWidth = parseInt(ageChart.style('width'), 10),
+				svgHeight = parseInt(ageChart.style('height'), 10),
 				margin = {
 					top: 10,
 					right: 10,
 					bottom: 30,
 					left: 50
 				},
-				chartW = w - margin.left - margin.right,
-				chartH = h - margin.top - margin.bottom,
+				width = svgWidth - margin.left - margin.right,
+				height = svgHeight - margin.top - margin.bottom,
 				minAge = d3.min(app.data.sgAges, function(obj) {
 					return obj.age;
 				}),
@@ -356,7 +206,7 @@ window.app = window.app || {};
 			var xScale = d3.scaleBand()
 					// .domain(d3.range(app.data.sgAges.length))
 					.domain(d3.range(minAge, maxAge))
-					.rangeRound([0, chartW])
+					.rangeRound([0, width])
 					.padding(0.1);
 
 					// console.log('ages:', app.data.sgAges);
@@ -365,7 +215,7 @@ window.app = window.app || {};
 					.domain([0, d3.max(app.data.sgAges, function(obj) {
 							return obj.employeeCount;
 						})])
-					.range([chartH, 0]);
+					.range([height, 0]);
 
 			var xAxis = d3.axisBottom(xScale)
 					.tickValues([25, 30, 35, 40, 45]),
@@ -387,13 +237,13 @@ window.app = window.app || {};
 				})
 				.attr('width', xScale.bandwidth())
 				.attr('height', function(d) {
-					return chartH - yScale(d.employeeCount);
+					return height - yScale(d.employeeCount);
 				});
 
 			// render axes
 			ageChart.append('g')
 				.attr('class', 'axis')
-				.attr('transform', 'translate(' + margin.left +',' + (margin.top + chartH) +')')
+				.attr('transform', 'translate(' + margin.left +',' + (margin.top + height) +')')
 				.call(xAxis);
 
 			ageChart.append('g')
@@ -450,6 +300,7 @@ window.app = window.app || {};
 	* @param {object} mapData Geodata for map
 	* @param {object} offices Data for offices (lat long etc)
 	* @param {object} cities Data for cities (lat long etc)
+	* @param {object} employeesPerYear Data for number of employees per year
 	*/
 	var loadHandler = function(error, employees, mapData, offices, cities, employeesPerYear) {
 		// create semi globals for datasets
@@ -458,8 +309,10 @@ window.app = window.app || {};
 		app.data.sgHometowns = cities;
 		app.data.employeeHistory = employeesPerYear;
 
+		// app.dataprocessor.init();
+
 		// put original employee properties into array before we add all kind of helper props
-		initEmployeeProperties();
+		// initEmployeeProperties();
 
 		// initialize geo stuff
 		app.map.init(mapData);
@@ -468,9 +321,10 @@ window.app = window.app || {};
 		app.dataprocessorGeo.init();
 
 		// process employee data (disciplines)
-		setEmployeeCount();
-		processEmployeeData();
+		app.dataprocessor.init();
+		// processEmployeeData();
 
+		setEmployeeCount();
 		initEmployeesPerOfficeList();
 
 
@@ -505,8 +359,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			// .defer(d3.csv, 'data/employees.csv')
-			.defer(d3.csv, 'data/employees-excerpt.csv')
+			.defer(d3.csv, 'data/employees.csv')
+			// .defer(d3.csv, 'data/employees-excerpt.csv')
 			.defer(d3.json, 'data/provinces.topojson')
 			.defer(d3.csv, 'data/offices-netherlands.csv')
 			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
