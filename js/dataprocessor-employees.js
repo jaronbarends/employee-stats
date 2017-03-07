@@ -1,6 +1,6 @@
 window.app = window.app || {};
 
-app.dataprocessor = (function($) {
+app.dataprocessorEmployees = (function($) {
 
 	'use strict';
 
@@ -152,7 +152,9 @@ app.dataprocessor = (function($) {
 	* @returns {undefined}
 	*/
 	var init = function() {
+		// put original employee properties into array before we add all kind of helper props
 		initEmployeeProperties();
+		// process employee data (disciplines etc)
 		processEmployeeData();
 	};
 
