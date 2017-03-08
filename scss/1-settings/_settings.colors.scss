@@ -1,0 +1,24 @@
+
+$color-blue: #00bdfa;/* valtech blue */
+$color-dark-grey: #363636;/* valtech dark grey */
+$color-light-grey: #ecedee;/* valtech light grey */
+$color-red: #d60042;/* valtech red */
+$color-yellow: #fecc00;/* valtech yellow */
+
+$color-white: #fff;
+
+$color-primary: $color-blue;
+$color-primary-hover: $color-blue;
+$color-font-bg-primary: $color-white;
+// $color-secundary: #1c2a3b;
+
+
+$color-body-bg: $color-white;
+$color-content-bg: $color-white;
+
+$color-link: $color-primary;
+$color-link-hover: $color-link;
+ 
+//defaults
+$color-text-default: $color-dark-grey !default;
+$color-text-less-important: #999 !default;//for less important text

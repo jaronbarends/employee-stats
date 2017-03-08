@@ -39,3 +39,4 @@ Thumbs.db
 # Project specific files and folders #
 ######################################
 data/employees.csv
+node_modules

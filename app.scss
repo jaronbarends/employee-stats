@@ -1,0 +1,56 @@
+/////////////////////////
+////
+////  APP STYLESHEET
+////
+////  This is where the magic happens. This file is only for imports!
+////
+/////////////////////////
+
+// 1. Settings: Global variables, config switches
+@import "scss/1-settings/settings.variables";
+// @import "scss/1-settings/settings.breakpoints";
+@import "scss/1-settings/settings.colors";
+// @import "scss/1-settings/settings.fonts";
+
+// 2. Tools: Default mixins, functions
+// @import "scss/2-tools/tools.mixins";
+
+// 3. Generic: Ground-zero styles (normalize, box-sizing)
+// @import "scss/libs/libs-css";//this one has to have extension .scss to be imported when compiling
+// @import "scss/libs/libs-scss";
+@import "scss/3-generic/normalize.custom";
+
+
+// 4. Base: Unclassed elements
+@import "scss/4-elements/elements.base";
+
+
+// 5. Objects: Cosmetic-free design patterns
+// @import "scss/5-objects/objects.clearfix";
+// @import "scss/5-objects/objects.layout";
+// @import "scss/5-objects/objects.list-bare";
+// @import "scss/5-objects/objects.grid";
+
+
+// 6. Components: Desigined components, chunks of UI
+@import "scss/6-components/components.forms";
+@import "scss/6-components/components.employee-stats";
+@import "scss/6-components/components.filter-charts";
+@import "scss/6-components/components.pie-chart";
+@import "scss/6-components/components.line-chart";
+@import "scss/6-components/components.info-box--employees";
+
+// 7. Trumps: Helpers and overrides
+// @import "scss/7-trumps/trumps.utilities";
+
+
+// Components
+// NOTE: this is an other type of "components": kind of plug-and-play functionality
+// this is also a different location: "components" vs "scss/6-components"
+// TODO: figure out how to use this best - with bower?
+// @import "components/font-icons/scss/font-icons";
+
+
+// Shame - quick hacks that have to be done now, but need to be cleaned up later
+@import "scss/shame";
+

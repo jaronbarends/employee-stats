@@ -1,0 +1,62 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	word-break: break-word;
+	box-sizing: border-box;
+}
+
+*:focus {
+	// only uncomment the line below if you offer an alternative
+	// outline: none;
+}
+
+html {
+}
+
+body {
+	font-size: $font-size-default;
+	color: $color-text-default;
+	font-family: $font-default;
+	line-height: 1.5;
+	background-color: $color-body-bg;
+	overflow-scrolling: touch;
+}
+
+a {
+	color: $color-link;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: $color-link-hover;
+		text-decoration: underline;
+	}
+
+	&:active {
+		color: $color-link-hover;
+	}
+
+	img {
+		border: none;
+	}
+}
+
+h1,
+.h1 {
+	font-size: 7.5rem;
+	font-weight: bold;
+	color: #ecedee;/* valtech light grey */;
+}
+
+h2,
+.h2 {
+	font-size: 2.4rem;
+	font-weight: bold;
+}
+
+h3 {
+	color: #00bdfa;/* valtech blue */
+	font-weight: bold;
+}
+

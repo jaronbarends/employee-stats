@@ -1,0 +1,183 @@
+
+// min-width media-query
+// use with one of the predefined screensizes (xs, sm, md, lg, xl)
+// 		@include mq-min(sm)
+// or with a value
+//		@include mq-min(431px)
+@mixin mq-min($screensize) {
+	// we want a min-width media query
+	@if $screensize == 'xs' {
+			@media all and (min-width: $xs-min) { @content; }
+	} @else if $screensize == 'sm' {
+			@media all and (min-width: $sm-min) { @content; }
+	} @else if $screensize == 'md' {
+			@media all and (min-width: $md-min) { @content; }
+	} @else if $screensize == 'lg' {
+			@media all and (min-width: $lg-min) { @content; }
+	} @else if $screensize == 'xl' {
+			@media all and (min-width: $xl-min) { @content; }
+	} @else {
+		// default: no preset screensize, use the value
+		@media all and (min-width: $screensize) { @content; }
+	}
+}
+
+
+// man-width media-query
+// use with one of the predefined screensizes (xs, sm, md, lg, xl)
+// 		@include mq-max(sm)
+// or with a value
+//		@include mq-max(431px)
+@mixin mq-max($screensize) {
+	// we want a max-width media query
+	@if $screensize == 'xs' {
+			@media all and (max-width: $xs-max) { @content; }
+	} @else if $screensize == 'sm' {
+			@media all and (max-width: $sm-max) { @content; }
+	} @else if $screensize == 'md' {
+			@media all and (max-width: $md-max) { @content; }
+	} @else if $screensize == 'lg' {
+			@media all and (max-width: $lg-max) { @content; }
+	} @else if $screensize == 'xl' {
+			@media all and (max-width: $xl-max) { @content; }
+	} @else {
+		// default: no preset screensize, use the value
+		@media all and (max-width: $screensize) { @content; }
+	}
+}
+
+
+// min-width and max-width media-query to target only one screensize
+// use with one of the predefined screensizes (xs, sm, md, lg, xl)
+// 		@include mq-only(sm)
+@mixin mq-only($screensize) {
+	// trigger only one screensize
+	@if $screensize == xs {
+			@media all and (min-width: $xs-min) and (max-width: $xs-max) { @content; }
+	} @else if $screensize == sm {
+			@media all and (min-width: $sm-min) and (max-width: $sm-max) { @content; }
+	} @else if $screensize == md {
+			@media all and (min-width: $md-min) and (max-width: $md-max) { @content; }
+	} @else if $screensize == lg {
+			@media all and (min-width: $lg-min) and (max-width: $lg-max) { @content; }
+	} @else if $screensize == xl {
+			@media all and (min-width: $xl-min) { @content; }
+	}
+}
+
+
+// you can use this mixin with one of the predefined screensizes (xs, sm, md, lg, xl)
+// 		@include mq('>=sm') to create min-width media-query
+// 		@include mq('<=sm') to create max-width media-query
+// 		@include mq('=sm') to create media-query that only covers that screensize
+// or with a value
+//		@include mq('>=431px') to create min-width media-query
+//		@include mq('<=431px') to create max-width media-query
+@mixin mq2($screensize) {
+	// note that in sass string-functions are 1-based (i.e. the first character has index 1) as opposed to most other languages which are 0-based
+		
+	@if str-index($screensize, '>=') == 1 {
+		// we want a min-width media query
+		$screensize: str-slice($screensize, 3);// cut of '>='
+
+		@if $screensize == 'xs' {
+				@media all and (min-width: $xs-min) { @content; }
+		} @else if $screensize == 'sm' {
+				@media all and (min-width: $sm-min) { @content; }
+		} @else if $screensize == 'md' {
+				@media all and (min-width: $md-min) { @content; }
+		} @else if $screensize == 'lg' {
+				@media all and (min-width: $lg-min) { @content; }
+		} @else if $screensize == 'xl' {
+				@media all and (min-width: $xl-min) { @content; }
+		} @else {
+			// default: no preset screensize, use the value
+			@media all and (min-width: $screensize) { @content; }
+		}
+
+	} @else if str-index($screensize, '<=') == 1 {
+		// we want a max-width media query
+		$screensize: str-slice($screensize, 3);// cut of '>='
+
+		@if $screensize == 'xs' {
+				@media all and (max-width: $xs-max) { @content; }
+		} @else if $screensize == 'sm' {
+				@media all and (max-width: $sm-max) { @content; }
+		} @else if $screensize == 'md' {
+				@media all and (max-width: $md-max) { @content; }
+		} @else if $screensize == 'lg' {
+				@media all and (max-width: $lg-max) { @content; }
+		} @else if $screensize == 'xl' {
+				@media all and (max-width: $xl-max) { @content; }
+		} @else {
+			// default: no preset screensize, use the value
+			@media all and (max-width: $screensize) { @content; }
+		}
+
+	} @else if str-index($screensize, '=') == 1 {
+		// we want to target one specific screensize
+		$screensize: str-slice($screensize, 2);// cut of '='
+
+		@if $screensize == xs {
+				@media all and (min-width: $xs-min) and (max-width: $xs-max) { @content; }
+		} @else if $screensize == sm {
+				@media all and (min-width: $sm-min) and (max-width: $sm-max) { @content; }
+		} @else if $screensize == md {
+				@media all and (min-width: $md-min) and (max-width: $md-max) { @content; }
+		} @else if $screensize == lg {
+				@media all and (min-width: $lg-min) and (max-width: $lg-max) { @content; }
+		} @else if $screensize == xl {
+				@media all and (min-width: $xl-min) { @content; }
+		}
+		// no default
+	}
+
+}
+
+// use: @include mq(xs) {...}
+// you can use this mixin
+@mixin mq($screensize) {
+		// min
+		@if $screensize == '>=xs' {
+				@media all and (min-width: $xs-min) { @content; }
+		} @else if $screensize == '>=sm' {
+				@media all and (min-width: $sm-min) { @content; }
+		} @else if $screensize == '>=md' {
+				@media all and (min-width: $md-min) { @content; }
+		} @else if $screensize == '>=lg' {
+				@media all and (min-width: $lg-min) { @content; }
+		} @else if $screensize == '>=xl' {
+				@media all and (min-width: $xl-min) { @content; }
+		}
+
+		// min and max
+		@else if $screensize == xs {
+				@media all and (min-width: $xs-min) and (max-width: $xs-max) { @content; }
+		} @else if $screensize == sm {
+				@media all and (min-width: $sm-min) and (max-width: $sm-max) { @content; }
+		} @else if $screensize == md {
+				@media all and (min-width: $md-min) and (max-width: $md-max) { @content; }
+		} @else if $screensize == lg {
+				@media all and (min-width: $lg-min) and (max-width: $lg-max) { @content; }
+		} @else if $screensize == xl {
+				@media all and (min-width: $xl-min) { @content; }
+		}
+		
+		// max
+		@else if $screensize == '<=xs' {
+				@media all and (max-width: $xs-max) { @content; }
+		} @else if $screensize == '<=sm' {
+				@media all and (max-width: $sm-max) { @content; }
+		} @else if $screensize == '<=md' {
+				@media all and (max-width: $md-max) { @content; }
+		} @else if $screensize == '<=lg' {
+				@media all and (max-width: $lg-max) { @content; }
+		} @else if $screensize == '<=xl' {
+				@media all and (max-width: $xl-max) { @content; }
+		}
+
+		@else {
+			//catch all: use min-width
+			@media all and (min-width: $screensize) { @content; }
+		}
+}

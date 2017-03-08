@@ -1,0 +1,19 @@
+$font-primary:				arial;
+$font-fallback:				helvetica, sans-serif;
+
+$font-default: 				$font-primary, $font-fallback;
+$font-headings: 			$font-primary, $font-fallback;
+
+$font-size-default: 	1.6rem;
+
+$font-size-h1: 				3rem !default;
+$font-size-h2: 				2.4rem !default;
+$font-size-h3: 				2.2rem !default;
+$font-size-h4: 				2.0rem !default;
+$font-size-h5: 				1.8rem !default;
+$font-size-h6: 				1.6rem !default;
+
+
+//default paddings for buttons etc
+$padding-vertical: 		1.0rem;
+$padding-horizontal: 	1.4rem;
