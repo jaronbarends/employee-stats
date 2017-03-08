@@ -20,37 +20,35 @@ app.dataprocessorEmployees = (function($) {
 	* handle an employee's discipline data
 	* - fill disciplines array
 	* - put level into separate field
+	* @param {object} emp The current employee's data-object
 	* @returns {undefined}
 	*/
-	var processDisciplines = function() {
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var emp = app.data.sgEmployees[i],
-				discipline = emp.disciplineWithLevel,
-				disciplineFound = false,
-				level = '';
+	var processDiscipline = function(emp) {
+		var discipline = emp.disciplineWithLevel,
+			disciplineFound = false,
+			level = '';
 
-			// cut off level
-			for (var lv=0, lvLen = app.data.sgLevels.length; lv<lvLen; lv++) {
-				var currLevel = app.data.sgLevels[lv];
-				
-				if (discipline.toLowerCase().indexOf(currLevel) === 0) {
-					discipline = discipline.substr(currLevel.length + 1);
-					level = currLevel;
+		// cut off level
+		for (var lv=0, lvLen = app.data.sgLevels.length; lv<lvLen; lv++) {
+			var currLevel = app.data.sgLevels[lv];
+			
+			if (discipline.toLowerCase().indexOf(currLevel) === 0) {
+				discipline = discipline.substr(currLevel.length + 1);
+				level = currLevel;
 
-					// stagiairs often don't have discipline in their data
-					// And I prefer not to count them within discipline anyhow
-					if (level === 'stagiair') {
-						discipline = 'stagiair';
-					}
-					break;
+				// stagiairs often don't have discipline in their data
+				// And I prefer not to count them within discipline anyhow
+				if (level === 'stagiair') {
+					discipline = 'stagiair';
 				}
+				break;
 			}
-
-			// we've looped through the levels, so any level is cut of now
-			// add the cleaned (or unchanged) discipline as a new property
-			emp.discipline = discipline;
-			emp.level = level;
 		}
+
+		// we've looped through the levels, so any level is cut of now
+		// add the cleaned (or unchanged) discipline as a new property
+		emp.discipline = discipline;
+		emp.level = level;
 	};
 
 
@@ -58,11 +56,53 @@ app.dataprocessorEmployees = (function($) {
 	* handle an employee's organisational unit data
 	* - cut of office name and "eFocus"
 	* - fill orgnisational units array
-	* @returns {undefined}
+	* in dataset, values may look like "Marketing & Communicatie", "Development Utrecht eFocus" or just "eFocus" (mt)
+	* @param {object} emp The current employee's data-object
 	* @returns {undefined}
 	*/
-	var processOrganisationalUnits = function() {
+	var processOrganisationalUnit = function(emp) {
+		var unit = emp.organisationalUnit,
+			unitLc = unit.toLowerCase(),
+			unitFound = false;
+
+		// rename just eFocus to Management Team
+		if (unitLc === 'efocus') {
+			unit = 'Management Team';
+			// emp.organisationalUnit = unit;
+		}
+
+		// check if unit includes an office name
+		// when not on its own, eFocus is always preceded by office name, so it will be cut off as well
+		for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
+			var office = app.data.sgOffices[i].city.toLowerCase(),
+				oIdx = unitLc.indexOf(' '+office);
+
+			if (oIdx > 0) {
+				unit = unit.substr(0, oIdx);
+				break;
+			}
+		}
+		emp.organisationalUnit = unit;
 		
+	};
+	
+
+
+	/**
+	* handle an employee's discipline data
+	* - fill disciplines array
+	* - put level into separate field
+	* @returns {undefined}
+	*/
+	var processDisciplinesEtc = function() {
+		console.log(app.data.sgOffices);
+		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
+
+			var emp = app.data.sgEmployees[i];
+
+			processDiscipline(emp);
+			processOrganisationalUnit(emp);
+		}
 	};
 	
 
@@ -142,8 +182,7 @@ app.dataprocessorEmployees = (function($) {
 	*/
 	var processEmployeeData = function() {
 		// process data we want to manipulate before use
-		processDisciplines();
-		processOrganisationalUnits();
+		processDisciplinesEtc();
 		processAges();
 
 		// now popuplate filterGroups

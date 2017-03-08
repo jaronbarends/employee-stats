@@ -39,9 +39,9 @@
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
-		border: 2px solid #363636;/* valtech dark grey */;
+		border: 2px solid $color-dark-grey;;
 		border-radius: 50%;
-		background: #00bdfa;/* valtech blue */;
+		background: $color-blue;;
 	}
 
 	.emp__shadow .emp__head,

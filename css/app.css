@@ -399,8 +399,7 @@ h1,
 .h1 {
   font-size: 7.5rem;
   font-weight: bold;
-  color: #ecedee;
-  /* valtech light grey */ }
+  color: #ecedee; }
 
 h2,
 .h2 {
@@ -409,36 +408,19 @@ h2,
 
 h3 {
   color: #00bdfa;
-  /* valtech blue */
   font-weight: bold; }
 
 input,
 select,
 button {
   border-bottom: 2px solid #ecedee;
-  /* valtech light grey */
   padding: 0.2em 0.5em; }
 
 button {
   border: 2px solid #ecedee;
-  /* valtech light grey */
   padding-bottom: 0;
   background: white; }
 
-clrs {
-  color: #00bdfa;
-  /* valtech blue */
-  color: #363636;
-  /* valtech dark grey */
-  color: #ecedee;
-  /* valtech light grey */
-  color: #d60042;
-  /* valtech red */
-  color: #fecc00;
-  /* valtech yellow */ }
-
-/*-- Start interface --*/
-/*-- End interface --*/
 .o-content-width {
   margin: 0 auto;
   max-width: 100em; }
@@ -494,17 +476,14 @@ header {
 
 .employee {
   fill: #00bdfa;
-  /* valtech blue */
   stroke: #363636;
-  /* valtech dark grey */
   stroke-width: 2px;
   transition: fill 0.5s, r 2s; }
 
 .map-view .employee {
   stroke-width: 1px;
   stroke: white;
-  fill: #363636;
-  /* valtech dark grey */ }
+  fill: #363636; }
 
 .map-view .info-box--hometown,
 .map-view .info-box--offices {
@@ -514,8 +493,7 @@ header {
   stroke: transparent; }
 
 .value {
-  color: #00bdfa;
-  /* valtech blue */ }
+  color: #00bdfa; }
 
 .value--primary {
   font-size: 3rem;
@@ -528,8 +506,7 @@ header {
 
 .highlight-gender .employee--male,
 .highlight-gender .employee--man {
-  fill: #00bdfa;
-  /* valtech blue */ }
+  fill: #00bdfa; }
 
 /*-- Start topographic stuff --*/
 .map {
@@ -541,7 +518,6 @@ header {
 
 .province {
   fill: #ecedee;
-  /* valtech light grey */
   fill: #ddd;
   stroke: #fff;
   stroke-width: 0.5; }
@@ -553,12 +529,7 @@ header {
   opacity: 0;
   transition: opacity 0.5s 1s ease-out;
   fill: rgba(0, 0, 0, 0.8);
-  fill: #fecc00;
-  /* valtech yellow */
-  fill: #d60042;
-  /* valtech red */
-  fill: rgba(0, 189, 250, 0.5);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.5); }
 
 .map-view .office {
   opacity: 1; }
@@ -570,8 +541,7 @@ header {
   width: 600px; }
 
 .age-chart rect {
-  fill: #00bdfa;
-  /* valtech blue */ }
+  fill: #00bdfa; }
 
 /*-- End age info --*/
 .chart-box {
@@ -589,61 +559,38 @@ header {
 
 .pie-segment--man {
   fill: #00bdfa;
-  /* valtech blue */
   /*fill: rgba(0, 0, 0, 0.3);*/ }
 
 /*-- parttime percentages --*/
 .pie-segment--100-00 {
-  fill: #00bdfa;
-  /* valtech blue */ }
+  fill: #00bdfa; }
 
 .pie-segment--95-00 {
-  fill: rgba(0, 189, 250, 0.95);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.95); }
 
 .pie-segment--90-00 {
-  fill: rgba(0, 189, 250, 0.9);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.9); }
 
 .pie-segment--85-00 {
-  fill: rgba(0, 189, 250, 0.8);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.8); }
 
 .pie-segment--80-00 {
-  fill: rgba(0, 189, 250, 0.8);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.8); }
 
 .pie-segment--75-00 {
-  fill: rgba(0, 189, 250, 0.75);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.75); }
 
 .pie-segment--60-00 {
-  fill: rgba(0, 189, 250, 0.6);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.6); }
 
 .pie-segment--50-00 {
-  fill: rgba(0, 189, 250, 0.3);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.3); }
 
 .pie-segment--40-00 {
-  fill: rgba(0, 189, 250, 0.3);
-  /* valtech blue */ }
+  fill: rgba(0, 189, 250, 0.3); }
 
 .pie-segment--0-00 {
-  fill: rgba(0, 189, 250, 0.2);
-  /* valtech blue */ }
-
-clrs {
-  color: #00bdfa;
-  /* valtech blue */
-  color: #363636;
-  /* valtech dark grey */
-  color: #ecedee;
-  /* valtech light grey */
-  color: #d60042;
-  /* valtech red */
-  color: #fecc00;
-  /* valtech yellow */ }
+  fill: rgba(0, 189, 250, 0.2); }
 
 .line-chart {
   width: 720px;
@@ -651,18 +598,15 @@ clrs {
 
 .line-chart .domain {
   stroke: #ecedee;
-  /* valtech light grey */
   stroke-width: 2px; }
 
 .line-chart .tick line {
   stroke: #363636;
-  /* valtech dark grey */
   stroke-width: 2px; }
 
 .line-chart .chart-path {
   fill: none;
   stroke: #00bdfa;
-  /* valtech blue */
   stroke-width: 3px;
   stroke-linejoin: round;
   stroke-linecap: round; }
@@ -670,7 +614,6 @@ clrs {
 .line-chart circle {
   fill: white;
   stroke: #00bdfa;
-  /* valtech blue */
   stroke-width: 3px; }
 
 .info-box--employees-general {
@@ -709,10 +652,8 @@ clrs {
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid #363636;
-  /* valtech dark grey */
   border-radius: 50%;
-  background: #00bdfa;
-  /* valtech blue */ }
+  background: #00bdfa; }
 
 .emp__shadow .emp__head,
 .emp__shadow .emp__body,

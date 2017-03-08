@@ -1,29 +1,21 @@
-clrs {
-	color: #00bdfa;/* valtech blue */
-	color: #363636;/* valtech dark grey */
-	color: #ecedee;/* valtech light grey */
-	color: #d60042;/* valtech red */
-	color: #fecc00;/* valtech yellow */
-}
-
 .line-chart {
 	width: 720px;
 	height: 360px;
 }
 
 .line-chart .domain {
-	stroke: #ecedee;/* valtech light grey */
+	stroke: $color-light-grey;
 	stroke-width: 2px;
 }
 
 .line-chart .tick line {
-	stroke: #363636;/* valtech dark grey */
+	stroke: $color-dark-grey;
 	stroke-width: 2px;
 }
 
 .line-chart .chart-path {
 	fill: none;
-	stroke: #00bdfa;/* valtech blue */
+	stroke: $color-blue;
 	stroke-width: 3px;
 	stroke-linejoin: round;
 	stroke-linecap: round;
@@ -31,7 +23,7 @@ clrs {
 
 .line-chart circle {
 	fill: white;
-	stroke: #00bdfa;/* valtech blue */
+	stroke: $color-blue;
 	stroke-width: 3px;
 }
 

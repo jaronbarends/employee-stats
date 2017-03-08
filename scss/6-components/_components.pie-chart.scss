@@ -9,18 +9,18 @@
 }
 
 .pie-segment--man {
-	fill: #00bdfa;/* valtech blue */
+	fill: $color-blue;
 	/*fill: rgba(0, 0, 0, 0.3);*/
 }
 
 /*-- parttime percentages --*/
-	.pie-segment--100-00 { fill: rgba(0, 189, 250, 1);/* valtech blue */ }
-	.pie-segment--95-00 { fill: rgba(0, 189, 250, 0.95);/* valtech blue */ }
-	.pie-segment--90-00 { fill: rgba(0, 189, 250, 0.9);/* valtech blue */ }
-	.pie-segment--85-00 { fill: rgba(0, 189, 250, 0.8);/* valtech blue */ }
-	.pie-segment--80-00 { fill: rgba(0, 189, 250, 0.8);/* valtech blue */ }
-	.pie-segment--75-00 { fill: rgba(0, 189, 250, 0.75);/* valtech blue */ }
-	.pie-segment--60-00 { fill: rgba(0, 189, 250, 0.6);/* valtech blue */ }
-	.pie-segment--50-00 { fill: rgba(0, 189, 250, 0.3);/* valtech blue */ }
-	.pie-segment--40-00 { fill: rgba(0, 189, 250, 0.3);/* valtech blue */ }
-	.pie-segment--0-00 { fill: rgba(0, 189, 250, 0.2);/* valtech blue */ }
+	.pie-segment--100-00 { fill: rgba($color-blue, 1); }
+	.pie-segment--95-00 { fill: rgba($color-blue, 0.95); }
+	.pie-segment--90-00 { fill: rgba($color-blue, 0.9); }
+	.pie-segment--85-00 { fill: rgba($color-blue, 0.8); }
+	.pie-segment--80-00 { fill: rgba($color-blue, 0.8); }
+	.pie-segment--75-00 { fill: rgba($color-blue, 0.75); }
+	.pie-segment--60-00 { fill: rgba($color-blue, 0.6); }
+	.pie-segment--50-00 { fill: rgba($color-blue, 0.3); }
+	.pie-segment--40-00 { fill: rgba($color-blue, 0.3); }
+	.pie-segment--0-00 { fill: rgba($color-blue, 0.2); }
