@@ -14,13 +14,15 @@ app.dataprocessorEmployees = (function($) {
 			app.data.sgEmployeeProps.push(prop);
 		}
 	};
+
+
 	/**
 	* handle an employee's discipline data
 	* - fill disciplines array
 	* - put level into separate field
 	* @returns {undefined}
 	*/
-	var processEmployeeDisciplines = function() {
+	var processDisciplines = function() {
 		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
 			var emp = app.data.sgEmployees[i],
 				discipline = emp.disciplineWithLevel,
@@ -53,10 +55,23 @@ app.dataprocessorEmployees = (function($) {
 
 
 	/**
+	* handle an employee's organisational unit data
+	* - cut of office name and "eFocus"
+	* - fill orgnisational units array
+	* @returns {undefined}
+	* @returns {undefined}
+	*/
+	var processOrganisationalUnits = function() {
+		
+	};
+	
+
+
+	/**
 	* process age and startdate data of employee
 	* @returns {undefined}
 	*/
-	var processEmployeeAges = function() {
+	var processAges = function() {
 		var ages = [],
 			ageMin = 1000,
 			ageMax = 0,
@@ -76,7 +91,7 @@ app.dataprocessorEmployees = (function($) {
 			ageMax = Math.max(ageRound, ageMax);
 			ageSum += age;
 
-			// put age data into array
+			// put age data into age array
 			if (!ages[ageRound]) {
 				ages[ageRound] = 1;
 				// this creates an array like ages[22], ages[15]
@@ -110,10 +125,6 @@ app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var addEmployeeToGroup = function(employee, groupName) {
-		if (groupName === 'discipline') {
-			// separate discipline and functionLevel
-		}
-
 		// check if this group already contains this employee's type
 		var type = employee[groupName],
 			dataset = app.filters.groups[groupName].dataset;
@@ -131,8 +142,9 @@ app.dataprocessorEmployees = (function($) {
 	*/
 	var processEmployeeData = function() {
 		// process data we want to manipulate before use
-		processEmployeeDisciplines();
-		processEmployeeAges();
+		processDisciplines();
+		processOrganisationalUnits();
+		processAges();
 
 		// now popuplate filterGroups
 		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
