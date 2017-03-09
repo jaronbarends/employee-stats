@@ -410,6 +410,13 @@ h3 {
   color: #00bdfa;
   font-weight: bold; }
 
+.bar-chart {
+  height: 200px;
+  width: 600px; }
+
+.bar-chart rect {
+  fill: #00bdfa; }
+
 input,
 select,
 button {
@@ -535,15 +542,6 @@ header {
   opacity: 1; }
 
 /*-- End topographic stuff --*/
-/*-- Start age info --*/
-.age-chart {
-  height: 200px;
-  width: 600px; }
-
-.age-chart rect {
-  fill: #00bdfa; }
-
-/*-- End age info --*/
 .chart-box {
   display: inline-block;
   margin: 1em;
@@ -615,6 +613,10 @@ header {
   fill: white;
   stroke: #00bdfa;
   stroke-width: 3px; }
+
+.bar-chart--discipline {
+  width: 400px;
+  height: 600px; }
 
 .info-box--employees-general {
   position: absolute;

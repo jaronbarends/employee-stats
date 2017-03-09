@@ -30,6 +30,7 @@
 // @import "scss/5-objects/objects.layout";
 // @import "scss/5-objects/objects.list-bare";
 // @import "scss/5-objects/objects.grid";
+@import "scss/5-objects/objects.bar-chart";
 
 
 // 6. Components: Desigined components, chunks of UI
@@ -38,6 +39,7 @@
 @import "scss/6-components/components.filter-charts";
 @import "scss/6-components/components.pie-chart";
 @import "scss/6-components/components.line-chart";
+@import "scss/6-components/components.bar-chart--discipline";
 @import "scss/6-components/components.info-box--employees";
 
 // 7. Trumps: Helpers and overrides

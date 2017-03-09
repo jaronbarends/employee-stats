@@ -34,12 +34,17 @@ app.dataprocessorEmployees = (function($) {
 			
 			if (discipline.toLowerCase().indexOf(currLevel) === 0) {
 				discipline = discipline.substr(currLevel.length + 1);
+				// make first letter uppercase if it isn't already
+				var firstLetter = discipline.charAt(0);
+				if (firstLetter.toUpperCase() !== firstLetter) {
+					discipline = firstLetter.toUpperCase() + discipline.substr(1, discipline.length-1);
+				}
 				level = currLevel;
 
 				// stagiairs often don't have discipline in their data
 				// And I prefer not to count them within discipline anyhow
 				if (level === 'stagiair') {
-					discipline = 'stagiair';
+					discipline = 'Stagiair';
 				}
 				break;
 			}
@@ -69,6 +74,7 @@ app.dataprocessorEmployees = (function($) {
 		if (unitLc === 'efocus') {
 			unit = 'Management Team';
 			// emp.organisationalUnit = unit;
+
 		}
 
 		// check if unit includes an office name
@@ -85,6 +91,31 @@ app.dataprocessorEmployees = (function($) {
 		emp.organisationalUnit = unit;
 		
 	};
+
+
+	/**
+	* Associate MD's with the correct office (now, they're all associated with Utr)
+	* @returns {undefined}
+	*/
+	var correctMDOffice = function(emp) {
+		if (emp.disciplineWithLevel.toLowerCase() === 'managing director') {
+			var office = 'Utrecht';
+			switch (emp.birthplace.toLowerCase()){
+				case 'heerlen':
+					office = 'Eindhoven';
+					break;
+				case 'nijmegen':
+					office = 'Amersfoort';
+					break;
+				case 'rijswijk':
+					office = 'Amsterdam';
+					break;
+				// no need to handle Utrecht MD
+			}
+			emp.office = office;
+		}
+	};
+	
 	
 
 
@@ -95,11 +126,12 @@ app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var processDisciplinesEtc = function() {
-		console.log(app.data.sgOffices);
+		// console.log(app.data.sgOffices);
 		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
 
 			var emp = app.data.sgEmployees[i];
 
+			correctMDOffice(emp);
 			processDiscipline(emp);
 			processOrganisationalUnit(emp);
 		}

@@ -253,9 +253,10 @@ window.app = window.app || {};
 		// add shapes for nodes
 		app.nodes.init();
 
-		// createAgeChart();
 		app.ageChart.init();
 		calculateAgeInfo();
+
+		app.disciplineChart.init();
 
 		// initialize force simulation
 		app.bubbleChart.initSimulation();

@@ -38,20 +38,10 @@
 
 		<div id="wrapper">
 
-			<div class="filter-charts-block">
+			<div class="discipline-charts-container">
 
-				<div>
-					<form id="filter-chart-form">
-						<label for="group-filter">For every&hellip;</label>
-						<select id="group-filter"></select>
-						Show&hellip;
-						<select id="employee-properties"></select>
-						<button type="submit">Show!</button>
-					</form>
-				</div>
-
-				<div id="filter-charts-container">
-				</div>
+				<h3>Our disciplines</h3>
+				<svg id="discipline-chart" class="bar-chart bar-chart--discipline"></svg>
 
 			</div>
 
@@ -106,7 +96,7 @@
 			<div id="overall-charts-container" class="overall-charts-container">
 
 				<h3>How old are we?</h3>
-				<svg id="age-chart" class="age-chart"></svg>
+				<svg id="age-chart" class="bar-chart age-chart"></svg>
 				<div id="age-info">
 					Our avarage age is
 					<div>
@@ -119,7 +109,24 @@
 
 			</div><!-- /.overall-charts-container -->
 
-		</div>
+			<div class="filter-charts-block">
+
+				<div>
+					<form id="filter-chart-form">
+						<label for="group-filter">For every&hellip;</label>
+						<select id="group-filter"></select>
+						Show&hellip;
+						<select id="employee-properties"></select>
+						<button type="submit">Show!</button>
+					</form>
+				</div>
+
+				<div id="filter-charts-container">
+				</div>
+
+			</div><!-- /.filter-charts-block -->
+
+		</div><!-- /.wrapper -->
 
 	</div><!-- /.o-content-width -->
 
@@ -139,6 +146,7 @@
 	<script src="js/pie-chart.js"></script>
 	<script src="js/line-chart.js"></script>
 	<script src="js/age-chart.js"></script>
+	<script src="js/discipline-chart.js"></script>
 	<script src="js/filters.js"></script>
 	<script src="js/employees.js"></script>
 	<script src="js/employee-stats-init.js"></script>
