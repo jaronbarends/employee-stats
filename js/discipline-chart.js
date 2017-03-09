@@ -9,7 +9,14 @@ app.disciplineChart = (function($) {
 	* @returns {undefined}
 	*/
 	var createDisciplineChart = function(dataset) {
-		console.log(dataset);
+		var dataset2 = [];
+
+		for (var prop in dataset) {
+			dataset2.push({name: prop, employees: dataset[prop]});
+		}
+		dataset = dataset2;
+		// console.log(dataset);
+
 		var chart = d3.select('#discipline-chart'),
 			svgWidth = parseInt(chart.style('width'), 10),
 			svgHeight = parseInt(chart.style('height'), 10),
@@ -22,25 +29,15 @@ app.disciplineChart = (function($) {
 			width = svgWidth - margin.left - margin.right,
 			height = svgHeight - margin.top - margin.bottom;
 
-		dataset = [10,20,30,40,50];
-
-
 		var yScale = d3.scaleBand()
-				// .domain(d3.range(minAge, maxAge))
 				.domain(d3.range(dataset.length))
 				.rangeRound([0, height])
 				.padding(0.1);
 
-		var max = d3.max(dataset, function(d) {
-						return d.length;
-					});
-				console.log('max:', max);
-
 		var xScale = d3.scaleLinear()
-				// .domain([0, d3.max(dataset, function(d) {
-				// 		return d.length;
-				// 	})])
-				.domain([0, 50])
+				.domain([0, d3.max(dataset, function(d) {
+						return d.employees.length;
+					})])
 				.range([0, width]);
 
 		var xAxis = d3.axisBottom(xScale),
@@ -60,11 +57,8 @@ app.disciplineChart = (function($) {
 			})
 			.attr('x', 0)
 			.attr('height', yScale.bandwidth())
-			// .attr('width', 18)
 			.attr('width', function(d) {
-				// return 100;
-				return xScale(d);
-				return xScale(d.length);
+				return xScale(d.employees.length);
 			});
 
 		// render axes
