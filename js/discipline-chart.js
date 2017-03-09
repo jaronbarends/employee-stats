@@ -11,10 +11,10 @@ app.disciplineChart = (function($) {
 	var createDisciplineChart = function(dataset) {
 		var dataset2 = [];
 
-		for (var prop in dataset) {
-			dataset2.push({name: prop, employees: dataset[prop]});
-		}
-		dataset = dataset2;
+		// for (var prop in dataset) {
+		// 	dataset2.push({name: prop, employees: dataset[prop]});
+		// }
+		// dataset = dataset2;
 		// console.log(dataset);
 
 		var chart = d3.select('#discipline-chart'),

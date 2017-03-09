@@ -27,60 +27,8 @@ app.filters = (function($) {
 		};
 
 
-	//-- Start Pie chart fucntions --
 
-
-		/**
-		* create a pie chart
-		* @returns {undefined}
-		*/
-		var createPieChart = function(dataset, id) {
-			// console.log(dataset);
-			var colorArray = app.util.randomizeArray(app.colors.band31.slice());//slice makes copy
-
-			var dataAccessor = function(d) {
-				return d.count;
-			};
-			
-			var pie = d3.pie().value(dataAccessor)(dataset),
-				svg = d3.select('#'+id)
-					.append('svg')
-					.attr('class', 'pie-chart'),
-				innerRadius = 0,
-				outerRadius = parseInt(svg.style('width'), 10)/2,
-				arc = d3.arc()
-						.innerRadius(innerRadius)
-						.outerRadius(outerRadius);
-
-			var arcs = svg.selectAll('g.pie-segment')
-				.data(pie)
-				.enter()
-				.append('g')
-				// .attr('class', 'pie-segment')
-				.attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
-
-			arcs.append('path')
-				.attr('class', function(d) {
-					// console.log(d.data);
-					return 'pie-segment pie-segment--'+ app.util.convertToClassName(d.data.prop);
-				})
-				.attr('d', arc)
-				.attr('fill', function(d,i) {
-					var idx = i % colorArray.length;
-					return colorArray[idx];
-				})
-
-			// now add some info
-			var $chartBox = $('#'+id),
-				info = '<p>' + dataset[0].type;
-			for (var i=0, len=dataset.length; i<len; i++) {
-				info += '<br>' + dataset[i].prop + ':' + dataset[i].count;
-			}
-			info += '</p>';
-			$chartBox.append(info);
-
-		};
-
+	//-- Start chart fucntions --
 
 		/**
 		* create a chart for a type-instance of specific group-filter
@@ -123,18 +71,19 @@ app.filters = (function($) {
 			var chartIdx = 0;
 
 			// loop through every type in this group
-			for (var typeName in group) {
+			for (var i=0, len=group.length; i<len; i++) {
+				
 
-				var typeEmployees = group[typeName];// array for all employees for a given type, like a specific office
+				var typeEmployees = group[i].employees;// array for all employees for a given type, like a specific discipline or office
 
 				// now we have arrays for all employees for a given type, like a specific office
 				// loop through those employees and sort them into the different prop-types
 				var employeesPerProp = [];
 
-				for (var i=0, empLen=typeEmployees.length; i<empLen; i++) {
+				for (var j=0, empLen=typeEmployees.length; j<empLen; j++) {
 
 					// for every employee in this type, check which chosen prop he has
-					var employee = typeEmployees[i],
+					var employee = typeEmployees[j],
 						propType = employee[prop];
 
 					if (!(propType in employeesPerProp)) {
@@ -148,7 +97,7 @@ app.filters = (function($) {
 				var dataset = [];
 				for (var p in employeesPerProp) {
 					var obj = {
-						type: typeName,
+						type: group[i].type,
 						prop: p,
 						count: employeesPerProp[p]
 					};
@@ -169,7 +118,7 @@ app.filters = (function($) {
 
 
 
-	//-- End Pie chart fucntions --
+	//-- End chart fucntions --
 
 
 

@@ -199,12 +199,27 @@ app.dataprocessorEmployees = (function($) {
 	var addEmployeeToGroup = function(employee, groupName) {
 		// check if this group already contains this employee's type
 		var type = employee[groupName],
-			dataset = app.filters.groups[groupName].dataset;
+			dataset = app.filters.groups[groupName].dataset,// like disciplines dataset
+			typeExists = false;
 
-		if (! (type in dataset)) {
-			dataset[type] = [];
+
+		for (var i=0, len=dataset.length; i<len; i++) {
+			var group = dataset[i];
+			if (group.type === type) {
+				typeExists = true;
+				group.employees.push(employee);
+				break;
+			}
 		}
-		dataset[type].push(employee);
+
+		// if no object exists for this type, create one and push it
+		if (!typeExists) {
+			var typeObj = {
+				type: type,
+				employees: [employee]
+			}
+			dataset.push(typeObj);
+		}
 	};
 
 
@@ -217,11 +232,11 @@ app.dataprocessorEmployees = (function($) {
 		processDisciplinesEtc();
 		processAges();
 
-		// now popuplate filterGroups
+		// now popuplate filterGroups (buckets of employees with shared property)
 		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
 			var employee = app.data.sgEmployees[i];
 
-			// loop through employee groups and add this employee's data
+			// loop through employee groups (like gender, discipline) and add this employee's data
 			for (var groupName in app.filters.groups) {
 				addEmployeeToGroup(employee, groupName);
 			}
