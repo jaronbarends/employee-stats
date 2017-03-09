@@ -5,9 +5,9 @@ app.filters = (function($) {
 	'use strict';
 
 	// filters variable naming:
-	// for every [group] show [prop]
+	// for every [bucket] show [prop]
 
-	var groups = {
+	var buckets = {
 		// use field name in .csv as property name
 		// use the same property-names we use in app.data.sgEmployees
 			gender: { guiName: 'Gender', dataset: []},
@@ -15,8 +15,8 @@ app.filters = (function($) {
 			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
 			office: { guiName: 'Office', dataset: []},
 			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
-		},
-		props = {// props we want to show for filter group instances
+		};
+	var props = {// props we want to show for filter bucket instances
 			age: { guiName: 'Age'},
 			startDate: { guiName: 'Start date'},
 			gender: { guiName: 'Gender'},
@@ -31,7 +31,7 @@ app.filters = (function($) {
 	//-- Start chart fucntions --
 
 		/**
-		* create a chart for a type-instance of specific group-filter
+		* create a chart for a type-instance of specific bucket-filter
 		* @returns {undefined}
 		*/
 		var createFilterChart = function(dataset, chartType, chartIdx) {
@@ -54,27 +54,27 @@ app.filters = (function($) {
 		* create charts based upon filters
 		* @returns {undefined}
 		*/
-		var createChartsByFilter = function(group, prop) {
-			// we'll distinguish groups and types: a group consists of several types,
-			// like the group offices consists of types utrecht, amersfoors, ...
+		var createChartsByFilter = function(bucket, prop) {
+			// we'll distinguish buckets and types: a bucket consists of several types,
+			// like the bucket offices consists of types utrecht, amersfoors, ...
 
 			// remove any previous charts
 			$('#filter-charts-container').empty();
 
-			// set up chart for every group
-			// console.log(group, prop, app.filters.groups[group]);
-			var propDataset = app.filters.groups[prop].dataset;
+			// set up chart for every bucket
+			// console.log(bucket, prop, app.filters.buckets[bucket]);
+			var propDataset = app.filters.buckets[prop].dataset;
 
 			// check for which types we need to show charts
 			// this is the "for every..." part
-			group = app.filters.groups[group].dataset;
+			bucket = app.filters.buckets[bucket].dataset;
 			var chartIdx = 0;
 
-			// loop through every type in this group
-			for (var i=0, len=group.length; i<len; i++) {
+			// loop through every type in this bucket
+			for (var i=0, len=bucket.length; i<len; i++) {
 				
 
-				var typeEmployees = group[i].employees;// array for all employees for a given type, like a specific discipline or office
+				var typeEmployees = bucket[i].employees;// array for all employees for a given type, like a specific discipline or office
 
 				// now we have arrays for all employees for a given type, like a specific office
 				// loop through those employees and sort them into the different prop-types
@@ -97,7 +97,7 @@ app.filters = (function($) {
 				var dataset = [];
 				for (var p in employeesPerProp) {
 					var obj = {
-						type: group[i].type,
+						type: bucket[i].type,
 						prop: p,
 						count: employeesPerProp[p]
 					};
@@ -130,11 +130,11 @@ app.filters = (function($) {
 		e.preventDefault();
 
 		var $form = $(e.currentTarget),
-			group = $form.find('#group-filter').val(),
+			bucket = $form.find('#bucket-filter').val(),
 			prop = $form.find('#employee-properties').val();
 
 		// decide which type of chart to show
-		createChartsByFilter(group, prop);
+		createChartsByFilter(bucket, prop);
 	};
 	
 
@@ -144,18 +144,18 @@ app.filters = (function($) {
 	* @returns {undefined}
 	*/
 	var initCompareTool = function() {
-		var $groupSelect = $('#group-filter'),
+		var $bucketSelect = $('#bucket-filter'),
 			$propertiesSelect = $('#employee-properties'),
-			groupOptions = '',
+			bucketOptions = '',
 			propertyOptions = '';
 
-		for (var groupName in app.filters.groups) {
-			var guiName = app.filters.groups[groupName].guiName;
-			// console.log(app.filters.groups[groupName]);
+		for (var bucketName in app.filters.buckets) {
+			var guiName = app.filters.buckets[bucketName].guiName;
+			// console.log(app.filters.buckets[bucketName]);
 
-			groupOptions += '<option value="' + groupName + '">' + guiName + '</option>';
+			bucketOptions += '<option value="' + bucketName + '">' + guiName + '</option>';
 		}
-		$groupSelect.append(groupOptions);
+		$bucketSelect.append(bucketOptions);
 
 
 		// generate props to show
@@ -180,7 +180,7 @@ app.filters = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		groups: groups,
+		buckets: buckets,
 		props: props,
 		init: init
 	};

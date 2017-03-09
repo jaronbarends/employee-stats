@@ -12,6 +12,15 @@ window.app = window.app || {};
 	app.data = {
 		sgEmployees: [],
 		sgEmployeeProps: [],
+		buckets: {
+			// use field name in .csv as property name
+			// use the same property-names we use in app.data.sgEmployees
+			gender: { guiName: 'Gender', dataset: []},
+			discipline: { guiName: 'Discipline', dataset: []},
+			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
+			office: { guiName: 'Office', dataset: []},
+			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
+		},
 		sgOffices: [],
 		sgHometowns: [],
 		sgPlacesWithoutGeoData: [],

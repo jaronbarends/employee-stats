@@ -191,23 +191,23 @@ app.dataprocessorEmployees = (function($) {
 
 
 	/**
-	* add employee to group which specific prop
+	* add employee to bucket which specific prop
 	* @param {string} employee The current employee
-	* @param {string} groupName The property-name of the group
+	* @param {string} bucketName The property-name of the bucket
 	* @returns {undefined}
 	*/
-	var addEmployeeToGroup = function(employee, groupName) {
-		// check if this group already contains this employee's type
-		var type = employee[groupName],
-			dataset = app.filters.groups[groupName].dataset,// like disciplines dataset
+	var addEmployeeToBucket = function(employee, bucketName) {
+		// check if this bucket already contains this employee's type
+		var type = employee[bucketName],
+			dataset = app.filters.buckets[bucketName].dataset,// like disciplines dataset
 			typeExists = false;
 
 
 		for (var i=0, len=dataset.length; i<len; i++) {
-			var group = dataset[i];
-			if (group.type === type) {
+			var bucket = dataset[i];
+			if (bucket.type === type) {
 				typeExists = true;
-				group.employees.push(employee);
+				bucket.employees.push(employee);
 				break;
 			}
 		}
@@ -232,13 +232,13 @@ app.dataprocessorEmployees = (function($) {
 		processDisciplinesEtc();
 		processAges();
 
-		// now popuplate filterGroups (buckets of employees with shared property)
+		// now popuplate filterBuckets (buckets of employees with shared property)
 		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
 			var employee = app.data.sgEmployees[i];
 
-			// loop through employee groups (like gender, discipline) and add this employee's data
-			for (var groupName in app.filters.groups) {
-				addEmployeeToGroup(employee, groupName);
+			// loop through employee buckets (like gender, discipline) and add this employee's data
+			for (var bucketName in app.filters.buckets) {
+				addEmployeeToBucket(employee, bucketName);
 			}
 		}
 

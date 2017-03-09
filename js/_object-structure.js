@@ -1,6 +1,6 @@
 
-app.filters.groups = {
-	gender: {// this is a group
+app.filters.buckets = {
+	gender: {// this is a bucket
 		guiName: 'Gender',
 		dataset: {
 			[
@@ -17,7 +17,7 @@ app.filters.groups = {
 			]
 		}
 	},
-	discipline: {// this is a group
+	discipline: {// this is a bucket
 		guiName: 'Discipline',
 		dataset: []
 	}
