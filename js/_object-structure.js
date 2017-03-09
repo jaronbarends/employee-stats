@@ -1,5 +1,5 @@
 
-app.filters.buckets = {
+app.data.buckets = {
 	gender: {// this is a bucket
 		guiName: 'Gender',
 		dataset: {

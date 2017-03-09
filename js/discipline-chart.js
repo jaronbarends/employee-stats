@@ -79,7 +79,7 @@ app.disciplineChart = (function($) {
 	* @returns {undefined}
 	*/
 	var init = function() {
-		var dataset = app.filters.buckets.discipline.dataset;
+		var dataset = app.data.buckets.discipline.dataset;
 		createDisciplineChart(dataset);
 	};
 

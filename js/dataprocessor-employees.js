@@ -199,7 +199,7 @@ app.dataprocessorEmployees = (function($) {
 	var addEmployeeToBucket = function(employee, bucketName) {
 		// check if this bucket already contains this employee's type
 		var type = employee[bucketName],
-			dataset = app.filters.buckets[bucketName].dataset,// like disciplines dataset
+			dataset = app.data.buckets[bucketName].dataset,// like disciplines dataset
 			typeExists = false;
 
 
@@ -237,7 +237,7 @@ app.dataprocessorEmployees = (function($) {
 			var employee = app.data.sgEmployees[i];
 
 			// loop through employee buckets (like gender, discipline) and add this employee's data
-			for (var bucketName in app.filters.buckets) {
+			for (var bucketName in app.data.buckets) {
 				addEmployeeToBucket(employee, bucketName);
 			}
 		}

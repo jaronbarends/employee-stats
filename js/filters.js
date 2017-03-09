@@ -6,16 +6,6 @@ app.filters = (function($) {
 
 	// filters variable naming:
 	// for every [bucket] show [prop]
-
-	var buckets = {
-		// use field name in .csv as property name
-		// use the same property-names we use in app.data.sgEmployees
-			gender: { guiName: 'Gender', dataset: []},
-			discipline: { guiName: 'Discipline', dataset: []},
-			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
-			office: { guiName: 'Office', dataset: []},
-			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
-		};
 	var props = {// props we want to show for filter bucket instances
 			age: { guiName: 'Age'},
 			startDate: { guiName: 'Start date'},
@@ -62,12 +52,12 @@ app.filters = (function($) {
 			$('#filter-charts-container').empty();
 
 			// set up chart for every bucket
-			// console.log(bucket, prop, app.filters.buckets[bucket]);
-			var propDataset = app.filters.buckets[prop].dataset;
+			// console.log(bucket, prop, app.data.buckets[bucket]);
+			var propDataset = app.data.buckets[prop].dataset;
 
 			// check for which types we need to show charts
 			// this is the "for every..." part
-			bucket = app.filters.buckets[bucket].dataset;
+			bucket = app.data.buckets[bucket].dataset;
 			var chartIdx = 0;
 
 			// loop through every type in this bucket
@@ -149,9 +139,9 @@ app.filters = (function($) {
 			bucketOptions = '',
 			propertyOptions = '';
 
-		for (var bucketName in app.filters.buckets) {
-			var guiName = app.filters.buckets[bucketName].guiName;
-			// console.log(app.filters.buckets[bucketName]);
+		for (var bucketName in app.data.buckets) {
+			var guiName = app.data.buckets[bucketName].guiName;
+			// console.log(app.data.buckets[bucketName]);
 
 			bucketOptions += '<option value="' + bucketName + '">' + guiName + '</option>';
 		}
@@ -180,7 +170,6 @@ app.filters = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		buckets: buckets,
 		props: props,
 		init: init
 	};
