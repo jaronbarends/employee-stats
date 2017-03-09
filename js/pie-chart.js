@@ -22,7 +22,8 @@ app.pieChart = (function($) {
 				.append('svg')
 				.attr('class', 'pie-chart'),
 			outerRadius = parseInt(svg.style('width'), 10)/2,
-			innerRadius = outerRadius/3,
+			// innerRadius = outerRadius/3,
+			innerRadius = 0,
 			arc = d3.arc()
 					.innerRadius(innerRadius)
 					.outerRadius(outerRadius);
@@ -31,7 +32,6 @@ app.pieChart = (function($) {
 			.data(pie)
 			.enter()
 			.append('g')
-			// .attr('class', 'pie-segment')
 			.attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
 
 		arcs.append('path')

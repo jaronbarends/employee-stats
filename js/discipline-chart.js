@@ -5,18 +5,10 @@ app.disciplineChart = (function($) {
 	'use strict';
 
 	/**
-	* create chart for age
+	* create chart for disciplines
 	* @returns {undefined}
 	*/
 	var createDisciplineChart = function(dataset) {
-		var dataset2 = [];
-
-		// for (var prop in dataset) {
-		// 	dataset2.push({name: prop, employees: dataset[prop]});
-		// }
-		// dataset = dataset2;
-		// console.log(dataset);
-
 		var chart = d3.select('#discipline-chart'),
 			svgWidth = parseInt(chart.style('width'), 10),
 			svgHeight = parseInt(chart.style('height'), 10),
@@ -24,10 +16,14 @@ app.disciplineChart = (function($) {
 				top: 10,
 				right: 10,
 				bottom: 30,
-				left: 50
+				left: 200
 			},
 			width = svgWidth - margin.left - margin.right,
 			height = svgHeight - margin.top - margin.bottom;
+
+		dataset = dataset.sort(function(a,b) {
+			return b.employees.length - a.employees.length;
+		});
 
 		var yScale = d3.scaleBand()
 				.domain(d3.range(dataset.length))
@@ -40,10 +36,14 @@ app.disciplineChart = (function($) {
 					})])
 				.range([0, width]);
 
+		var disciplineScale = d3.scaleBand()
+				.domain(dataset.map(function(d) {return d.type}))
+				.rangeRound([0, height])
+				.padding(0.1);
+
 		var xAxis = d3.axisBottom(xScale),
-				// .tickValues([25, 30, 35, 40, 45]),
-			yAxis = d3.axisLeft(yScale)
-				// .ticks(3);
+			yAxis = d3.axisLeft(disciplineScale);
+			// yAxis = d3.axisLeft(yScale)
 
 		// render bars
 		chart.append('g')

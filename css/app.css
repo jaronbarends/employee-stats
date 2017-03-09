@@ -407,15 +407,14 @@ h2,
   font-weight: bold; }
 
 h3 {
-  color: #00bdfa;
+  color: #d60042;
   font-weight: bold; }
 
 .bar-chart {
   height: 200px;
   width: 600px; }
-
-.bar-chart rect {
-  fill: #00bdfa; }
+  .bar-chart rect {
+    fill: #00bdfa; }
 
 input,
 select,
@@ -615,7 +614,7 @@ header {
   stroke-width: 3px; }
 
 .bar-chart--discipline {
-  width: 400px;
+  width: 600px;
   height: 600px; }
 
 .info-box--employees-general {
