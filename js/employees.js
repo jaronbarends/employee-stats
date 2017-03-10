@@ -14,18 +14,18 @@ window.app = window.app || {};
 		sgEmployeeProps: [],
 		buckets: {
 			// use field name in .csv as property name
-			// use the same property-names we use in app.data.sgEmployees
+			// use the same property-names we use in app.data.sgEmployees if possible
 			gender: { guiName: 'Gender', dataset: []},
 			discipline: { guiName: 'Discipline', dataset: []},
 			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
 			office: { guiName: 'Office', dataset: []},
 			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
+			startYear: { guiName: 'Starting year', dataset: []}
 		},
 		sgOffices: [],
 		sgHometowns: [],
 		sgPlacesWithoutGeoData: [],
 		sgLevels: ['senior', 'stagiair', 'junior'],
-		sgBirthdays: [],
 		sgAges: [],
 		sgAvarageAge: 0
 	};
@@ -38,7 +38,7 @@ window.app = window.app || {};
 
 	app.colors = {
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
-	}
+	};
 
 
 

@@ -17,7 +17,7 @@ app.lineChart = (function($) {
 			height = svgHeight - margin.top - margin.bottom,
 			g = lineChart.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		var parseTime = d3.timeParse('%d-%m-%Y');
+		var parseTime = d3.timeParse('%d/%m/%Y');
 
 		var xScale = d3.scaleTime()
 				.rangeRound([0, width]);
@@ -74,6 +74,10 @@ app.lineChart = (function($) {
 		 		return yScale(d.count);
 		 	})
 		 	.attr('r', 5);
+
+		 // now add data for start year
+		 // g.append('path')
+		 // 	.datum()
 	};
 
 

@@ -37,7 +37,7 @@ app.disciplineChart = (function($) {
 				.range([0, width]);
 
 		var disciplineScale = d3.scaleBand()
-				.domain(dataset.map(function(d) {return d.type}))
+				.domain(dataset.map(function(d) {return d.type;}))
 				.rangeRound([0, height])
 				.padding(0.1);
 

@@ -4,6 +4,11 @@ app.dataprocessorEmployees = (function($) {
 
 	'use strict';
 
+	var sgAges = [],
+		sgAgeMin = 1000,
+		sgAgeMax = 0,
+		sgAgeSum = 0;
+
 
 	/**
 	* put comparable employee properties into array
@@ -115,9 +120,58 @@ app.dataprocessorEmployees = (function($) {
 			emp.office = office;
 		}
 	};
-	
-	
 
+
+
+	/**
+	* process an employee's age data: push all birthdays into array
+	* and start creating groups per age
+	* @returns {undefined}
+	*/
+	var processAge = function(emp) {
+		// process age data
+		var age = app.util.getYearsUntilToday(emp.birthday),
+			ageRound = Math.floor(age);
+
+
+		// keep track of min and max ages, and the sum
+		sgAgeMin = Math.min(ageRound, sgAgeMin);
+		sgAgeMax = Math.max(ageRound, sgAgeMax);
+		sgAgeSum += age;
+
+		// put age data into age array
+		if (!sgAges[ageRound]) {
+			sgAges[ageRound] = 1;
+			// this creates an array like sgAges[22], sgAges[15]
+			// this is somehow different from a normal array like sgAges[0], [1] etc
+		} else {
+			sgAges[ageRound]++;
+		}
+	};
+
+
+
+	/**
+	* process the employee's start date
+	* put them into bucket for starting year
+	* calculate how long they've been working at Valtech
+	* calculate their age when they started
+	* @returns {undefined}
+	*/
+	var processStartDate = function(emp) {
+		var startDate = emp.startDate,
+			parseTime = d3.timeParse('%d/%m/%Y');
+
+		emp.startDate = parseTime(startDate);
+
+
+
+		// console.log(startDate, startYear);
+	};
+	
+	
+	
+	
 
 	/**
 	* handle an employee's discipline data
@@ -134,58 +188,31 @@ app.dataprocessorEmployees = (function($) {
 			correctMDOffice(emp);
 			processDiscipline(emp);
 			processOrganisationalUnit(emp);
+			processAge(emp);
+			processStartDate(emp);
 		}
 	};
 	
 
 
 	/**
-	* process age and startdate data of employee
+	* process age data we collected while looping through employees
 	* @returns {undefined}
 	*/
-	var processAges = function() {
-		var ages = [],
-			ageMin = 1000,
-			ageMax = 0,
-			ageSum = 0;
-
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var emp = app.data.sgEmployees[i];
-
-			// process age data
-			app.data.sgBirthdays.push(emp.birthday);
-			var age = app.util.getYearsUntilToday(emp.birthday),
-				ageRound = Math.floor(age);
-
-
-			// keep track of min and max ages, and the sum
-			ageMin = Math.min(ageRound, ageMin);
-			ageMax = Math.max(ageRound, ageMax);
-			ageSum += age;
-
-			// put age data into age array
-			if (!ages[ageRound]) {
-				ages[ageRound] = 1;
-				// this creates an array like ages[22], ages[15]
-				// this is somehow different from a normal array like ages[0], [1] etc
-			} else {
-				ages[ageRound]++;
-			}
-		
-		}// end loop employees
+	var processAgeData = function() {
 
 		// check if every age between min and max is present
-		var ageRange = ageMax - ageMin;
+		var ageRange = sgAgeMax - sgAgeMin;
 		for (var a = 0; a <= ageRange; a++) {
-			var currAge = ageMin + a;
+			var currAge = sgAgeMin + a;
 			app.data.sgAges.push({
 				age: currAge,
-				employeeCount: ages[currAge] || 0
+				employeeCount: sgAges[currAge] || 0
 			});
 		}
 
 		// calculate avarage age
-		app.data.sgAverageAge = ageSum / app.data.sgEmployees.length;
+		app.data.sgAverageAge = sgAgeSum / app.data.sgEmployees.length;
 	};
 
 
@@ -230,7 +257,7 @@ app.dataprocessorEmployees = (function($) {
 	var processEmployeeData = function() {
 		// process data we want to manipulate before use
 		processDisciplinesEtc();
-		processAges();
+		processAgeData();
 
 		// now popuplate filterBuckets (buckets of employees with shared property)
 		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
