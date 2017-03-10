@@ -160,16 +160,52 @@ app.dataprocessorEmployees = (function($) {
 	*/
 	var processStartDate = function(emp) {
 		var startDate = emp.startDate,
-			parseTime = d3.timeParse('%d/%m/%Y');
+			parseTime = d3.timeParse('%d/%m/%Y'),
+			yearStr = '31/12/' + startDate.split('/')[2];
 
-		emp.startDate = parseTime(startDate);
+		// create array just like employees per year
+		// employeesPerYear: {
+		// 	[
+		// 		count: 20,
+		// 		year: 'Tue Feb 28 2017 00:00:00 GMT+0100' (returned by d3.timeParse)
+		// 	]
+		// }
 
+		var espy = app.data.employeesStartedPerYear,
+			yearFound = false;
 
+		for (var i=0, len=espy.length; i<len; i++) {
+			var yearObj = espy[i]
+			if (yearObj.year === yearStr) {
+				app.data.employeesStartedPerYear[i].count++;
+				yearFound = true;
+			}
+		}
 
-		// console.log(startDate, startYear);
+		if (!yearFound) {
+			yearObj = {
+				year: yearStr,
+				count: 1
+			};
+			app.data.employeesStartedPerYear.push(yearObj);
+		}
+
 	};
 	
 	
+	
+	/**
+	* sort the employeesStartedPerYear array
+	* @returns {undefined}
+	*/
+	var sortStartYearArray = function() {
+		var getYear = function(yearStr) {
+			return +yearStr.split('/')[2];
+		}
+		app.data.employeesStartedPerYear.sort(function(a, b) {
+			return ( getYear(a.year) > getYear(b.year));
+		});
+	};
 	
 	
 
@@ -191,6 +227,15 @@ app.dataprocessorEmployees = (function($) {
 			processAge(emp);
 			processStartDate(emp);
 		}
+
+		sortStartYearArray();
+		// console.log(app.data.employeesStartedPerYear);
+		// var arr = app.data.employeesStartedPerYear,
+		// 	total = 0;
+		// for (var j=0, len=arr.length; j<len; j++) {
+		// 	total += arr[j].count;
+		// }
+		// console.log(total);
 	};
 	
 

@@ -27,7 +27,9 @@ window.app = window.app || {};
 		sgPlacesWithoutGeoData: [],
 		sgLevels: ['senior', 'stagiair', 'junior'],
 		sgAges: [],
-		sgAvarageAge: 0
+		sgAvarageAge: 0,
+		employeesPerYear: [],
+		employeesStartedPerYear: []
 	};
 
 
@@ -241,7 +243,7 @@ window.app = window.app || {};
 		app.data.sgEmployees = employees;
 		app.data.sgOffices = offices;
 		app.data.sgHometowns = cities;
-		app.data.employeeHistory = employeesPerYear;
+		app.data.employeesPerYear = employeesPerYear;
 
 		// put original employee properties into array before we add all kind of helper props
 		// initEmployeeProperties();

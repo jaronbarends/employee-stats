@@ -31,7 +31,7 @@ app.lineChart = (function($) {
 				.y(function(d) { return yScale(d.count); });
 
 	 // process data
-		var data = app.data.employeeHistory;
+		var data = app.data.employeesPerYear;
 		for (var i=0; i<data.length; i++) {
 			var d = data[i];
 			d.year = parseTime(d.year);
