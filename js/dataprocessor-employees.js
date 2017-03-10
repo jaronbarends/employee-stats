@@ -161,22 +161,15 @@ app.dataprocessorEmployees = (function($) {
 	var processStartDate = function(emp) {
 		var startDate = emp.startDate,
 			parseTime = d3.timeParse('%d/%m/%Y'),
-			yearStr = '31/12/' + startDate.split('/')[2];
-
-		// create array just like employees per year
-		// employeesPerYear: {
-		// 	[
-		// 		count: 20,
-		// 		year: 'Tue Feb 28 2017 00:00:00 GMT+0100' (returned by d3.timeParse)
-		// 	]
-		// }
+			yearStr = '31/12/' + startDate.split('/')[2],
+			year = parseTime(startDate);
 
 		var espy = app.data.employeesStartedPerYear,
 			yearFound = false;
 
 		for (var i=0, len=espy.length; i<len; i++) {
 			var yearObj = espy[i]
-			if (yearObj.year === yearStr) {
+			if (yearObj.yearStr === yearStr) {
 				app.data.employeesStartedPerYear[i].count++;
 				yearFound = true;
 			}
@@ -184,7 +177,8 @@ app.dataprocessorEmployees = (function($) {
 
 		if (!yearFound) {
 			yearObj = {
-				year: yearStr,
+				yearStr: yearStr,
+				year: year,
 				count: 1
 			};
 			app.data.employeesStartedPerYear.push(yearObj);
@@ -196,15 +190,52 @@ app.dataprocessorEmployees = (function($) {
 	
 	/**
 	* sort the employeesStartedPerYear array
+	* and add info: missing years and cumulative count
 	* @returns {undefined}
 	*/
-	var sortStartYearArray = function() {
+	var sortAndCompleteStartYearArray = function() {
 		var getYear = function(yearStr) {
 			return +yearStr.split('/')[2];
-		}
-		app.data.employeesStartedPerYear.sort(function(a, b) {
-			return ( getYear(a.year) > getYear(b.year));
+		};
+
+		var arr = app.data.employeesStartedPerYear;
+		arr.sort(function(a, b) {
+			return ( getYear(a.yearStr) - getYear(b.yearStr));
 		});
+
+		// now we have a sorted array, which may not contain every year
+		var firstYear = getYear(arr[0].yearStr),
+			lastYear = getYear(arr[arr.length-1].yearStr),
+			currYear = firstYear,
+			range = lastYear - firstYear,
+			countCumulative = 0,
+			prevYear = firstYear - 1,
+			idx = 0,
+			newArr = [];
+
+		while (currYear <= lastYear) {
+			var yearObj = arr[idx];
+
+			if (getYear(yearObj.yearStr) > currYear) {
+				// at least 1 year is missing - create a new obj
+				var newYearStr = '31/12/'+currYear;
+				yearObj = {
+					yearStr: newYearStr,
+					year: d3.timeParse('%d/%m/%Y')(newYearStr),
+					count: 0
+				};
+			} else {
+				idx++
+			}
+			countCumulative += yearObj.count;
+			yearObj.countCumulative = countCumulative;
+
+			newArr.push(yearObj);
+			currYear++;
+		}
+		console.log(newArr);
+
+		app.data.employeesStartedPerYear = newArr;
 	};
 	
 	
@@ -228,13 +259,14 @@ app.dataprocessorEmployees = (function($) {
 			processStartDate(emp);
 		}
 
-		sortStartYearArray();
+		sortAndCompleteStartYearArray();
 		// console.log(app.data.employeesStartedPerYear);
-		// var arr = app.data.employeesStartedPerYear,
-		// 	total = 0;
-		// for (var j=0, len=arr.length; j<len; j++) {
-		// 	total += arr[j].count;
-		// }
+		var arr = app.data.employeesStartedPerYear,
+			total = 0;
+		for (var j=0, len=arr.length; j<len; j++) {
+			// console.log(arr[j].yearStr, arr[j].count);
+			total += arr[j].count;
+		}
 		// console.log(total);
 	};
 	

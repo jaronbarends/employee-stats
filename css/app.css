@@ -377,12 +377,13 @@ label {
   box-sizing: border-box; }
 
 body {
+  overflow-scrolling: touch;
+  padding: 0 3rem;
+  background-color: #fff;
   font-size: 1.6rem;
   color: #363636;
   font-family: arial, helvetica, sans-serif;
-  line-height: 1.5;
-  background-color: #fff;
-  overflow-scrolling: touch; }
+  line-height: 1.5; }
 
 a {
   color: #00bdfa;
@@ -615,7 +616,12 @@ header {
 
 .bar-chart--discipline {
   width: 600px;
-  height: 600px; }
+  height: 600px;
+  color: #fff;
+  color: white;
+  margin: 0;
+  padding: 2px;
+  font-family: "verdana"; }
 
 .info-box--employees-general {
   position: absolute;

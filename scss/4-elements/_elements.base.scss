@@ -15,12 +15,13 @@ html {
 }
 
 body {
+	overflow-scrolling: touch;
+	padding: 0 3rem;
+	background-color: $color-body-bg;
 	font-size: $font-size-default;
 	color: $color-text-default;
 	font-family: $font-default;
 	line-height: 1.5;
-	background-color: $color-body-bg;
-	overflow-scrolling: touch;
 }
 
 a {

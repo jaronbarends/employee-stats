@@ -28,7 +28,11 @@ app.lineChart = (function($) {
 		var line = d3.line()
 				.curve(d3.curveCardinal)
 				.x(function(d) { return xScale(d.year); })
-				.y(function(d) { return yScale(d.count); });
+				.y(function(d) { return yScale(d.count); }),
+			line2 = d3.line()
+				.curve(d3.curveCardinal)
+				.x(function(d) { return xScale(d.year); })
+				.y(function(d) { return yScale(d.countCumulative); });
 
 	 // process data
 		var data = app.data.employeesPerYear;
@@ -76,8 +80,26 @@ app.lineChart = (function($) {
 		 	.attr('r', 5);
 
 		 // now add data for start year
-		 // g.append('path')
-		 // 	.datum()
+		 var espy = app.data.employeesStartedPerYear;
+		 // console.log(data);
+		 // console.log(espy);
+		 g.append('path')
+		 	.datum(espy)
+		 	.attr('class', 'chart-path')
+		 	.attr('d', line2);
+
+		 g.append('g')
+		 	.selectAll('circle')
+		 	.data(espy)
+		 	.enter()
+		 	.append('circle')
+		 	.attr('cx', function(d) {
+		 		return xScale(d.year);
+		 	})
+		 	.attr('cy', function(d) {
+		 		return yScale(d.countCumulative);
+		 	})
+		 	.attr('r', 5);
 	};
 
 
