@@ -593,26 +593,28 @@ header {
 .line-chart {
   width: 720px;
   height: 360px; }
-
-.line-chart .domain {
-  stroke: #ecedee;
-  stroke-width: 2px; }
-
-.line-chart .tick line {
-  stroke: #363636;
-  stroke-width: 2px; }
-
-.line-chart .chart-path {
-  fill: none;
-  stroke: #00bdfa;
-  stroke-width: 3px;
-  stroke-linejoin: round;
-  stroke-linecap: round; }
-
-.line-chart circle {
-  fill: white;
-  stroke: #00bdfa;
-  stroke-width: 3px; }
+  .line-chart .domain {
+    stroke: #ecedee;
+    stroke-width: 2px; }
+  .line-chart .tick line {
+    stroke: #363636;
+    stroke-width: 2px; }
+  .line-chart .chart-path {
+    fill: none;
+    stroke: #00bdfa;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    stroke-linecap: round; }
+  .line-chart circle {
+    fill: white;
+    stroke: #00bdfa;
+    stroke-width: 3px;
+    r: 5; }
+  .line-chart .secondary {
+    color: #ecedee; }
+    .line-chart .secondary.chart-path,
+    .line-chart .secondary circle {
+      stroke: currentColor; }
 
 .bar-chart--discipline {
   width: 600px;

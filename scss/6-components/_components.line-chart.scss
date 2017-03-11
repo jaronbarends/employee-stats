@@ -1,29 +1,40 @@
 .line-chart {
 	width: 720px;
 	height: 360px;
-}
 
-.line-chart .domain {
-	stroke: $color-light-grey;
-	stroke-width: 2px;
-}
 
-.line-chart .tick line {
-	stroke: $color-dark-grey;
-	stroke-width: 2px;
-}
+	.domain {
+		stroke: $color-light-grey;
+		stroke-width: 2px;
+	}
 
-.line-chart .chart-path {
-	fill: none;
-	stroke: $color-blue;
-	stroke-width: 3px;
-	stroke-linejoin: round;
-	stroke-linecap: round;
-}
+	.tick line {
+		stroke: $color-dark-grey;
+		stroke-width: 2px;
+	}
 
-.line-chart circle {
-	fill: white;
-	stroke: $color-blue;
-	stroke-width: 3px;
-}
+	.chart-path {
+		fill: none;
+		stroke: $color-blue;
+		stroke-width: 3px;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+	}
 
+	circle {
+		fill: white;
+		stroke: $color-blue;
+		stroke-width: 3px;
+		r: 5;
+	}
+
+	.secondary {
+		color: $color-light-grey;
+
+		&.chart-path,
+		circle {
+			stroke: currentColor;
+		}
+	}
+
+}

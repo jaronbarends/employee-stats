@@ -34,16 +34,19 @@ app.lineChart = (function($) {
 				.x(function(d) { return xScale(d.year); })
 				.y(function(d) { return yScale(d.countCumulative); });
 
-	 // process data
-		var data = app.data.employeesPerYear;
-		for (var i=0; i<data.length; i++) {
-			var d = data[i];
+		var totalData = app.data.employeesPerYear,
+			startedData = app.data.employeesStartedPerYear;
+		
+		 // process data for totals
+		for (var i=0; i<totalData.length; i++) {
+			var d = totalData[i];
 			d.year = parseTime(d.year);
 			d.count = +d.count;
 		}
 
-		xScale.domain(d3.extent(data, function(d) { return d.year; }));
-		yScale.domain(d3.extent(data, function(d) { return d.count; }));
+		xScale.domain(d3.extent(totalData, function(d) { return d.year; }));
+		yScale.domain(d3.extent(totalData, function(d) { return d.count; }));
+		yScale.domain([0, d3.max(totalData, function(d) { return d.count; })]);
 
 		g.append("g")
 			.attr('class', 'axis--bottom')
@@ -59,16 +62,16 @@ app.lineChart = (function($) {
 			.attr("y", 6)
 			.attr("dy", "0.71em")
 			.attr("text-anchor", "end")
-			.text("Employees");
+			.text("Number of employees");
 
 		g.append("path")
-			.datum(data)
+			.datum(totalData)
 			.attr('class', 'chart-path')
 			.attr("d", line);
 
 		 g.append('g')
 		 	.selectAll('circle')
-		 	.data(data)
+		 	.data(totalData)
 		 	.enter()
 		 	.append('circle')
 		 	.attr('cx', function(d) {
@@ -76,21 +79,18 @@ app.lineChart = (function($) {
 		 	})
 		 	.attr('cy', function(d) {
 		 		return yScale(d.count);
-		 	})
-		 	.attr('r', 5);
+		 	});
 
 		 // now add data for start year
-		 var espy = app.data.employeesStartedPerYear;
-		 // console.log(data);
-		 // console.log(espy);
 		 g.append('path')
-		 	.datum(espy)
-		 	.attr('class', 'chart-path')
+		 	.datum(startedData)
+		 	.attr('class', 'chart-path secondary')
 		 	.attr('d', line2);
 
 		 g.append('g')
+		 	.attr('class', 'secondary')
 		 	.selectAll('circle')
-		 	.data(espy)
+		 	.data(startedData)
 		 	.enter()
 		 	.append('circle')
 		 	.attr('cx', function(d) {
