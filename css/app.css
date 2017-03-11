@@ -611,7 +611,7 @@ header {
     stroke-width: 3px;
     r: 5; }
   .line-chart .secondary {
-    color: #ecedee; }
+    color: #cbcccc; }
     .line-chart .secondary.chart-path,
     .line-chart .secondary circle {
       stroke: currentColor; }
