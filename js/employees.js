@@ -249,7 +249,7 @@ window.app = window.app || {};
 	* @param {object} employeesPerYear Data for number of employees per year
 	*/
 	var loadHandler = function(error, employees, mapData, offices, cities, employeesPerYear) {
-		// randomize array
+		// randomize array, so we don't get same view every time
 		d3.shuffle(employees);
 
 		// create semi globals for datasets
@@ -258,12 +258,8 @@ window.app = window.app || {};
 		app.data.sgHometowns = cities;
 		app.data.employeesPerYear = employeesPerYear;
 
-		// put original employee properties into array before we add all kind of helper props
-		// initEmployeeProperties();
-
 		// initialize geo stuff
 		app.map.init(mapData);
-
 
 		// process employee data
 		app.dataprocessorEmployees.init();
@@ -272,7 +268,6 @@ window.app = window.app || {};
 		// process all geo-related data
 		app.dataprocessorGeo.init();
 		initEmployeesPerOfficeList();
-
 
 		// add shapes for nodes
 		app.nodes.init();
