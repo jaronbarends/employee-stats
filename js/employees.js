@@ -106,6 +106,10 @@ window.app = window.app || {};
 			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(app.bubbleChart.getGeoForce('x', coordsProp, 120)));
 			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(app.bubbleChart.getGeoForce('y', coordsProp, 20)));
 			app.bubbleChart.setDefaultCollisionForce();
+
+			if (coordsProp === 'officeCoords') {
+				$sgBody.addClass('highlight-office');
+			}
 		});
 		
 
@@ -245,6 +249,9 @@ window.app = window.app || {};
 	* @param {object} employeesPerYear Data for number of employees per year
 	*/
 	var loadHandler = function(error, employees, mapData, offices, cities, employeesPerYear) {
+		// randomize array
+		d3.shuffle(employees);
+
 		// create semi globals for datasets
 		app.data.sgEmployees = employees;
 		app.data.sgOffices = offices;
@@ -257,13 +264,13 @@ window.app = window.app || {};
 		// initialize geo stuff
 		app.map.init(mapData);
 
-		// process all geo-related data
-		app.dataprocessorGeo.init();
 
 		// process employee data
 		app.dataprocessorEmployees.init();
-
 		setEmployeeCount();
+
+		// process all geo-related data
+		app.dataprocessorGeo.init();
 		initEmployeesPerOfficeList();
 
 
@@ -309,7 +316,6 @@ window.app = window.app || {};
 			.defer(d3.csv, 'data/employee-count-per-year.csv')
 			.await(loadHandler);
 	};
-
 
 
 	// load data and kick things off

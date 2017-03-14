@@ -233,7 +233,6 @@ app.dataprocessorEmployees = (function($) {
 			newArr.push(yearObj);
 			currYear++;
 		}
-		console.log(newArr);
 
 		app.data.employeesStartedPerYear = newArr;
 	};
