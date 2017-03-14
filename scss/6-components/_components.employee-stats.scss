@@ -75,12 +75,6 @@ header {
 		transition: fill 0.5s, r 2s;
 	}
 
-	.map-view .employee {
-		stroke-width: 1px;
-		stroke: white;
-		fill: $color-dark-grey;;
-	}
-
 	.map-view .info-box--hometown,
 	.map-view .info-box--offices {
 		opacity: 1;
@@ -105,50 +99,41 @@ header {
 
 
 
-.highlight-gender .employee--female,
-.highlight-gender .employee--vrouw {
-	fill: pink;
+.highlight-gender {
+	.employee--female,
+	.employee--vrouw {
+		fill: pink;
+	}
+
+	.employee--male,
+	.employee--man {
+		fill: $color-blue;
+	}
 }
 
-.highlight-gender .employee--male,
-.highlight-gender .employee--man {
-	fill: $color-blue;
+.highlight-office {
+
+	g {// add g-selector for specificity
+
+		.employee--office-utrecht {
+			fill: $color-utrecht;
+		}
+		
+		.employee--office-amsterdam {
+			fill: $color-amsterdam;
+		}
+		
+		.employee--office-amersfoort {
+			fill: $color-amersfoort;
+		}
+		
+		.employee--office-eindhoven {
+			fill: $color-eindhoven;
+		}
+		
+		.employee--office-algemeen {
+			fill: $color-algemeen;
+		}
+	}
+
 }
-
-
-
-/*-- Start topographic stuff --*/
-	.map {
-		opacity: 0;
-		transition: opacity 0.5s ease-out;
-	}
-
-	.map-view .map {
-		opacity: 1;
-	}
-
-	.province {
-		fill: $color-light-grey;
-		fill: #ddd;
-		stroke: #fff;
-		stroke-width: 0.5;
-	}
-	.province:hover {
-		/*fill: #333;*/
-	}
-
-	.office {
-		opacity: 0;
-		transition: opacity 0.5s 1s ease-out;
-
-		fill: rgba(0,0,0, 0.8);
-		fill: rgba($color-blue, 0.5);
-
-	}
-
-	.map-view .office {
-		opacity: 1;
-	}
-/*-- End topographic stuff --*/
-
-

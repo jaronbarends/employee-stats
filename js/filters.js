@@ -141,9 +141,12 @@ app.filters = (function($) {
 
 		for (var bucketName in app.data.buckets) {
 			var guiName = app.data.buckets[bucketName].guiName;
-			// console.log(app.data.buckets[bucketName]);
 
-			bucketOptions += '<option value="' + bucketName + '">' + guiName + '</option>';
+			bucketOptions += '<option value="' + bucketName +'"';
+			if (bucketName === 'office') {
+				bucketOptions += ' selected="selected"'
+			}
+			bucketOptions += '>' + guiName + '</option>';
 		}
 		$bucketSelect.append(bucketOptions);
 
@@ -151,11 +154,15 @@ app.filters = (function($) {
 		// generate props to show
 		// console.log(app.filters.props);
 		for (var propName in app.filters.props) {
-			propertyOptions += '<option value="' + propName + '">' + app.filters.props[propName].guiName + '</option>';	
+			propertyOptions += '<option value="' + propName + '"';
+			if (propName === 'gender') {
+				propertyOptions += ' selected="selected"';
+			}
+			propertyOptions += '>' + app.filters.props[propName].guiName + '</option>';	
 		}
 		$propertiesSelect.append(propertyOptions);
 
-		$('#filter-chart-form').on('submit', showComparison);
+		$('#filter-chart-form').on('submit', showComparison).trigger('submit');
 	};
 
 	/**

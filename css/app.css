@@ -487,11 +487,6 @@ header {
   stroke-width: 2px;
   transition: fill 0.5s, r 2s; }
 
-.map-view .employee {
-  stroke-width: 1px;
-  stroke: white;
-  fill: #363636; }
-
 .map-view .info-box--hometown,
 .map-view .info-box--offices {
   opacity: 1; }
@@ -515,37 +510,47 @@ header {
 .highlight-gender .employee--man {
   fill: #00bdfa; }
 
-/*-- Start topographic stuff --*/
-.map {
-  opacity: 0;
-  transition: opacity 0.5s ease-out; }
+.highlight-office g .employee--office-utrecht {
+  fill: #d60042; }
 
-.map-view .map {
-  opacity: 1; }
+.highlight-office g .employee--office-amsterdam {
+  fill: #363636; }
 
-.province {
-  fill: #ecedee;
-  fill: #ddd;
-  stroke: #fff;
-  stroke-width: 0.5; }
+.highlight-office g .employee--office-amersfoort {
+  fill: #fecc00; }
 
-.province:hover {
-  /*fill: #333;*/ }
+.highlight-office g .employee--office-eindhoven {
+  fill: #00bdfa; }
 
-.office {
-  opacity: 0;
-  transition: opacity 0.5s 1s ease-out;
-  fill: rgba(0, 0, 0, 0.8);
-  fill: rgba(0, 189, 250, 0.5); }
+.highlight-office g .employee--office-algemeen {
+  fill: #d60042; }
 
-.map-view .office {
-  opacity: 1; }
-
-/*-- End topographic stuff --*/
 .chart-box {
   display: inline-block;
   margin: 1em;
   vertical-align: top; }
+
+.map {
+  opacity: 0;
+  transition: opacity 0.5s ease-out; }
+  .map-view .map {
+    opacity: 1; }
+  .map .province {
+    fill: #ecedee;
+    fill: #ddd;
+    stroke: #fff;
+    stroke-width: 0.5; }
+  .map .office {
+    opacity: 0;
+    transition: opacity 0.5s 1s ease-out;
+    fill: none; }
+  .map-view .map .office {
+    opacity: 1; }
+
+.map-view .employee {
+  stroke-width: 1px;
+  stroke: white;
+  fill: #363636; }
 
 .pie-chart {
   width: 100px;

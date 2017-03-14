@@ -23,6 +23,12 @@ $color-link-hover: $color-link;
 $color-text-default: $color-dark-grey !default;
 $color-text-less-important: #999 !default;//for less important text
 
+$color-utrecht: $color-red;
+$color-amsterdam: $color-dark-grey;
+$color-amersfoort: $color-yellow;
+$color-eindhoven: $color-blue;
+$color-algemeen: $color-utrecht;
+
 // color scales generated with chroma.js
 $color-scale-red-yellow: ('#d60042','#df4140','#e6633c','#ee7f36','#f49a2e','#f9b320','#fecc00');// https://gka.github.io/palettes/#colors=#d60042,#fecc00|steps=7|bez=1|coL=1
 $color-scale-blue-red: ('#00bdfa','#77a8d9','#9e93b8','#b57b99','#c4627b','#cf435e','#d60042');// https://gka.github.io/palettes/#colors=#00bdfa,#d60042|steps=7|bez=1|coL=1

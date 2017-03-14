@@ -1,0 +1,43 @@
+//-- Start topographic stuff --
+	.map {
+		opacity: 0;
+		transition: opacity 0.5s ease-out;
+
+		.map-view & {
+			opacity: 1;
+		}
+
+		.province {
+			fill: $color-light-grey;
+			fill: #ddd;
+			stroke: #fff;
+			stroke-width: 0.5;
+		}
+
+		.office {
+			opacity: 0;
+			transition: opacity 0.5s 1s ease-out;
+
+			// fill: rgba(0,0,0, 0.8);
+			// fill: rgba($color-blue, 0.5);
+			// stroke: $color-blue;
+			fill: none;
+
+		}
+
+		.map-view & .office {
+			opacity: 1;
+		}
+
+	}
+
+	.map-view {
+			.employee {
+				stroke-width: 1px;
+				stroke: white;
+				// stroke: rgba(0,0,0,0.5);
+				// stroke: transparent;
+				fill: $color-dark-grey;
+			}
+	}
+//-- End topographic stuff --
