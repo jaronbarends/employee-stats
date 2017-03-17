@@ -7,22 +7,29 @@ app.pieChart = (function($) {
 
 	/**
 	* create a pie chart
+	* @param {array} dataset The set to draw the chart for
+	* @param {string} containerId The id of the element in the html containing the chart's svg
 	* @returns {undefined}
 	*/
-	var drawChart = function(dataset, id) {
+	var drawChart = function(dataset, containerId, relativeSize, zup) {
 		// console.log(dataset);
 		var colorArray = app.util.randomizeArray(app.colors.band31.slice());//slice makes copy
 
 		var dataAccessor = function(d) {
 			return d.count;
 		};
-		
+
+		if (typeof relativeSize === 'undefined') {
+			relativeSize = 1;
+		}
+
 		var pie = d3.pie().value(dataAccessor)(dataset),
-			svg = d3.select('#'+id)
+			svg = d3.select('#'+containerId)
 				.append('svg')
 				.attr('class', 'pie-chart'),
-			outerRadius = parseInt(svg.style('width'), 10)/2,
-			// innerRadius = outerRadius/3,
+			svgWidth = parseInt(svg.style('width'), 10),
+			maxRadius = svgWidth/2,
+			outerRadius = maxRadius * Math.sqrt(relativeSize),
 			innerRadius = 0,
 			arc = d3.arc()
 					.innerRadius(innerRadius)
@@ -32,7 +39,7 @@ app.pieChart = (function($) {
 			.data(pie)
 			.enter()
 			.append('g')
-			.attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
+			.attr('transform', 'translate(' + svgWidth/2 + ',' + svgWidth/2 + ')');
 
 		arcs.append('path')
 			.attr('class', function(d) {
@@ -46,12 +53,14 @@ app.pieChart = (function($) {
 			})
 
 		// now add some info
-		var $chartBox = $('#'+id),
-			info = '<p>' + dataset[0].type;
+		var $chartBox = $('#'+containerId),
+			info = '<h4>' + dataset[0].type + '</h4>';
+
+		info += '<dl>';
 		for (var i=0, len=dataset.length; i<len; i++) {
-			info += '<br>' + dataset[i].prop + ':' + dataset[i].count;
+			info += '<dt>' + dataset[i].prop + '</dt><dd>' + dataset[i].count + '</dd>';
 		}
-		info += '</p>';
+		info += '</dl>';
 		$chartBox.append(info);
 
 	};

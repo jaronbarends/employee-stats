@@ -1,7 +1,7 @@
 changed column titles:
 birthday,age,startDate,parttimePercentage,hometown,gender,discipline,office,organisationalUnit,fulltimeOrParttime,birthplace,birthcountry
 
-in Excel: change location Algemeen to Utrecht
+in Excel: change location Algemeen to Utrecht (best is to do this in text editor in csv; replace ,Algemeen, with ,Utrecht,)
 
 Getting new geo data:
 in employees.js:

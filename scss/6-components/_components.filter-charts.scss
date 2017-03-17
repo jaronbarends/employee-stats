@@ -6,4 +6,17 @@
 	display: inline-block;
 	margin: 1em;
 	vertical-align: top;
+
+	dt {
+		display: inline-block;
+		width: 60%;
+		text-align: right;
+	}
+
+	dd {
+		display: inline-block;
+		padding-left: 0.5em;
+		width: 40%;
+	}
+
 }
