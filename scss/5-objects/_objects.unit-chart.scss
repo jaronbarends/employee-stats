@@ -1,0 +1,16 @@
+.unit-chart {
+	height: 200px;
+	width: 600px;
+
+	circle {
+		fill: $color-blue;
+	}
+
+	.axis--y {
+		.tick {
+			line {
+				display: none;
+			}
+		}
+	}
+}

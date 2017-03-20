@@ -276,6 +276,7 @@ window.app = window.app || {};
 		calculateAgeInfo();
 
 		app.disciplineChart.init();
+		app.unitChart.init();
 
 		// initialize force simulation
 		app.bubbleChart.initSimulation();

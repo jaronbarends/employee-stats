@@ -1,15 +1,39 @@
 window.app = window.app || {};
 
-app.disciplineChart = (function($) {
+app.unitChart = (function($) {
 
 	'use strict';
+
+
+	/**
+	* flatten the dataset to employee level,
+	* so we can bind the inidiviual employees to 
+	* @param {array} dataset The dataset to flatten
+	* @returns {array} The flattened dataset
+	*/
+	var flattenDataset = function(dataset) {
+		var flatSet = [];
+
+		for (var i=0, len=dataset.length; i<len; i++) {
+			var employees = dataset[i].employees;
+			for (var j=0, len2=employees.length; j<len2; j++) {
+				var emp = employees[j];
+				emp.typeIdx = i;
+				emp.employeeOfTypeIdx = j;
+				flatSet.push(emp);
+			}
+		}
+
+		return flatSet;
+	};
+	
 
 	/**
 	* create chart for disciplines
 	* @returns {undefined}
 	*/
-	var createDisciplineChart = function(dataset) {
-		var chart = d3.select('#discipline-chart'),
+	var createUnitChart = function(dataset) {
+		var chart = d3.select('#discipline-chart2'),
 			svgWidth = parseInt(chart.style('width'), 10),
 			svgHeight = parseInt(chart.style('height'), 10),
 			margin = {
@@ -24,6 +48,9 @@ app.disciplineChart = (function($) {
 		dataset = dataset.sort(function(a,b) {
 			return b.employees.length - a.employees.length;
 		});
+
+		var flatSet = flattenDataset(dataset);
+		// console.log(flatSet);
 
 		var yScale = d3.scaleBand()
 				.domain(d3.range(dataset.length))
@@ -45,21 +72,24 @@ app.disciplineChart = (function($) {
 			yAxis = d3.axisLeft(disciplineScale);
 			// yAxis = d3.axisLeft(yScale)
 
-		// render bars
+		var r = xScale(0.4),
+			marginTop = Math.ceil(yScale.bandwidth()/2);
+
+		// render units
 		chart.append('g')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-			.selectAll('.bar')
-			.data(dataset)
+			.selectAll('.unit')
+			.data(flatSet)
 			.enter()
-			.append('rect')
-			.attr('y', function(d, i) {
-				return yScale(i);
+			.append('circle')
+			.attr('cy', function(d) {
+				return yScale(d.typeIdx) + marginTop;
 			})
-			.attr('x', 0)
-			.attr('height', yScale.bandwidth())
-			.attr('width', function(d) {
-				return xScale(d.employees.length);
-			});
+			.attr('cx', function(d) {
+				return xScale(d.employeeOfTypeIdx);
+			})
+			.attr('r', r)
+
 
 		// render axes
 		chart.append('g')
@@ -80,7 +110,7 @@ app.disciplineChart = (function($) {
 	*/
 	var init = function() {
 		var dataset = app.data.buckets.discipline.dataset;
-		createDisciplineChart(dataset);
+		createUnitChart(dataset);
 	};
 
 
