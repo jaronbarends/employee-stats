@@ -411,6 +411,13 @@ h3 {
   color: #d60042;
   font-weight: bold; }
 
+.axis g {
+  font-size: 12px;
+  color: #363636; }
+
+.tick text {
+  fill: #363636; }
+
 .bar-chart {
   height: 200px;
   width: 600px; }
@@ -641,21 +648,11 @@ header {
 
 .bar-chart--discipline {
   width: 600px;
-  height: 600px;
-  color: #fff;
-  color: white;
-  margin: 0;
-  padding: 2px;
-  font-family: "verdana"; }
+  height: 600px; }
 
 .unit-chart--discipline {
   width: 800px;
-  height: 600px;
-  color: #fff;
-  color: white;
-  margin: 0;
-  padding: 2px;
-  font-family: "verdana"; }
+  height: 600px; }
 
 .info-box--employees-general {
   position: absolute;

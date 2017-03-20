@@ -50,7 +50,6 @@ app.unitChart = (function($) {
 		});
 
 		var flatSet = flattenDataset(dataset);
-		// console.log(flatSet);
 
 		var yScale = d3.scaleBand()
 				.domain(d3.range(dataset.length))

@@ -275,7 +275,7 @@ window.app = window.app || {};
 		app.ageChart.init();
 		calculateAgeInfo();
 
-		app.disciplineChart.init();
+		// app.disciplineChart.init();
 		app.unitChart.init();
 
 		// initialize force simulation
