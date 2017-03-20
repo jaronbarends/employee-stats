@@ -70,9 +70,11 @@ app.unitChart = (function($) {
 
 		var xAxis = d3.axisBottom(xScale),
 			yAxis = d3.axisLeft(disciplineScale);
-			// yAxis = d3.axisLeft(yScale)
 
-		var r = xScale(0.4),
+		// determine radius of unit-circles by checking at which axis one unit smallest
+		var unitSizeY = yScale.bandwidth(),// this already includes padding
+			unitSizeX = xScale(1) * 0.8,// multiply by 0.8 to create padding
+			r = Math.min(unitSizeX, unitSizeY)/2,
 			marginTop = Math.ceil(yScale.bandwidth()/2);
 
 		// render units
