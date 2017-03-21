@@ -20,6 +20,7 @@ window.app = window.app || {};
 			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
 			office: { guiName: 'Office', dataset: []},
 			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
+			ageRound: { guiName: 'Age', dataset: []},
 			startYear: { guiName: 'Starting year', dataset: []}
 		},
 		sgOffices: [],
@@ -242,8 +243,13 @@ window.app = window.app || {};
 	var drawDisciplineChart = function() {
 		var options = {
 			dataset: app.data.buckets.discipline.dataset,
-			chartSelector: '#unit-chart--discipline'
+			chartSelector: '#unit-chart--discipline',
+			sortFunction: app.util.sortBucketByEmployeeCount
 		};
+		// var options = {
+		// 	dataset: app.data.buckets.ageRound.dataset,
+		// 	chartSelector: '#unit-chart--discipline',
+		// };
 
 		app.unitChart.drawChart(options);
 	};

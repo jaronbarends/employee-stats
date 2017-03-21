@@ -30,7 +30,7 @@ app.unitChart = (function($) {
 
 	/**
 	* create the chart
-	* @param {object} options {dataset:array, chartSelector:string}
+	* @param {object} options {dataset:array, chartSelector:string[, sortFunction:function]}
 	* @returns {undefined}
 	*/
 	var drawChart = function(options) {
@@ -47,9 +47,10 @@ app.unitChart = (function($) {
 			width = svgWidth - margin.left - margin.right,
 			height = svgHeight - margin.top - margin.bottom;
 
-		dataset = dataset.sort(function(a,b) {
-			return b.employees.length - a.employees.length;
-		});
+		// when a sorting function has been passed, sort the array
+		if (options.sortFunction) {
+			dataset = dataset.sort(options.sortFunction);
+		}
 
 		var flatSet = flattenDataset(dataset);
 

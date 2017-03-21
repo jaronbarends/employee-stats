@@ -1,5 +1,3 @@
-window.app = window.app || {};
-
 app.dataprocessorEmployees = (function($) {
 
 	'use strict';
@@ -134,6 +132,12 @@ app.dataprocessorEmployees = (function($) {
 			ageRound = Math.floor(age);
 
 
+		emp.ageRound = ageRound;
+		emp.ageExact = age;
+
+		// addEmployeeToBucket(emp, 'age')
+
+
 		// keep track of min and max ages, and the sum
 		sgAgeMin = Math.min(ageRound, sgAgeMin);
 		sgAgeMax = Math.max(ageRound, sgAgeMax);
@@ -144,6 +148,7 @@ app.dataprocessorEmployees = (function($) {
 			sgAges[ageRound] = 1;
 			// this creates an array like sgAges[22], sgAges[15]
 			// this is somehow different from a normal array like sgAges[0], [1] etc
+			// my guess is that the array is converted to an object, with the numbers as property names
 		} else {
 			sgAges[ageRound]++;
 		}
@@ -292,6 +297,24 @@ app.dataprocessorEmployees = (function($) {
 	};
 
 
+	/**
+	* sort buckets with time-based data like age
+	* @returns {undefined}
+	*/
+	var sortTimeBuckets = function() {
+		var buckets = [
+				app.data.buckets.ageRound
+			];
+		
+		for (var i=0, len=buckets.length; i<len; i++) {
+			buckets[i].dataset.sort(function(a,b) {
+				return a.type - b.type;
+			});	
+		}
+
+	};
+
+
 
 	/**
 	* add employee to bucket which specific prop
@@ -304,7 +327,6 @@ app.dataprocessorEmployees = (function($) {
 		var type = employee[bucketName],
 			dataset = app.data.buckets[bucketName].dataset,// like disciplines dataset
 			typeExists = false;
-
 
 		for (var i=0, len=dataset.length; i<len; i++) {
 			var bucket = dataset[i];
@@ -344,6 +366,8 @@ app.dataprocessorEmployees = (function($) {
 				addEmployeeToBucket(employee, bucketName);
 			}
 		}
+
+		sortTimeBuckets();
 
 	};
 

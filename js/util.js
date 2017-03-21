@@ -58,22 +58,33 @@ app.util = (function($) {
 	};
 
 
-		/**
-		* calculate the years passed between a certain date and today
-		* @param {string} pastDateStr Date in the past, format d/m/y
-		* @returns {number} The number of years (not rounded)
-		*/
-		var getYearsUntilToday = function(pastDateStr) {
-			var now = new Date(),
-				dateArr = pastDateStr.split('/'),
-				pastDate = new Date(dateArr[2], dateArr[1]-1, dateArr[0]),// month is 0-based, hence -1
-				nowMsecs = now.getTime(),
-				pastDateMsecs = pastDate.getTime(),
-				diffMsecs = nowMsecs - pastDateMsecs,// diff between dates in milliseconds
-				diffYear = diffMsecs / (1000 * 60 * 60 * 24 * 365);// not entirely accurate (no leap years) but good enough for now
+	/**
+	* sorting function to sort the types in a bucket array by the number of employees
+	* this function will be passed to the bucket array's sort function
+	* @returns {number} a number which determines the sorting behavior
+	*/
+	var sortBucketByEmployeeCount = function(a, b) {
+		return b.employees.length - a.employees.length;
+	};
+	
 
-			return diffYear;
-		};
+
+	/**
+	* calculate the years passed between a certain date and today
+	* @param {string} pastDateStr Date in the past, format d/m/y
+	* @returns {number} The number of years (not rounded)
+	*/
+	var getYearsUntilToday = function(pastDateStr) {
+		var now = new Date(),
+			dateArr = pastDateStr.split('/'),
+			pastDate = new Date(dateArr[2], dateArr[1]-1, dateArr[0]),// month is 0-based, hence -1
+			nowMsecs = now.getTime(),
+			pastDateMsecs = pastDate.getTime(),
+			diffMsecs = nowMsecs - pastDateMsecs,// diff between dates in milliseconds
+			diffYear = diffMsecs / (1000 * 60 * 60 * 24 * 365);// not entirely accurate (no leap years) but good enough for now
+
+		return diffYear;
+	};
 
 
 	
@@ -82,6 +93,7 @@ app.util = (function($) {
 		removeBodyClasses: removeBodyClasses,
 		convertToClassName: convertToClassName,
 		randomizeArray: randomizeArray,
+		sortBucketByEmployeeCount: sortBucketByEmployeeCount,
 		getYearsUntilToday: getYearsUntilToday,
 	};
 

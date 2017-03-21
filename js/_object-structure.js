@@ -20,5 +20,16 @@ app.data.buckets = {
 	discipline: {// this is a bucket
 		guiName: 'Discipline',
 		dataset: []
+	},
+	age: {
+		guiName: 'Age',
+		dataset: {
+			[
+				{
+					type: 20.
+					employees: []
+				}
+			]
+		}
 	}
 }
