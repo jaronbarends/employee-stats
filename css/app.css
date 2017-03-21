@@ -415,8 +415,9 @@ h3 {
   font-size: 12px;
   color: #363636; }
 
-.tick text {
-  fill: #363636; }
+.axis--y .tick text {
+  fill: #363636;
+  transform: translateX(-0.2em); }
 
 .bar-chart {
   height: 200px;

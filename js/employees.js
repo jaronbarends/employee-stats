@@ -232,6 +232,22 @@ window.app = window.app || {};
 
 		$value.text(numEmployees);
 	};
+
+
+
+	/**
+	* draw unit chart for disciplines
+	* @returns {undefined}
+	*/
+	var drawDisciplineChart = function() {
+		var options = {
+			dataset: app.data.buckets.discipline.dataset,
+			chartSelector: '#unit-chart--discipline'
+		};
+
+		app.unitChart.drawChart(options);
+	};
+	
 	
 
 	
@@ -276,7 +292,7 @@ window.app = window.app || {};
 		calculateAgeInfo();
 
 		// app.disciplineChart.init();
-		app.unitChart.init();
+		drawDisciplineChart();
 
 		// initialize force simulation
 		app.bubbleChart.initSimulation();

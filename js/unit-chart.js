@@ -29,11 +29,13 @@ app.unitChart = (function($) {
 	
 
 	/**
-	* create chart for disciplines
+	* create the chart
+	* @param {object} options {dataset:array, chartSelector:string}
 	* @returns {undefined}
 	*/
-	var createUnitChart = function(dataset) {
-		var chart = d3.select('#discipline-chart2'),
+	var drawChart = function(options) {
+		var dataset = options.dataset,
+			chart = d3.select(options.chartSelector),
 			svgWidth = parseInt(chart.style('width'), 10),
 			svgHeight = parseInt(chart.style('height'), 10),
 			margin = {
@@ -62,13 +64,14 @@ app.unitChart = (function($) {
 					})])
 				.range([0, width]);
 
-		var disciplineScale = d3.scaleBand()
+		var typeScale = d3.scaleBand()
 				.domain(dataset.map(function(d) {return d.type;}))
 				.rangeRound([0, height])
 				.padding(0.1);
 
 		var xAxis = d3.axisBottom(xScale),
-			yAxis = d3.axisLeft(disciplineScale);
+			yAxis = d3.axisLeft(typeScale)
+						.tickPadding(10);
 
 		// determine radius of unit-circles by checking at which axis one unit smallest
 		var unitSizeY = yScale.bandwidth(),// this already includes padding
@@ -110,15 +113,20 @@ app.unitChart = (function($) {
 	* @returns {undefined}
 	*/
 	var init = function() {
-		var dataset = app.data.buckets.discipline.dataset;
-		createUnitChart(dataset);
+		var options = {
+			// dataset: app.data.buckets.discipline.dataset,
+			dataset: app.data.buckets.discipline.dataset,
+			chartSelector: '#unit-chart--discipline'
+		};
+
+		drawChart(options);
 	};
 
 
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		drawChart: drawChart
 	};
 
 	return publicMethodsAndProps;

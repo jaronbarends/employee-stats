@@ -6,9 +6,14 @@
 	}
 }
 
-.tick {
+.axis--y {
 
-	text {
-		fill: $color-dark-grey;
+	.tick {
+
+		text {
+			fill: $color-dark-grey;
+			transform: translateX(-0.2em);
+		}
 	}
+
 }
