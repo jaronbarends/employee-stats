@@ -244,7 +244,13 @@ window.app = window.app || {};
 		var options = {
 			dataset: app.data.buckets.discipline.dataset,
 			chartSelector: '#unit-chart--discipline',
-			sortFunction: app.util.sortBucketByEmployeeCount
+			sortFunction: app.util.sortBucketByEmployeeCount,
+			margin: {
+				top: 10,
+				right: 10,
+				bottom: 30,
+				left: 200
+			}
 		};
 
 		app.unitChart.drawChart(options);
@@ -259,7 +265,13 @@ window.app = window.app || {};
 		var options = {
 			dataset: app.data.buckets.ageRound.dataset,
 			chartSelector: '#unit-chart--age',
-			isHorizontal: false
+			isHorizontal: false,
+			margin: {
+				top: 10,
+				right: 10,
+				bottom: 50,
+				left: 30
+			}
 		};
 
 		app.unitChart.drawChart(options);
