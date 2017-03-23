@@ -197,25 +197,23 @@ app.bubbleChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		// init: init
-		getGeoForce: getGeoForce,
-		forceXGender: forceXGender,
-		forceXDiscipline: forceXDiscipline,
-		forceXGender: forceXGender,
-		forceYGrid: forceYGrid,
-		forceXCenter: forceXCenter,
-		forceYCenter: forceYCenter,
-		xForce: xForce,
-		yForce: yForce,
-		setDefaultCollisionForce: setDefaultCollisionForce,
-		initSimulation: initSimulation,
-		getSimulation: getSimulation,
-		simulationTickHandler: simulationTickHandler,
-		changeForce: changeForce,
-
-		sgSimulation: sgSimulation,
-		sgForceStrength: sgForceStrength,
-		sgAlphaTarget: sgAlphaTarget,
+		// init
+		getGeoForce,
+		forceXGender,
+		forceXDiscipline,
+		forceYGrid,
+		forceXCenter,
+		forceYCenter,
+		xForce,
+		yForce,
+		setDefaultCollisionForce,
+		initSimulation,
+		getSimulation,
+		simulationTickHandler,
+		changeForce,
+		sgSimulation,
+		sgForceStrength,
+		sgAlphaTarget,
 	};
 
 	return publicMethodsAndProps;

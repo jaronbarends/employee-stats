@@ -1,8 +1,10 @@
 window.app = window.app || {};
 
-app.filters = (function($) {
+window.app.filters = (function($) {
 
 	'use strict';
+
+	var app = window.app;
 
 	// filters variable naming:
 	// for every [bucket] show [prop]
@@ -130,9 +132,9 @@ app.filters = (function($) {
  			for (var i=0, len=joinedDatasets.length; i<len; i++) {
 				var dataset = joinedDatasets[i],
 					options = {
-						chartType: chartType,
+						chartType,
 						chartIdx: i,
-						extent: extent
+						extent
 					};
 
 				createFilterChart(dataset, options);
@@ -212,8 +214,8 @@ app.filters = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		props: props,
-		init: init
+		props,
+		init
 	};
 
 	return publicMethodsAndProps;

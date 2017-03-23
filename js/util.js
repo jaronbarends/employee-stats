@@ -1,8 +1,10 @@
 window.app = window.app || {};
 
-app.util = (function($) {
+window.app.util = (function($) {
 
 	'use strict';
+
+	var app = window.app;
 
 	var $sgBody = $('body'); 
 
@@ -90,11 +92,11 @@ app.util = (function($) {
 	
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		removeBodyClasses: removeBodyClasses,
-		convertToClassName: convertToClassName,
-		randomizeArray: randomizeArray,
-		sortBucketByEmployeeCount: sortBucketByEmployeeCount,
-		getYearsUntilToday: getYearsUntilToday,
+		removeBodyClasses,
+		convertToClassName,
+		randomizeArray,
+		sortBucketByEmployeeCount,
+		getYearsUntilToday,
 	};
 
 	return publicMethodsAndProps;

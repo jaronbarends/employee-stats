@@ -1,8 +1,10 @@
 window.app = window.app || {};
 
-app.unitChart = (function($) {
+window.app.unitChart = (function($) {
 
 	'use strict';
+
+	var app = window.app;
 
 
 	/**
@@ -93,7 +95,7 @@ app.unitChart = (function($) {
 			.attr('cx', function(d) {
 				return xScale(d.employeeOfTypeIdx);
 			})
-			.attr('r', r)
+			.attr('r', r);
 
 
 		// render axes
@@ -127,7 +129,7 @@ app.unitChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		drawChart: drawChart
+		drawChart
 	};
 
 	return publicMethodsAndProps;

@@ -4,6 +4,8 @@ app.dataprocessorGeo = (function($) {
 
 	'use strict';
 
+	var app = window.app;
+
 
 	//-- Start geo functions
 
@@ -17,12 +19,7 @@ app.dataprocessorGeo = (function($) {
 		* @param {array} dataset The dataset containing the locations
 		* @returns {undefined}
 		*/
-		var matchEmployeesWithLocations = function(options) {
-			var locationData = options.locationData,
-				datasetLocationProp = options.datasetLocationProp,
-				employeeLocationProp = options.employeeLocationProp,
-				locationCoordsProp = options.locationCoordsProp,
-				unknownPlaces = [];
+		var matchEmployeesWithLocations = function({locationData, datasetLocationProp, employeeLocationProp, locationCoordsProp}) {
 
 			// enrich location-data: add prop for employee count to every location
 			for (var i=0, locationCount=locationData.length; i<locationCount; i++) {
@@ -181,7 +178,7 @@ app.dataprocessorGeo = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		init
 	};
 
 	return publicMethodsAndProps;

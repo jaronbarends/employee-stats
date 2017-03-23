@@ -1,8 +1,10 @@
 window.app = window.app || {};
 
-app.map = (function($) {
+window.app.map = (function($) {
 
 	'use strict';
+
+	var app = window.app;
 
 	// vars for map stuff
 	var elements = {
@@ -105,8 +107,8 @@ app.map = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		elements: elements,
-		init: init,
+		elements,
+		init,
 		show,
 		hide
 	};

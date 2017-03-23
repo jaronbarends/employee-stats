@@ -1,6 +1,6 @@
 window.app = window.app || {};
 
-app.ageChart = (function($) {
+window.app.ageChart = (function($) {
 
 	'use strict';
 
@@ -90,7 +90,7 @@ app.ageChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		init
 	};
 
 	return publicMethodsAndProps;

@@ -4,6 +4,8 @@ app.nodes = (function($) {
 
 	'use strict';
 
+	var app = window.app;
+
 	// vars for employee nodes
 	var elements = {
 		sgNodes: null,// d3 selection of all employee nodes
@@ -140,11 +142,11 @@ app.nodes = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndPropsAndProps = {
-		elements: elements,
-		init: init,
-		setNodeSize: setNodeSize,
-		setNodeSpacing: setNodeSpacing,
-		getNodeGridPosition: getNodeGridPosition,
+		elements,
+		init,
+		setNodeSize,
+		setNodeSpacing,
+		getNodeGridPosition,
 	};
 
 	return publicMethodsAndPropsAndProps;

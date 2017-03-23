@@ -1,8 +1,10 @@
 window.app = window.app || {};
 
-app.lineChart = (function($) {
+window.app.lineChart = (function($) {
 
 	'use strict';
+
+	var app = window.app;
 
 	var sgChartGroup,
 		sgWidth,
@@ -174,7 +176,7 @@ app.lineChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		init
 	};
 
 	return publicMethodsAndProps;

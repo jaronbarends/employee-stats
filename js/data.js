@@ -1,6 +1,6 @@
 window.app = window.app || {};
 
-app.data = (function($) {
+window.app.data = (function($) {
 
 	'use strict';
 
@@ -15,7 +15,7 @@ app.data = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		init
 	};
 
 	return publicMethodsAndProps;

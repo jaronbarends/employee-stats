@@ -4,6 +4,8 @@ app.disciplineChart = (function($) {
 
 	'use strict';
 
+	var app = window.app;
+
 	/**
 	* create chart for disciplines
 	* @returns {undefined}
@@ -87,7 +89,7 @@ app.disciplineChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		init
 	};
 
 	return publicMethodsAndProps;

@@ -1,21 +1,23 @@
 window.app = window.app || {};
 
-app.modulename = (function($) {
+window.app.modulename = (function($) {
 
 	'use strict';
+
+	let app = window.app;
 
 	/**
 	* 
 	* @returns {undefined}
 	*/
-	var init = function() {
+	const init = function() {
 	};
 
 
 
 	// define public methods that are available through app
-	var publicMethodsAndProps = {
-		init: init
+	const publicMethodsAndProps = {
+		init
 	};
 
 	return publicMethodsAndProps;

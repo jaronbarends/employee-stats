@@ -1,9 +1,10 @@
 window.app = window.app || {};
 
-app.pieChart = (function($) {
+window.app.pieChart = (function($) {
 
 	'use strict';
 
+	var app = window.app;
 
 	/**
 	* create a pie chart
@@ -70,7 +71,7 @@ app.pieChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		drawChart: drawChart
+		drawChart
 	};
 
 	return publicMethodsAndProps;

@@ -1,6 +1,10 @@
-app.dataprocessorEmployees = (function($) {
+window.app = window.app || {};
+
+window.app.dataprocessorEmployees = (function($) {
 
 	'use strict';
+
+	var app = window.app;
 
 	var sgAges = [],
 		sgAgeMin = 1000,
@@ -182,8 +186,8 @@ app.dataprocessorEmployees = (function($) {
 
 		if (!yearFound) {
 			yearObj = {
-				yearStr: yearStr,
-				year: year,
+				yearStr,
+				year,
 				count: 1
 			};
 			app.data.employeesStartedPerYear.push(yearObj);
@@ -340,7 +344,7 @@ app.dataprocessorEmployees = (function($) {
 		// if no object exists for this type, create one and push it
 		if (!typeExists) {
 			var typeObj = {
-				type: type,
+				type,
 				employees: [employee]
 			}
 			dataset.push(typeObj);
@@ -387,7 +391,7 @@ app.dataprocessorEmployees = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init: init
+		init
 	};
 
 	return publicMethodsAndProps;
