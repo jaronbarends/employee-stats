@@ -5,7 +5,8 @@ window.app = window.app || {};
 	'use strict';
 
 
-	var $sgBody = $('body');
+	var $sgBody = $('body'),
+		app = window.app;
 	
 	// vars for datasets
 
@@ -234,6 +235,8 @@ window.app = window.app || {};
 		$value.text(numEmployees);
 	};
 
+	zup = aap;
+
 
 
 	/**
@@ -246,10 +249,10 @@ window.app = window.app || {};
 			chartSelector: '#unit-chart--discipline',
 			sortFunction: app.util.sortBucketByEmployeeCount
 		};
-		// var options = {
-		// 	dataset: app.data.buckets.ageRound.dataset,
-		// 	chartSelector: '#unit-chart--discipline',
-		// };
+		options = {
+			dataset: app.data.buckets.ageRound.dataset,
+			chartSelector: '#unit-chart--discipline',
+		};
 
 		app.unitChart.drawChart(options);
 	};
