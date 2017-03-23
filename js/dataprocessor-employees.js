@@ -86,9 +86,10 @@ window.app.dataprocessorEmployees = (function($) {
 
 		// check if unit includes an office name
 		// when not on its own, eFocus is always preceded by office name, so it will be cut off as well
-		for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
-			var office = app.data.sgOffices[i].city.toLowerCase(),
-				oIdx = unitLc.indexOf(' '+office);
+		// for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
+		for (let office of app.data.sgOffices) {
+			office = office.city.toLowerCase();
+			var oIdx = unitLc.indexOf(' '+office);
 
 			if (oIdx > 0) {
 				unit = unit.substr(0, oIdx);

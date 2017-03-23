@@ -1,17 +1,24 @@
+/*
+*
+*
+* THIS IS THE OLD AGE-CHART CODE
+*
+*/
+
+
+
 window.app = window.app || {};
 
 window.app.ageChart = (function($) {
 
 	'use strict';
 
-	const app = window.app;
-
 	/**
 	* create chart for age
 	* @returns {undefined}
 	*/
 	var createAgeChart = function() {
-		var ageChart = d3.select('#age-chart-old'),
+		var ageChart = d3.select('#age-chart'),
 			svgWidth = parseInt(ageChart.style('width'), 10),
 			svgHeight = parseInt(ageChart.style('height'), 10),
 			margin = {

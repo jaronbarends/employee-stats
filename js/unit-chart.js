@@ -35,9 +35,8 @@ window.app.unitChart = (function($) {
 	* @param {object} options {dataset:array, chartSelector:string[, sortFunction:function]}
 	* @returns {undefined}
 	*/
-	var drawChart = function(options) {
-		var dataset = options.dataset,
-			chart = d3.select(options.chartSelector),
+	const drawChart = function({dataset, chartSelector, sortFunction, isHorizontal = true}) {
+		let chart = d3.select(chartSelector),
 			svgWidth = parseInt(chart.style('width'), 10),
 			svgHeight = parseInt(chart.style('height'), 10),
 			margin = {
@@ -50,52 +49,103 @@ window.app.unitChart = (function($) {
 			height = svgHeight - margin.top - margin.bottom;
 
 		// when a sorting function has been passed, sort the array
-		if (options.sortFunction) {
-			dataset = dataset.sort(options.sortFunction);
+		if (sortFunction) {
+			dataset = dataset.sort(sortFunction);
 		}
 
-		var flatSet = flattenDataset(dataset);
+		let flatSet = flattenDataset(dataset);
 
-		var yScale = d3.scaleBand()
+		// we have a few different scales:
+		// the type scale is a numeric scale to calculate positions for the type-data
+		// the type label scale is a scale that can return the proper type name
+		// the employee count scale is the scale for the number of employees
+		// both the type and the employee count can be used vertically or horizontally
+		// so we can't name them xScale and yScale
+
+		// first determine which propery (width or height) to use for each scale
+		let typeScaleHeightOrWidth,
+			employeeCountHeightOrWidth;
+
+		if (isHorizontal) {
+			typeScaleHeightOrWidth = height;
+			employeeCountHeightOrWidth = width;
+		} else {
+			typeScaleHeightOrWidth = width;
+			employeeCountHeightOrWidth = height;
+		}
+
+		let typeScale = d3.scaleBand()
 				.domain(d3.range(dataset.length))
-				.rangeRound([0, height])
+				.rangeRound([0, typeScaleHeightOrWidth])
 				.padding(0.1);
 
-		var xScale = d3.scaleLinear()
+		let typeLabelScale = d3.scaleBand()
+				.domain(dataset.map(function(d) {return d.type;}))
+				.rangeRound([0, typeScaleHeightOrWidth])
+				.padding(0.1);
+
+		let employeeCountScale = d3.scaleLinear()
 				.domain([0, d3.max(dataset, function(d) {
 						return d.employees.length;
 					})])
-				.range([0, width]);
+				.range([0, employeeCountHeightOrWidth]);
 
-		var typeScale = d3.scaleBand()
-				.domain(dataset.map(function(d) {return d.type;}))
-				.rangeRound([0, height])
-				.padding(0.1);
+		// now set the proper scale for each axis
+		let xScale,
+			xTicksScale,
+			yScale,
+			yTicksScale;
 
-		var xAxis = d3.axisBottom(xScale),
-			yAxis = d3.axisLeft(typeScale)
+		if (isHorizontal) {
+			xScale = employeeCountScale;
+			xTicksScale = xScale;
+			yScale = typeScale;
+			yTicksScale = typeLabelScale;
+		} else {
+			xScale = typeScale;
+			xTicksScale = typeLabelScale;
+			yScale = employeeCountScale;
+			yTicksScale = yScale;
+		}
+
+		let xAxis = d3.axisBottom(xTicksScale),
+			yAxis = d3.axisLeft(yTicksScale)
 						.tickPadding(10);
 
-		// determine radius of unit-circles by checking at which axis one unit smallest
-		var unitSizeY = yScale.bandwidth(),// this already includes padding
-			unitSizeX = xScale(1) * 0.8,// multiply by 0.8 to create padding
-			r = Math.min(unitSizeX, unitSizeY)/2,
-			marginTop = Math.ceil(yScale.bandwidth()/2);
+		// determine radius of unit-circles by checking at which axis one unit is the smallest
+		let unitSizeAxis1 = typeScale.bandwidth(),// this already includes padding
+			unitSizeAxis2 = employeeCountScale(1) * 0.8,// multiply by 0.8 to create padding
+			r = Math.min(unitSizeAxis2, unitSizeAxis1)/2,
+			cMargin = Math.ceil(typeScale.bandwidth()/2);
+
+		// TODO For the axis which does not dictate the unit size, you would want to recalculate the
+		// height the svg (or the input domain) should have to prevent units too far apart
 
 		// render units
-		chart.append('g')
+		let circle = chart.append('g')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 			.selectAll('.unit')
 			.data(flatSet)
 			.enter()
 			.append('circle')
-			.attr('cy', function(d) {
-				return yScale(d.typeIdx) + marginTop;
-			})
-			.attr('cx', function(d) {
-				return xScale(d.employeeOfTypeIdx);
-			})
 			.attr('r', r);
+
+		if (isHorizontal) {
+			circle.attr('cy', function(d) {
+					return typeScale(d.typeIdx) + cMargin;
+				})
+				.attr('cx', function(d) {
+					return employeeCountScale(d.employeeOfTypeIdx);
+				});
+		} else {
+			circle.attr('cx', function(d) {
+					return typeScale(d.typeIdx) + cMargin;
+				})
+				.attr('cy', function(d) {
+					return height - employeeCountScale(d.employeeOfTypeIdx);
+				});
+		}
+			
 
 
 		// render axes
@@ -108,21 +158,6 @@ window.app.unitChart = (function($) {
 			.attr('class', 'axis axis--y')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 			.call(yAxis);
-	};
-
-
-	/**
-	* 
-	* @returns {undefined}
-	*/
-	var init = function() {
-		var options = {
-			// dataset: app.data.buckets.discipline.dataset,
-			dataset: app.data.buckets.discipline.dataset,
-			chartSelector: '#unit-chart--discipline'
-		};
-
-		drawChart(options);
 	};
 
 
