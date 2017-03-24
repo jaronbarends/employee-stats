@@ -173,6 +173,9 @@ window.app.unitChart = (function($) {
 			unitSizeAxis2 = sgEmployeeCountScale(1) * 0.8,// multiply by 0.8 to create padding
 			r = Math.min(unitSizeAxis2, unitSizeAxis1)/2;
 
+		// radius calculation doesn't always turn out well
+		r = 4;
+
 		let eachCircle = sgChart.append('g')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 			.selectAll('.unit')
@@ -220,7 +223,7 @@ window.app.unitChart = (function($) {
 				return sgTypeScale(d.typeIdx) + cMargin;
 			})
 			.attr(cxOrCyForEmployeeCount, function(d) {
-				return sgEmployeeCountScale(d.employeeOfTypeIdx);
+				return sgEmployeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
 			});
 
 	};
