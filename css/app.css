@@ -499,9 +499,10 @@ header {
 
 .employee {
   fill: #00bdfa;
-  stroke: #363636;
-  stroke-width: 2px;
   transition: fill 0.5s, r 2s; }
+  .employee-group .employee {
+    stroke: #363636;
+    stroke-width: 2px; }
 
 .map-view .info-box--hometown,
 .map-view .info-box--offices {
@@ -537,9 +538,6 @@ header {
 
 .highlight-office g .employee--office-eindhoven {
   fill: #00bdfa; }
-
-.highlight-office g .employee--office-algemeen {
-  fill: #d60042; }
 
 .chart-box {
   display: inline-block;
@@ -654,6 +652,18 @@ header {
 .unit-chart--discipline {
   width: 800px;
   height: 600px; }
+
+.unit-chart--age .axis--x .tick line {
+  stroke: #ccc; }
+
+.unit-chart--age .axis--x .tick text {
+  display: none; }
+
+.unit-chart--age .axis--x .tick:nth-child(5n+3) line {
+  stroke: #363636; }
+
+.unit-chart--age .axis--x .tick:nth-child(5n+3) text {
+  display: block; }
 
 .info-box--employees-general {
   position: absolute;

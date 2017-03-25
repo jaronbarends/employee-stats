@@ -1,0 +1,21 @@
+.unit-chart--age .axis--x .tick {
+
+	line {
+		stroke: #ccc;
+	}
+
+	text {
+		display: none;
+	}
+
+	&:nth-child(5n+3) {
+		line {
+			stroke: $color-dark-grey;
+		}
+
+		text {
+			display: block;
+		}
+	}
+
+}

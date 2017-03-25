@@ -182,6 +182,7 @@ window.app.unitChart = (function($) {
 			.data(sgFlatSet)
 			.enter()
 			.append('circle')
+			.attr('class', app.util.getEmployeeClasses)
 			.attr('r', r);
 
 		return eachCircle;

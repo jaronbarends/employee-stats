@@ -178,7 +178,7 @@ window.app.dataprocessorEmployees = (function($) {
 			yearFound = false;
 
 		for (var i=0, len=espy.length; i<len; i++) {
-			var yearObj = espy[i]
+			var yearObj = espy[i];
 			if (yearObj.yearStr === yearStr) {
 				app.data.employeesStartedPerYear[i].count++;
 				yearFound = true;
@@ -195,6 +195,37 @@ window.app.dataprocessorEmployees = (function($) {
 		}
 
 	};
+
+
+	/**
+	* complete the age array - make sure we have an object for every year
+	* @returns {undefined}
+	*/
+	const completeAgeArray = function() {
+		console.log(app.data.buckets.ageRound.dataset);
+		let ageSet = app.data.buckets.ageRound.dataset,
+			prevAge;
+
+		ageSet.forEach(function(obj, i) {
+			let age = obj.type;
+			console.log(age);
+			// if (i === 0) {
+			// 	prevAge = age -1;
+			// }
+			// let missingYears = prevAge + 1 - age;
+			// if (missingYears) {
+			// 	console.log('prev:', prevAge, 'age:', age);
+			// }
+			// for (let j = 0; j < missingYears; j++) {
+			// 	let obj = {
+			// 		employees: [],
+			// 		type: prevAge + i + 1
+			// 	};
+			// 	console.log(obj);
+			// }
+		});
+	};
+	
 	
 	
 	
@@ -235,7 +266,7 @@ window.app.dataprocessorEmployees = (function($) {
 					count: 0
 				};
 			} else {
-				idx++
+				idx++;
 			}
 			countCumulative += yearObj.count;
 			yearObj.countCumulative = countCumulative;
@@ -257,26 +288,16 @@ window.app.dataprocessorEmployees = (function($) {
 	*/
 	var processDisciplinesEtc = function() {
 		// console.log(app.data.sgOffices);
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-
-			var emp = app.data.sgEmployees[i];
-
+		app.data.sgEmployees.forEach(function(emp) {
 			correctMDOffice(emp);
 			processDiscipline(emp);
 			processOrganisationalUnit(emp);
 			processAge(emp);
 			processStartDate(emp);
-		}
+		});
 
 		sortAndCompleteStartYearArray();
 		// console.log(app.data.employeesStartedPerYear);
-		var arr = app.data.employeesStartedPerYear,
-			total = 0;
-		for (var j=0, len=arr.length; j<len; j++) {
-			// console.log(arr[j].yearStr, arr[j].count);
-			total += arr[j].count;
-		}
-		// console.log(total);
 	};
 	
 
@@ -347,7 +368,7 @@ window.app.dataprocessorEmployees = (function($) {
 			var typeObj = {
 				type,
 				employees: [employee]
-			}
+			};
 			dataset.push(typeObj);
 		}
 	};
@@ -372,6 +393,7 @@ window.app.dataprocessorEmployees = (function($) {
 			}
 		}
 
+		completeAgeArray();// make sure age array has all consecutive values
 		sortTimeBuckets();
 
 	};

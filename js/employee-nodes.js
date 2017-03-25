@@ -15,7 +15,6 @@ app.nodes = (function($) {
 		sgNodeSpacing: 3,
 		sgInfoProp: '',// property to be shown when clicking on node
 		sgNodesChart: null,
-		sgNodesChart: null,
 		sgNodesChartWidth: null,
 		sgNodesChartHeight: null,
 		sgGroupTranslate: 'translate(0,0)'
@@ -72,17 +71,7 @@ app.nodes = (function($) {
 			.data(app.data.sgEmployees)
 			.enter()
 			.append('circle')
-			.attr('class', function(d) {
-				var clsNames = [
-					'employee',
-					'employee--'+d.gender.toLowerCase(),
-					'employee--office-'+d.office.toLowerCase(),
-					'employee--discipline-'+d.discipline.toLowerCase().replace(' ','-')
-				],
-				cls = clsNames.join(' ');
-
-				return cls;
-			})
+			.attr('class', app.util.getEmployeeClasses)
 			.attr('r', elements.sgNodeSize)
 			.attr('cx', function(d, i) {
 				var x = getNodeGridPosition(i)[0];

@@ -167,10 +167,10 @@ window.app.lineChart = (function($) {
 		initScales();
 		createAxes();
 
-		drawLine(sgTotalData, 'count');
-		drawMarkers(sgTotalData, 'count');
 		drawLine(sgStartedData, 'countCumulative', 'secondary');
 		drawMarkers(sgStartedData, 'countCumulative', 'secondary');
+		drawLine(sgTotalData, 'count');
+		drawMarkers(sgTotalData, 'count');
 	};
 
 

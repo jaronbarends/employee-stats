@@ -317,7 +317,7 @@ window.app = window.app || {};
 		// add shapes for nodes
 		app.nodes.init();
 
-		app.ageChart.init();
+		// app.ageChart.init();
 		calculateAgeInfo();
 
 		// app.disciplineChart.init();

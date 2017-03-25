@@ -10,6 +10,24 @@ window.app.util = (function($) {
 
 
 	/**
+	* get the classes to put onto an employee node
+	* @returns {undefined}
+	*/
+	const getEmployeeClasses = function(d) {
+		let clsNames = [
+			'employee',
+			'employee--'+d.gender.toLowerCase(),
+			'employee--office-'+d.office.toLowerCase(),
+			'employee--discipline-'+d.discipline.toLowerCase().replace(' ','-')
+		],
+		cls = clsNames.join(' ');
+
+		return cls;
+	};
+	
+
+
+	/**
 	* remove classes from the body element based on a pattern
 	* @returns {undefined}
 	*/
@@ -97,6 +115,7 @@ window.app.util = (function($) {
 		randomizeArray,
 		sortBucketByEmployeeCount,
 		getYearsUntilToday,
+		getEmployeeClasses
 	};
 
 	return publicMethodsAndProps;
