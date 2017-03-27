@@ -201,29 +201,33 @@ window.app.dataprocessorEmployees = (function($) {
 	* complete the age array - make sure we have an object for every year
 	* @returns {undefined}
 	*/
-	const completeAgeArray = function() {
-		console.log(app.data.buckets.ageRound.dataset);
-		let ageSet = app.data.buckets.ageRound.dataset,
-			prevAge;
+	const sortAndCompleteAgeArray = function() {
+		let ageSet = app.data.buckets.ageRound.dataset;
 
-		ageSet.forEach(function(obj, i) {
-			let age = obj.type;
-			console.log(age);
-			// if (i === 0) {
-			// 	prevAge = age -1;
-			// }
-			// let missingYears = prevAge + 1 - age;
-			// if (missingYears) {
-			// 	console.log('prev:', prevAge, 'age:', age);
-			// }
-			// for (let j = 0; j < missingYears; j++) {
-			// 	let obj = {
-			// 		employees: [],
-			// 		type: prevAge + i + 1
-			// 	};
-			// 	console.log(obj);
-			// }
+		//first sort age array
+		ageSet.sort(function(a, b) {
+			return (a.type - b.type);
 		});
+
+		let highestAge = ageSet[ageSet.length-1].type,
+			idx = 0,
+			prevAge = ageSet[0].type-1;
+
+		while (ageSet[idx] && ageSet[idx].type <= highestAge) {
+			let currAge = ageSet[idx].type,
+				expectedAge = prevAge + 1;
+			if (currAge > expectedAge) {
+				// at least 1 year is missing; add obj
+				let obj = {
+					type: expectedAge,
+					employees: []
+				};
+				// add to array
+				ageSet.splice(idx, 0, obj);
+			}
+			prevAge = ageSet[idx].type;
+			idx++;
+		}
 	};
 	
 	
@@ -393,7 +397,7 @@ window.app.dataprocessorEmployees = (function($) {
 			}
 		}
 
-		completeAgeArray();// make sure age array has all consecutive values
+		sortAndCompleteAgeArray();// make sure age array has all consecutive values
 		sortTimeBuckets();
 
 	};
