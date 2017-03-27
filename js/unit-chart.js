@@ -251,13 +251,34 @@ window.app.unitChart = (function($) {
 				.text(function(d) {
 					return d;
 				})
-				.attr('x', function(d) {
-					return sgEmployeeCountScale(d);
+				.attr('x', function(d, i) {
+					if (settings.isHorizontal) {
+						return sgEmployeeCountScale(d+1);// put label where next unit would be
+					} else {
+						return sgTypeScale(i);
+					}
 				})
 				.attr('y', function(d, i) {
-					return sgTypeScale(i);
+					if (settings.isHorizontal) {
+						return sgTypeScale(i);
+					} else {
+						return sgEmployeeCountScale(d+1);// put label where next unit would be
+					}
 				})
-				.attr('dy', '0.8em');
+				.attr('dy', function() {
+					if (settings.isHorizontal) {
+						return  '1em';
+					} else {
+						return 0;
+					}
+				})
+				.attr('text-anchor', function() {
+					if (settings.isHorizontal) {
+						return 'left';
+					} else {
+						return 'middle';
+					}
+				});
 		}
 	};
 	

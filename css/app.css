@@ -431,6 +431,10 @@ h3 {
 .unit-chart .axis--y .tick line {
   display: none; }
 
+.unit-chart .count-label {
+  font-size: 12px;
+  fill: #d60042; }
+
 input,
 select,
 button {

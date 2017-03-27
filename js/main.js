@@ -247,7 +247,7 @@ window.app = window.app || {};
 				sortFunction: app.util.sortBucketByEmployeeCount,
 				margin: {
 					top: 10,
-					right: 10,
+					right: 30,
 					bottom: 30,
 					left: 200
 				}
@@ -267,7 +267,7 @@ window.app = window.app || {};
 			options = {
 				isHorizontal: false,
 				margin: {
-					top: 10,
+					top: 30,
 					right: 10,
 					bottom: 50,
 					left: 30
