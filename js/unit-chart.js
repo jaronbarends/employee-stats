@@ -21,12 +21,11 @@ window.app.unitChart = (function($) {
 				bottom: 20,
 				right: 20
 			},
-			// svgWidth: 600,
-			// svgHeight: 600,
 			isHorizontal: true,
 			radius: 4,
 			typeMargin: 10,
-			employeeMargin: 2
+			employeeMargin: 2,
+			showCountLabels: true
 		},
 		settings;
 
@@ -227,6 +226,41 @@ window.app.unitChart = (function($) {
 
 		return eachCircle;
 	};
+
+
+	/**
+	* add labels with employee count for every type
+	* @returns {undefined}
+	*/
+	const addCountLabels = function() {
+		// add labels for count
+		if (settings.showCountLabels) {
+			let typeAmounts = [];
+			sgDataset.forEach(function(typeObj) {
+				typeAmounts.push(typeObj.employees.length);
+			});
+
+			// now add text to svg
+			sgChart.append('g')
+				.attr('transform', 'translate(' + settings.margin.left +',' + settings.margin.top +')')
+				.selectAll('.count-label')
+				.data(typeAmounts)
+				.enter()
+				.append('text')
+				.attr('class', 'count-label')
+				.text(function(d) {
+					return d;
+				})
+				.attr('x', function(d) {
+					return sgEmployeeCountScale(d);
+				})
+				.attr('y', function(d, i) {
+					return sgTypeScale(i);
+				})
+				.attr('dy', '0.8em');
+		}
+	};
+	
 	
 	
 
@@ -268,6 +302,8 @@ window.app.unitChart = (function($) {
 			.attr(cxOrCyForEmployeeCount, function(d) {
 				return sgEmployeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
 			});
+
+		addCountLabels();
 
 	};
 
