@@ -479,7 +479,7 @@ header {
   min-height: 600px; }
 
 .map-view .bubble-chart-container {
-  /*transform: rotateX(45deg) rotateZ(10deg);*/ }
+  transform: rotateX(45deg) rotateZ(10deg); }
 
 .bubble-chart {
   display: block;
@@ -659,10 +659,28 @@ header {
 .unit-chart--age .axis--x .tick text {
   display: none; }
 
-.unit-chart--age .axis--x .tick:nth-child(5n+3) line {
+.unit-chart--age .axis--x[data-tick-show-5n-plus="2"] .tick:nth-of-type(5n+2) line {
   stroke: #363636; }
 
-.unit-chart--age .axis--x .tick:nth-child(5n+3) text {
+.unit-chart--age .axis--x[data-tick-show-5n-plus="2"] .tick:nth-of-type(5n+2) text {
+  display: block; }
+
+.unit-chart--age .axis--x[data-tick-show-5n-plus="3"] .tick:nth-of-type(5n+3) line {
+  stroke: #363636; }
+
+.unit-chart--age .axis--x[data-tick-show-5n-plus="3"] .tick:nth-of-type(5n+3) text {
+  display: block; }
+
+.unit-chart--age .axis--x[data-tick-show-5n-plus="4"] .tick:nth-of-type(5n+4) line {
+  stroke: #363636; }
+
+.unit-chart--age .axis--x[data-tick-show-5n-plus="4"] .tick:nth-of-type(5n+4) text {
+  display: block; }
+
+.unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) line {
+  stroke: #363636; }
+
+.unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) text {
   display: block; }
 
 .info-box--employees-general {

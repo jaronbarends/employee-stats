@@ -262,19 +262,24 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var drawAgeChart = function() {
-		var options = {
-			dataset: app.data.buckets.ageRound.dataset,
-			chartSelector: '#unit-chart--age',
-			isHorizontal: false,
-			margin: {
-				top: 10,
-				right: 10,
-				bottom: 50,
-				left: 30
-			}
-		};
+		let ageSet = app.data.buckets.ageRound.dataset,
+			options = {
+				dataset: ageSet,
+				chartSelector: '#unit-chart--age',
+				isHorizontal: false,
+				margin: {
+					top: 10,
+					right: 10,
+					bottom: 50,
+					left: 30
+				}
+			},
+			lowestAge = ageSet[0].type,
+			showTicks5nPlus = 6 - lowestAge%5;
+			console.log('lowest %5:', lowestAge%5, '5nplus:', showTicks5nPlus);
 
 		app.unitChart.drawChart(options);
+		document.querySelector('#unit-chart--age .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
 	
 	

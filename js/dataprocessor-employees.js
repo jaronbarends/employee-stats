@@ -252,9 +252,7 @@ window.app.dataprocessorEmployees = (function($) {
 		var firstYear = getYear(arr[0].yearStr),
 			lastYear = getYear(arr[arr.length-1].yearStr),
 			currYear = firstYear,
-			range = lastYear - firstYear,
 			countCumulative = 0,
-			prevYear = firstYear - 1,
 			idx = 0,
 			newArr = [];
 
@@ -401,7 +399,6 @@ window.app.dataprocessorEmployees = (function($) {
 		sortTimeBuckets();
 
 	};
-
 
 	/**
 	* 
