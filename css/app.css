@@ -425,13 +425,11 @@ h3 {
   .bar-chart rect {
     fill: #00bdfa; }
 
-.unit-chart {
-  height: 200px;
-  width: 600px; }
-  .unit-chart circle {
-    fill: #00bdfa; }
-  .unit-chart .axis--y .tick line {
-    display: none; }
+.unit-chart circle {
+  fill: #00bdfa; }
+
+.unit-chart .axis--y .tick line {
+  display: none; }
 
 input,
 select,
@@ -647,10 +645,6 @@ header {
 
 .bar-chart--discipline {
   width: 600px;
-  height: 600px; }
-
-.unit-chart--discipline {
-  width: 800px;
   height: 600px; }
 
 .unit-chart--age .axis--x .tick line {

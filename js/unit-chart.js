@@ -14,9 +14,21 @@ window.app.unitChart = (function($) {
 		sgTypeScale,
 		sgTypeLabelScale,
 		sgEmployeeCountScale,
-		sgRadius = 4,
-		sgTypeMargin = 10,
-		sgEmployeeMargin = 2;
+		defaults = {
+			margin: {
+				top: 20,
+				left: 20,
+				bottom: 20,
+				right: 20
+			},
+			// svgWidth: 600,
+			// svgHeight: 600,
+			isHorizontal: true,
+			radius: 4,
+			typeMargin: 10,
+			employeeMargin: 2
+		},
+		settings;
 
 
 	/**
@@ -48,10 +60,10 @@ window.app.unitChart = (function($) {
 	* determine height and width, prepare data etc
 	* @returns {undefined}
 	*/
-	const initChart = function(margin, isHorizontal) {
+	const initChart = function() {
 		
-		let svgWidth = parseInt(sgChart.style('width'), 10),
-			svgHeight = parseInt(sgChart.style('height'), 10);
+		// let svgWidth = parseInt(sgChart.style('width'), 10),
+		// 	svgHeight = parseInt(sgChart.style('height'), 10);
 
 		// calculate desired size based on dataset, radius and margin between units
 		let numberOfTypes = sgDataset.length,
@@ -59,22 +71,28 @@ window.app.unitChart = (function($) {
 				return elm.employees.length;
 			});
 
-		let countDirectionSize = 2*sgRadius * maxCount + sgEmployeeMargin * (maxCount - 1),
-			typeDirectionSize = 2*sgRadius * numberOfTypes + sgTypeMargin * (numberOfTypes - 1);
+		let countDirectionSize = 2*settings.radius * maxCount + settings.employeeMargin * (maxCount - 1),
+			typeDirectionSize = 2*settings.radius * numberOfTypes + settings.typeMargin * (numberOfTypes - 1);
 
 		// console.log('numberOfTypes:', numberOfTypes, 'maxCount:', maxCount);
 
 
-		sgWidth = svgWidth - margin.left - margin.right,
-		sgHeight = svgHeight - margin.top - margin.bottom;
+		// sgWidth = svgWidth - settings.margin.left - settings.margin.right,
+		// sgHeight = svgHeight - settings.margin.top - settings.margin.bottom;
 
-		if (isHorizontal) {
+		if (settings.isHorizontal) {
 			sgWidth = countDirectionSize;
 			sgHeight = typeDirectionSize;
 		} else {
 			sgWidth = typeDirectionSize;
 			sgHeight = countDirectionSize;
 		}
+
+		let svgWidth = sgWidth + settings.margin.left + settings.margin.right,
+			svgHeight = sgHeight + settings.margin.top + settings.margin.bottom;
+
+		sgChart.attr('width', svgWidth)
+			.attr('height', svgHeight);
 
 		// console.log()
 	};
@@ -102,7 +120,7 @@ window.app.unitChart = (function($) {
 	* create scales
 	* @returns {undefined}
 	*/
-	const createScales = function(isHorizontal = true) {
+	const createScales = function() {
 		// we have a few different scales:
 		// the type scale is a numeric scale to calculate positions for the type-data
 		// the type label scale is a scale that can return the proper type name
@@ -114,7 +132,7 @@ window.app.unitChart = (function($) {
 		let typeScaleHeightOrWidth,
 			employeeCountHeightOrWidth;
 
-		if (isHorizontal) {
+		if (settings.isHorizontal) {
 			typeScaleHeightOrWidth = sgHeight;
 			employeeCountHeightOrWidth = sgWidth;
 		} else {
@@ -137,7 +155,7 @@ window.app.unitChart = (function($) {
 					return d.employees.length;
 				})]);
 
-		if (isHorizontal) {
+		if (settings.isHorizontal) {
 			sgEmployeeCountScale.range([0, employeeCountHeightOrWidth]);
 		} else {
 			sgEmployeeCountScale.range([employeeCountHeightOrWidth, 0]);
@@ -149,14 +167,14 @@ window.app.unitChart = (function($) {
 	* create the axes
 	* @returns {undefined}
 	*/
-	const createAxes = function(isHorizontal, margin) {
+	const createAxes = function() {
 		// now set the proper scale for each axis
 		let xScale,
 			xTicksScale,
 			yScale,
 			yTicksScale;
 
-		if (isHorizontal) {
+		if (settings.isHorizontal) {
 			xScale = sgEmployeeCountScale;
 			xTicksScale = xScale;
 			yScale = sgTypeScale;
@@ -176,12 +194,12 @@ window.app.unitChart = (function($) {
 		// render axes
 		sgChart.append('g')
 			.attr('class', 'axis axis--x')
-			.attr('transform', 'translate(' + margin.left +',' + (margin.top + sgHeight) +')')
+			.attr('transform', 'translate(' + settings.margin.left +',' + (settings.margin.top + sgHeight) +')')
 			.call(xAxis);
 
 		sgChart.append('g')
 			.attr('class', 'axis axis--y')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			.attr('transform', 'translate(' + settings.margin.left + ',' + settings.margin.top + ')')
 			.call(yAxis);
 	};
 
@@ -197,10 +215,9 @@ window.app.unitChart = (function($) {
 			r = Math.min(unitSizeAxis2, unitSizeAxis1)/2;
 
 		// radius calculation doesn't always turn out well
-		r = sgRadius;
-
+		r = settings.radius;
 		let eachCircle = sgChart.append('g')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			.attr('transform', 'translate(' + settings.margin.left + ',' + settings.margin.top + ')')
 			.selectAll('.unit')
 			.data(sgFlatSet)
 			.enter()
@@ -219,23 +236,25 @@ window.app.unitChart = (function($) {
 	* @param {object} options {dataset:array, chartSelector:string[, sortFunction:function]}
 	* @returns {undefined}
 	*/
-	const drawChart = function({dataset, chartSelector, sortFunction, margin, isHorizontal = true}) {
-		prepareDataset(dataset, sortFunction);
+	const drawChart = function(dataset, chartSelector, options) {
+		prepareDataset(dataset, options.sortFunction);
+
+		settings = Object.assign({}, defaults, options);
 
 		sgChart = d3.select(chartSelector);
-		initChart(margin, isHorizontal);
+		initChart();
 
-		createScales(isHorizontal);
-		createAxes(isHorizontal, margin);
+		createScales();
+		createAxes();
 
 
 		// render units
-		let eachCircle = addEachCircle(margin),
+		let eachCircle = addEachCircle(),
 			cMargin = Math.ceil(sgTypeScale.bandwidth()/2),
 			cxOrCyForType,
 			cxOrCyForEmployeeCount;
 
-		if (isHorizontal) {
+		if (settings.isHorizontal) {
 			cxOrCyForType = 'cy';
 			cxOrCyForEmployeeCount = 'cx';
 		} else {

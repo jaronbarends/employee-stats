@@ -241,19 +241,19 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var drawDisciplineChart = function() {
-		var options = {
-			dataset: app.data.buckets.discipline.dataset,
-			chartSelector: '#unit-chart--discipline',
-			sortFunction: app.util.sortBucketByEmployeeCount,
-			margin: {
-				top: 10,
-				right: 10,
-				bottom: 30,
-				left: 200
-			}
-		};
+		let dataset = app.data.buckets.discipline.dataset,
+			chartSelector = '#unit-chart--discipline',  
+			options = {
+				sortFunction: app.util.sortBucketByEmployeeCount,
+				margin: {
+					top: 10,
+					right: 10,
+					bottom: 30,
+					left: 200
+				}
+			};
 
-		app.unitChart.drawChart(options);
+		app.unitChart.drawChart(dataset, chartSelector, options);
 	};
 
 
@@ -262,10 +262,9 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var drawAgeChart = function() {
-		let ageSet = app.data.buckets.ageRound.dataset,
+		let dataset = app.data.buckets.ageRound.dataset,
+			chartSelector = '#unit-chart--age',  
 			options = {
-				dataset: ageSet,
-				chartSelector: '#unit-chart--age',
 				isHorizontal: false,
 				margin: {
 					top: 10,
@@ -274,10 +273,10 @@ window.app = window.app || {};
 					left: 30
 				}
 			},
-			lowestAge = ageSet[0].type,
+			lowestAge = dataset[0].type,
 			showTicks5nPlus = 6 - lowestAge%5;
 
-		app.unitChart.drawChart(options);
+		app.unitChart.drawChart(dataset, chartSelector, options);
 		document.querySelector('#unit-chart--age .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
 	
