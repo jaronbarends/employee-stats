@@ -209,12 +209,10 @@ window.app.unitChart = (function($) {
 	*/
 	const addEachCircle = function(margin) {
 		// determine radius of unit-circles by checking at which axis one unit is the smallest
-		let unitSizeAxis1 = sgTypeScale.bandwidth(),// this already includes padding
-			unitSizeAxis2 = sgEmployeeCountScale(1) * 0.8,// multiply by 0.8 to create padding
-			r = Math.min(unitSizeAxis2, unitSizeAxis1)/2;
+		// let unitSizeAxis1 = sgTypeScale.bandwidth(),// this already includes padding
+		// 	unitSizeAxis2 = sgEmployeeCountScale(1) * 0.8,// multiply by 0.8 to create padding
+		// 	r = Math.min(unitSizeAxis2, unitSizeAxis1)/2;
 
-		// radius calculation doesn't always turn out well
-		r = settings.radius;
 		let eachCircle = sgChart.append('g')
 			.attr('transform', 'translate(' + settings.margin.left + ',' + settings.margin.top + ')')
 			.selectAll('.unit')
@@ -222,7 +220,7 @@ window.app.unitChart = (function($) {
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
-			.attr('r', r);
+			.attr('r', settings.radius);
 
 		return eachCircle;
 	};
@@ -241,7 +239,7 @@ window.app.unitChart = (function($) {
 			});
 
 			// now add text to svg
-			sgChart.append('g')
+			let eachCountLabel = sgChart.append('g')
 				.attr('transform', 'translate(' + settings.margin.left +',' + settings.margin.top +')')
 				.selectAll('.count-label')
 				.data(typeAmounts)
@@ -250,24 +248,25 @@ window.app.unitChart = (function($) {
 				.attr('class', 'count-label')
 				.text(function(d) {
 					return d;
-				})
-				.attr('x', function(d, i) {
+				});
+
+			eachCountLabel.attr('x', function(d, i) {
 					if (settings.isHorizontal) {
 						return sgEmployeeCountScale(d+1);// put label where next unit would be
 					} else {
-						return sgTypeScale(i);
+						return sgTypeScale(i) + getOffsetToScaleBandCenter();
 					}
 				})
 				.attr('y', function(d, i) {
 					if (settings.isHorizontal) {
-						return sgTypeScale(i);
+						return sgTypeScale(i) + getOffsetToScaleBandCenter();
 					} else {
 						return sgEmployeeCountScale(d+1);// put label where next unit would be
 					}
 				})
 				.attr('dy', function() {
 					if (settings.isHorizontal) {
-						return  '1em';
+						return '0.3em';
 					} else {
 						return 0;
 					}
@@ -284,6 +283,15 @@ window.app.unitChart = (function($) {
 	
 	
 	
+
+	/**
+	* circles need to be placed in the center of a scale's band
+	* so calculate the offset for that
+	* @returns {undefined}
+	*/
+	var getOffsetToScaleBandCenter = function() {
+		return Math.ceil(sgTypeScale.bandwidth()/2);
+	};
 
 
 	/**
@@ -305,7 +313,6 @@ window.app.unitChart = (function($) {
 
 		// render units
 		let eachCircle = addEachCircle(),
-			cMargin = Math.ceil(sgTypeScale.bandwidth()/2),
 			cxOrCyForType,
 			cxOrCyForEmployeeCount;
 
@@ -318,7 +325,7 @@ window.app.unitChart = (function($) {
 		}
 
 		eachCircle.attr(cxOrCyForType, function(d) {
-				return sgTypeScale(d.typeIdx) + cMargin;
+				return sgTypeScale(d.typeIdx) + getOffsetToScaleBandCenter();// put center in center of band
 			})
 			.attr(cxOrCyForEmployeeCount, function(d) {
 				return sgEmployeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
