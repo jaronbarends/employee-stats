@@ -250,34 +250,25 @@ window.app.unitChart = (function($) {
 					return d;
 				});
 
-			eachCountLabel.attr('x', function(d, i) {
-					if (settings.isHorizontal) {
-						return sgEmployeeCountScale(d+1);// put label where next unit would be
-					} else {
-						return sgTypeScale(i) + getOffsetToScaleBandCenter();
-					}
-				})
-				.attr('y', function(d, i) {
-					if (settings.isHorizontal) {
-						return sgTypeScale(i) + getOffsetToScaleBandCenter();
-					} else {
-						return sgEmployeeCountScale(d+1);// put label where next unit would be
-					}
-				})
-				.attr('dy', function() {
-					if (settings.isHorizontal) {
-						return '0.3em';
-					} else {
-						return 0;
-					}
-				})
-				.attr('text-anchor', function() {
-					if (settings.isHorizontal) {
-						return 'left';
-					} else {
-						return 'middle';
-					}
-				});
+			if (settings.isHorizontal) {
+				eachCountLabel.attr('x', function(d, i) {
+							return sgEmployeeCountScale(d+1);// put label where next unit would be
+					})
+					.attr('y', function(d, i) {
+							return sgTypeScale(i) + getOffsetToScaleBandCenter();
+					})
+					.attr('dy', '0.3em');
+			} else {
+				eachCountLabel.attr('x', function(d, i) {
+							return sgTypeScale(i) + getOffsetToScaleBandCenter();
+					})
+					.attr('y', function(d, i) {
+							return sgEmployeeCountScale(d+1);// put label where next unit would be
+					})
+					.attr('dy', 0)
+					.attr('text-anchor', 'middle');
+			}
+
 		}
 	};
 	

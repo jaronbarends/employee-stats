@@ -15,7 +15,7 @@
 	@for $i from 2 through 5 {
 		&[data-tick-show-5n-plus="#{$i}"] .tick:nth-of-type(5n+#{$i}) {
 			line {
-				stroke: $color-dark-grey;
+				stroke: $color-grey-xxdark;
 			}
 
 			text {
