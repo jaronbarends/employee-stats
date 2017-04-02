@@ -1,12 +1,11 @@
 window.app = window.app || {};
 
-app.bubbleChart = (function($) {
+window.app.bubbleChart = (function($) {
 
 	'use strict';
 
-	var $sgBody = $('body');
-
-	var sgSimulation,
+	let app = window.app,
+		sgSimulation,
 		sgForceStrength = 0.04,
 		sgAlphaTarget = 0.4;
 

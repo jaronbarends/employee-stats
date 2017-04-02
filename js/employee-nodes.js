@@ -1,13 +1,13 @@
 window.app = window.app || {};
 
-app.nodes = (function($) {
+window.app.nodes = (function($) {
 
 	'use strict';
 
-	var app = window.app;
+	let app = window.app;
 
 	// vars for employee nodes
-	var elements = {
+	let elements = {
 		sgNodes: null,// d3 selection of all employee nodes
 		sgDefaultNodeSize: 8,
 		sgNodeSize: 8,
@@ -93,7 +93,7 @@ app.nodes = (function($) {
 				if (elements.sgInfoProp) {
 					console.log(d[elements.sgInfoProp]);
 				}
-			})
+			});
 	};
 
 
