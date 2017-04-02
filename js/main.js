@@ -227,11 +227,29 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var setEmployeeCount = function() {
-		var $box = $('#info-box--employees-general'),
+		let $box = $('#info-box--employees-general'),
 			$value = $box.find('.value--primary'),
-			numEmployees = app.data.sgEmployees.length;
+			numEmployees = app.data.sgEmployees.length,
+			currNumber = 0,
+			countSpeed = 10;
 
-		$value.text(numEmployees);
+		$box.addClass('infobox--is-initiated');
+
+		const showNextNumber = function() {
+			$value.text(currNumber);
+			currNumber++;
+
+			if (currNumber < numEmployees) {
+				setTimeout(showNextNumber, countSpeed/2);// somehow, dividing by 2 works - don't know why yet
+			} else {
+				// kick off simulation
+				startSimulation();
+			}
+		};
+
+		// $value.text(numEmployees);
+		showNextNumber();
+		app.nodes.revealNodes(countSpeed);
 	};
 
 
@@ -282,6 +300,25 @@ window.app = window.app || {};
 	
 	
 
+
+	/**
+	* initialize and start the bubble chart simulation
+	* @returns {undefined}
+	*/
+	const startSimulation = function() {
+		// initialize force simulation
+		app.bubbleChart.initSimulation();
+		// this kicks off the animation
+		var sim = app.bubbleChart.getSimulation();
+		// console.log('app.bubbleChart.sgSimulation:', sim);
+		// console.log('app.bubbleChart.sgSimulation:', app.bubbleChart.sgSimulation);
+		// app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
+		
+		sim.on('tick', app.bubbleChart.simulationTickHandler);
+
+		document.getElementById('node-filter-box').classList.add('node-filter-box--is-active');
+	};
+
 	
 	
 	
@@ -311,7 +348,6 @@ window.app = window.app || {};
 
 		// process employee data
 		app.dataprocessorEmployees.init();
-		setEmployeeCount();
 
 		// process all geo-related data
 		app.dataprocessorGeo.init();
@@ -319,6 +355,7 @@ window.app = window.app || {};
 
 		// add shapes for nodes
 		app.nodes.init();
+		setEmployeeCount();
 
 		// app.ageChart.init();
 		calculateAgeInfo();
@@ -326,15 +363,6 @@ window.app = window.app || {};
 		// app.disciplineChart.init();
 		drawDisciplineChart();
 		drawAgeChart();
-
-		// initialize force simulation
-		app.bubbleChart.initSimulation();
-		// this kicks off the animation
-		var sim = app.bubbleChart.getSimulation();
-		// console.log('app.bubbleChart.sgSimulation:', sim);
-		// console.log('app.bubbleChart.sgSimulation:', app.bubbleChart.sgSimulation);
-		// app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
-		sim.on('tick', app.bubbleChart.simulationTickHandler);
 
 		app.filters.init();
 

@@ -463,19 +463,12 @@ header {
   margin-right: 1em; }
 
 /*-- Start general styles --*/
-.wrapper {
-  position: relative;
-  perspective: 600px; }
-
-.bubble-chart-container,
-.overall-charts-container {
-  float: left; }
-
 .bubble-chart-container {
   width: 60%;
   height: 80vh;
   /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
   min-width: 500px;
+  min-width: 900px;
   min-height: 600px; }
 
 .bubble-chart {
@@ -539,6 +532,14 @@ header {
 
 .highlight-office g .employee--office-eindhoven {
   fill: #00bdfa; }
+
+.node-filter-box {
+  margin: 0 0 1em auto;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s; }
+  .node-filter-box--is-active {
+    opacity: 1; }
 
 .chart-box {
   display: inline-block;
@@ -681,9 +682,20 @@ header {
   display: block; }
 
 .info-box--employees-general {
-  position: absolute;
+  position: relative;
   opacity: 1;
   text-align: center; }
+  .info-box--employees-general dl {
+    margin: 0 0 1em; }
+  .info-box--employees-general dd {
+    line-height: 1; }
+  .info-box--employees-general dt {
+    opacity: 0;
+    transition: 1s 1s; }
+  .info-box--employees-general.infobox--is-initiated .value--primary {
+    font-size: 3rem; }
+  .info-box--employees-general.infobox--is-initiated dt {
+    opacity: 1; }
 
 /*-- Start employee-icon --*/
 .emp,
@@ -698,7 +710,8 @@ header {
   height: 43px; }
 
 .emp {
-  z-index: 1; }
+  z-index: 1;
+  margin-bottom: 1em; }
 
 .emp__shadow {
   position: absolute;

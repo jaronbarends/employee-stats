@@ -1,0 +1,10 @@
+.node-filter-box {
+	margin: 0 0 1em auto;
+	text-align: center;
+	opacity: 0;
+	transition: opacity 0.3s;
+
+	&--is-active {
+		opacity: 1;
+	}
+}

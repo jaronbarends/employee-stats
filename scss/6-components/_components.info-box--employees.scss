@@ -1,7 +1,29 @@
 .info-box--employees-general {
-	position: absolute;
+	position: relative;
 	opacity: 1;
 	text-align: center;
+
+	dl {
+		margin: 0 0 1em;
+	}
+
+	dd {
+		line-height: 1;
+	}
+
+	dt {
+		opacity: 0;
+		transition: 1s 1s;
+	}
+
+	&.infobox--is-initiated {
+		.value--primary {
+			font-size: 3rem;
+		}
+		dt {
+			opacity: 1;
+		}
+	}
 }
 
 /*-- Start employee-icon --*/
@@ -21,6 +43,7 @@
 
 	.emp {
 		z-index: 1;
+		margin-bottom: 1em;
 	}
 
 	.emp__shadow {
@@ -77,3 +100,4 @@
 	}
 
 /*-- End employee-icon --*/
+

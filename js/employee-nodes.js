@@ -64,7 +64,7 @@ window.app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	var addEmployeeNodes = function() {
-		var employeeG = elements.sgNodesChart.selectAll('#employee-group')
+		let employeeG = elements.sgNodesChart.selectAll('#employee-group')
 				.attr('transform', elements.sgGroupTranslate);
 
 		elements.sgNodes = employeeG.selectAll('.employee')
@@ -93,8 +93,26 @@ window.app.nodes = (function($) {
 				if (elements.sgInfoProp) {
 					console.log(d[elements.sgInfoProp]);
 				}
-			});
+			})
+			.attr('opacity', 0);
 	};
+
+
+	/**
+	* reveal all employee nodes
+	* @returns {undefined}
+	*/
+	const revealNodes = function(duration) {
+		elements.sgNodes
+			.transition()
+			.duration(duration)
+			.delay(function(d, i) {
+				// return i*10;
+				return i*duration;
+			})
+			.attr('opacity', 1);
+	};
+	
 
 
 	/**
@@ -136,6 +154,7 @@ window.app.nodes = (function($) {
 		setNodeSize,
 		setNodeSpacing,
 		getNodeGridPosition,
+		revealNodes
 	};
 
 	return publicMethodsAndPropsAndProps;

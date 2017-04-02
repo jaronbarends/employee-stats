@@ -21,22 +21,12 @@ header {
 
 /*-- Start general styles --*/
 
-	.wrapper {
-		position: relative;
-		perspective: 600px;
-	}
-
-	.bubble-chart-container,
-	.overall-charts-container {
-		float: left;
-	}
-
-
 	.bubble-chart-container {
 		width: 60%;
 		height: 80vh;
 		/* proportions of map of netherlands is 1:1.175 or 0.85:1 */
 		min-width: 500px;
+		min-width: 900px;// otherwise it isn't wide enough for grid
 		min-height: 600px;
 	}
 
@@ -53,8 +43,7 @@ header {
 		transform: rotateX(45deg) rotateZ(10deg);
 	}
 
-	.overall-charts-container {
-	}
+
 
 	.legends {
 		position: absolute;
