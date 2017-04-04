@@ -72,7 +72,8 @@ window.app.nodes = (function($) {
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
-			.attr('r', elements.sgNodeSize)
+			// .attr('r', elements.sgNodeSize)
+			.attr('r', 0)
 			.attr('cx', function(d, i) {
 				var x = getNodeGridPosition(i)[0];
 				d.x = x; 
@@ -93,8 +94,8 @@ window.app.nodes = (function($) {
 				if (elements.sgInfoProp) {
 					console.log(d[elements.sgInfoProp]);
 				}
-			})
-			.attr('opacity', 0);
+			});
+			// .attr('opacity', 0);
 	};
 
 
@@ -105,12 +106,13 @@ window.app.nodes = (function($) {
 	const revealNodes = function(duration) {
 		elements.sgNodes
 			.transition()
+			// .ease('elastic')
 			.duration(duration)
 			.delay(function(d, i) {
-				// return i*10;
 				return i*duration;
 			})
-			.attr('opacity', 1);
+			.attr('r', elements.sgNodeSize)
+			// .attr('opacity', 1);
 	};
 	
 

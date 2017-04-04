@@ -494,6 +494,9 @@ header {
 .employee {
   fill: #00bdfa;
   transition: fill 0.5s, r 2s; }
+
+@keyframes bounce {}  .bubble-chart--is-not-initiated .employee {
+    transition: none; }
   .employee-group .employee {
     stroke: #363636;
     stroke-width: 2px; }

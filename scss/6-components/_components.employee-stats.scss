@@ -60,6 +60,16 @@ header {
 		fill: $color-blue;
 		transition: fill 0.5s, r 2s;
 
+		@keyframes bounce {
+			// r
+		}
+
+		.bubble-chart--is-not-initiated & {
+			// transition: r 0.1s;
+			// animation: bounce 0.1s;
+			transition: none;
+		}
+
 		.employee-group & {
 			stroke: $color-grey-xxdark;
 			stroke-width: 2px;

@@ -231,7 +231,8 @@ window.app = window.app || {};
 			$value = $box.find('.value--primary'),
 			numEmployees = app.data.sgEmployees.length,
 			currNumber = 0,
-			countSpeed = 10;
+			countSpeed = 10,
+			totalDuration = app.data.sgEmployees.length * countSpeed + 100;
 
 		$box.addClass('infobox--is-initiated');
 
@@ -241,15 +242,13 @@ window.app = window.app || {};
 
 			if (currNumber < numEmployees) {
 				setTimeout(showNextNumber, countSpeed/2);// somehow, dividing by 2 works - don't know why yet
-			} else {
-				// kick off simulation
-				startSimulation();
 			}
 		};
 
 		// $value.text(numEmployees);
 		showNextNumber();
 		app.nodes.revealNodes(countSpeed);
+		setTimeout(startSimulation, totalDuration);
 	};
 
 
@@ -316,6 +315,7 @@ window.app = window.app || {};
 		
 		sim.on('tick', app.bubbleChart.simulationTickHandler);
 
+		document.getElementById('bubble-chart').classList.remove('bubble-chart--is-not-initiated');
 		document.getElementById('node-filter-box').classList.add('node-filter-box--is-active');
 	};
 
