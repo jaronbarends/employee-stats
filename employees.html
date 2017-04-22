@@ -78,7 +78,7 @@
 
 		<div class="chart-section">
 			<div id="bubble-chart-container" class="bubble-chart-container">
-				<svg id="bubble-chart" class="bubble-chart bubble-chart--is-not-initiated">
+				<svg id="bubble-chart" class="chart-svg bubble-chart bubble-chart--is-not-initiated">
 					<g id="map-group" class="map"></g>
 					<g id="employee-group" class="employee-group"></g>
 				</svg>
@@ -86,20 +86,21 @@
 		</div><!-- /.chart-section -->
 
 
+		<!-- Start discipline chart -->
+
 		<div class="chart-section">
 			<div class="discipline-charts-container">
 				<h3>We're working as a&hellip;</h3>
-				<svg id="unit-chart--discipline" class="unit-chart unit-chart--discipline"></svg>
+				<svg id="unit-chart--discipline" class="chart-svg unit-chart unit-chart--discipline"></svg>
 			</div>
 		</div><!-- /.chart-section -->
 
 
-		<!-- Start overall charts -->
-
-		<div id="overall-charts-container" class="overall-charts-container">
+		<!-- Start age chart -->
+		<div class="chart-section">
 
 			<h3>How old are we?</h3>
-			<svg id="unit-chart--age" class="unit-chart unit-chart--age"></svg>
+			<svg id="unit-chart--age" class="chart-svg unit-chart unit-chart--age"></svg>
 			<div id="age-info">
 				Our avarage age is
 				<div>
@@ -108,24 +109,24 @@
 				</div>
 			</div>
 
+		</div><!-- /.chart-section -->
+
+		<div class="chart-section">
 			<h3>How we've grown over the years</h3>
-			<svg id="line-chart" class="line-chart" width="960" height="500"></svg>
+			<svg id="line-chart" class="chart-svg line-chart" width="960" height="500"></svg>
+		</div><!-- /.chart-section -->
 
-		</div><!-- /.overall-charts-container -->
+		<div class="chart-section filter-charts-block">
 
-		<div class="filter-charts-block">
+			<form id="filter-chart-form" class="filter-chart-form">
+				<label for="bucket-filter">For every&hellip;</label>
+				<select id="bucket-filter"></select>
+				Show&hellip;
+				<select id="employee-properties"></select>
+				<button type="submit">Show!</button>
+			</form>
 
-			<div>
-				<form id="filter-chart-form">
-					<label for="bucket-filter">For every&hellip;</label>
-					<select id="bucket-filter"></select>
-					Show&hellip;
-					<select id="employee-properties"></select>
-					<button type="submit">Show!</button>
-				</form>
-			</div>
-
-			<div id="filter-charts-container">
+			<div id="filter-charts-container" class="filter-charts-container">
 			</div>
 
 		</div><!-- /.filter-charts-block -->

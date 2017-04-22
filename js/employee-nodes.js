@@ -105,7 +105,8 @@ window.app.nodes = (function($) {
 	const revealNodes = function() {
 		let $body = $('body'),
 			numEmployees = app.data.sgEmployees.length,
-			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, 800),
+			firstDelay = 300,
+			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, firstDelay),
 			delays = timeoutsAndDelays.cumulativeDelays,
 			animationDuration = 100;
 

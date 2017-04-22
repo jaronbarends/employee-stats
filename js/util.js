@@ -132,8 +132,6 @@ window.app.util = (function($) {
 	*/
 	const getTimeoutsAndDelays = function(totalCount, firstDelay, decay=0.95) {
 		// dt[i] = dt[0]*Math.pow(decay, i)
-		// set dt[0] to be 1
-		// than you get how many times dt[0] the whole sequence takes
 		let power = 2,
 			relativeTotalDuration = 0,// total duration relative to first delay (n*firstDelay)
 			minTimeout = 10,
@@ -156,9 +154,6 @@ window.app.util = (function($) {
 			cumulativeDelays.push(cumulativeDelay);
 			relativeTotalDuration += dt;
 		}
-		// console.log('timeouts:', timeouts);
-		// console.log('cumulativeDelays:', cumulativeDelays);
-		// console.log('relativeTotalDuration:', relativeTotalDuration);
 
 		return {
 			timeouts,
