@@ -127,23 +127,25 @@ window.app.util = (function($) {
 	* what is its cumulative delay from the start of the iteration
 	*
 	* @param {number} totalCount The total number of iterations
-	* @param {number} firstDelay The delay of the first iteration
+	* @param {number} firstDelay The delay of the first iteration (msec)
 	* @returns {object} {timeouts, cumulativeDelays, relativeTotalDuration}
 	*/
-	const getTimeoutsAndDelays = function(totalCount, firstDelay) {
-		// dt[i] = dt[0]*Math.pow(factor, i)
+	const getTimeoutsAndDelays = function(totalCount, firstDelay, decay=0.95) {
+		// dt[i] = dt[0]*Math.pow(decay, i)
 		// set dt[0] to be 1
 		// than you get how many times dt[0] the whole sequence takes
-		let factor = 0.9,
-			powFactor = 1,
+		let power = 2,
 			relativeTotalDuration = 0,// total duration relative to first delay (n*firstDelay)
+			minTimeout = 10,
 			timeouts = [],
 			cumulativeDelays = [];
 
 		// do a dry run to calculate all timeouts and cumulative delays
 		for (let i=0; i<totalCount; i++) {
-			let dt = firstDelay * Math.pow(factor, i*powFactor),
+			let dt = firstDelay * Math.pow(decay, i*power),
 				cumulativeDelay;
+
+			dt = Math.max(dt, minTimeout);
 
 			timeouts.push(dt);
 			if (i === 0) {

@@ -217,7 +217,6 @@ window.app = window.app || {};
 
 	//-- End age functions --
 
-	
 
 
 	
@@ -229,34 +228,20 @@ window.app = window.app || {};
 	var setEmployeeCount = function() {
 		let $box = $('#info-box--employees-general'),
 			$value = $box.find('.value--primary'),
-			numEmployees = app.data.sgEmployees.length,
-			currNumber = 1,
-			countSpeed = 50,
-			animationDuration = 100,
-			totalDuration = app.data.sgEmployees.length * countSpeed + 100;
+			numEmployees = app.data.sgEmployees.length;
 
-		let timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, 800);
-
-		console.log(timeoutsAndDelays);
-
-		$box.addClass('infobox--is-initiated');
-
-		const showNextNumber = function() {
-			// $value.text(currNumber);
-			currNumber++;
-			let currTimeout = timeoutsAndDelays.timeouts[currNumber-1];
-
-			if (currNumber <= numEmployees) {
-				setTimeout(showNextNumber, currTimeout);// somehow, dividing by 2 works - don't know why yet
-			} else {
+		// define callback function for updating employee count
+		const updateEmployeeNumber = function(e, data) {
+			let count = data.revealed;
+			$value.text(count);
+			if (count === numEmployees) {
+				$sgBody.off('nodeRevealed', updateEmployeeNumber);
 				setTimeout(startSimulation, 500);
 			}
 		};
 
-		// $value.text(numEmployees);
-		setTimeout(showNextNumber, animationDuration);
-		app.nodes.revealNodes(timeoutsAndDelays.cumulativeDelays);
-		
+		$sgBody.on('nodeRevealed', updateEmployeeNumber);
+		$box.addClass('infobox--is-initiated');
 	};
 
 
@@ -366,6 +351,7 @@ window.app = window.app || {};
 		// add shapes for nodes
 		app.nodes.init();
 		setEmployeeCount();
+		app.nodes.revealNodes();
 
 		// app.ageChart.init();
 		calculateAgeInfo();
