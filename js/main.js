@@ -231,24 +231,32 @@ window.app = window.app || {};
 			$value = $box.find('.value--primary'),
 			numEmployees = app.data.sgEmployees.length,
 			currNumber = 1,
-			countSpeed = 500,
+			countSpeed = 50,
+			animationDuration = 100,
 			totalDuration = app.data.sgEmployees.length * countSpeed + 100;
+
+		let timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, 800);
+
+		console.log(timeoutsAndDelays);
 
 		$box.addClass('infobox--is-initiated');
 
 		const showNextNumber = function() {
-			$value.text(currNumber);
+			// $value.text(currNumber);
 			currNumber++;
+			let currTimeout = timeoutsAndDelays.timeouts[currNumber-1];
 
 			if (currNumber <= numEmployees) {
-				setTimeout(showNextNumber, countSpeed);// somehow, dividing by 2 works - don't know why yet
+				setTimeout(showNextNumber, currTimeout);// somehow, dividing by 2 works - don't know why yet
+			} else {
+				setTimeout(startSimulation, 500);
 			}
 		};
 
 		// $value.text(numEmployees);
-		showNextNumber();
-		app.nodes.revealNodes(countSpeed);
-		setTimeout(startSimulation, totalDuration);
+		setTimeout(showNextNumber, animationDuration);
+		app.nodes.revealNodes(timeoutsAndDelays.cumulativeDelays);
+		
 	};
 
 

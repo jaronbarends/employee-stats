@@ -102,16 +102,25 @@ window.app.nodes = (function($) {
 	* reveal all employee nodes
 	* @returns {undefined}
 	*/
-	const revealNodes = function(duration) {
+	const revealNodes = function(delays, animationDuration) {
+		let $body = $('body');
+
 		elements.sgNodes
 			.transition()
+			.on('end', function(d, i) {
+				$body.trigger('nodeRevealed', {revealed: i+1});
+				// $value.text(i+1);
+				// console.log(i);
+			})
 			// .ease('elastic')
 			.ease(d3.easeBackOut)
-			.duration(duration)
+			.duration(animationDuration)
 			.delay(function(d, i) {
-				return i*duration;
+				return delays[i];
 			})
 			.attr('r', elements.sgNodeSize);
+
+
 	};
 
 	//d3.easeLinearIn

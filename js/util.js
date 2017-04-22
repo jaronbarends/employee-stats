@@ -119,6 +119,51 @@ window.app.util = (function($) {
 	const getEasedDuration = function(i, stepCount, min=1, max=10) {
 		
 	};
+
+
+	/**
+	* get timing info for an iteration
+	* for each iteration: what is its timeout
+	* what is its cumulative delay from the start of the iteration
+	*
+	* @param {number} totalCount The total number of iterations
+	* @param {number} firstDelay The delay of the first iteration
+	* @returns {object} {timeouts, cumulativeDelays, relativeTotalDuration}
+	*/
+	const getTimeoutsAndDelays = function(totalCount, firstDelay) {
+		// dt[i] = dt[0]*Math.pow(factor, i)
+		// set dt[0] to be 1
+		// than you get how many times dt[0] the whole sequence takes
+		let factor = 0.9,
+			powFactor = 1,
+			relativeTotalDuration = 0,// total duration relative to first delay (n*firstDelay)
+			timeouts = [],
+			cumulativeDelays = [];
+
+		// do a dry run to calculate all timeouts and cumulative delays
+		for (let i=0; i<totalCount; i++) {
+			let dt = firstDelay * Math.pow(factor, i*powFactor),
+				cumulativeDelay;
+
+			timeouts.push(dt);
+			if (i === 0) {
+				cumulativeDelay = 0;
+			} else {
+				cumulativeDelay = cumulativeDelays[i-1] + timeouts[i-1];
+			}
+			cumulativeDelays.push(cumulativeDelay);
+			relativeTotalDuration += dt;
+		}
+		// console.log('timeouts:', timeouts);
+		// console.log('cumulativeDelays:', cumulativeDelays);
+		// console.log('relativeTotalDuration:', relativeTotalDuration);
+
+		return {
+			timeouts,
+			cumulativeDelays,
+			relativeTotalDuration
+		};
+	};
 	
 
 
@@ -130,7 +175,8 @@ window.app.util = (function($) {
 		randomizeArray,
 		sortBucketByEmployeeCount,
 		getYearsUntilToday,
-		getEmployeeClasses
+		getEmployeeClasses,
+		getTimeoutsAndDelays
 	};
 
 	return publicMethodsAndProps;
