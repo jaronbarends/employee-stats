@@ -95,7 +95,6 @@ window.app.nodes = (function($) {
 					console.log(d[elements.sgInfoProp]);
 				}
 			});
-			// .attr('opacity', 0);
 	};
 
 
@@ -107,13 +106,15 @@ window.app.nodes = (function($) {
 		elements.sgNodes
 			.transition()
 			// .ease('elastic')
+			.ease(d3.easeBackOut)
 			.duration(duration)
 			.delay(function(d, i) {
 				return i*duration;
 			})
-			.attr('r', elements.sgNodeSize)
-			// .attr('opacity', 1);
+			.attr('r', elements.sgNodeSize);
 	};
+
+	//d3.easeLinearIn
 	
 
 

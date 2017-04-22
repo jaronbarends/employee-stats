@@ -230,8 +230,8 @@ window.app = window.app || {};
 		let $box = $('#info-box--employees-general'),
 			$value = $box.find('.value--primary'),
 			numEmployees = app.data.sgEmployees.length,
-			currNumber = 0,
-			countSpeed = 10,
+			currNumber = 1,
+			countSpeed = 500,
 			totalDuration = app.data.sgEmployees.length * countSpeed + 100;
 
 		$box.addClass('infobox--is-initiated');
@@ -240,8 +240,8 @@ window.app = window.app || {};
 			$value.text(currNumber);
 			currNumber++;
 
-			if (currNumber < numEmployees) {
-				setTimeout(showNextNumber, countSpeed/2);// somehow, dividing by 2 works - don't know why yet
+			if (currNumber <= numEmployees) {
+				setTimeout(showNextNumber, countSpeed);// somehow, dividing by 2 works - don't know why yet
 			}
 		};
 
@@ -251,6 +251,8 @@ window.app = window.app || {};
 		setTimeout(startSimulation, totalDuration);
 	};
 
+
+	
 
 
 	/**
