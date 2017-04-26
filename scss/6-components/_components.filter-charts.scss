@@ -1,3 +1,17 @@
+.filter-charts-form {
+
+	label {
+		display: block;
+		color: $color-grey-medium;
+		font-size: $font-size-tiny;
+	}
+
+	select {
+		display: block;
+		width: 100%;
+	}
+}
+
 .filter-charts-container {
 	margin: 0 auto;
 }

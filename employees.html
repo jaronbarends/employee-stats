@@ -36,27 +36,6 @@
 		</div>
 
 
-		
-
-		<div id="info-box--employees-general" class="info-box info-box--employees-general">
-			<div class="emp">
-				<div class="emp__head"></div>
-				<div class="emp__body"></div>
-				<div class="emp__legs"></div>
-
-				<div class="emp__shadow">
-					<div class="emp__head"></div>
-					<div class="emp__body"></div>
-					<div class="emp__legs"></div>
-				</div>
-			</div>
-			<dl>
-				<dd class="value value--primary">&nbsp;</dd>
-				<dt class="nominator">Employees</dt>
-			</dl>
-		</div>
-		
-
 		<div id="node-filter-box" class="node-filter-box">
 			<h4 class="filter-heading">Sort by:</h4>
 			<ul class="filter-list">
@@ -76,60 +55,163 @@
 			</ul>
 		</div>
 
-		<div class="chart-section">
-			<div id="bubble-chart-container" class="bubble-chart-container">
-				<svg id="bubble-chart" class="chart-svg bubble-chart bubble-chart--is-not-initiated">
-					<g id="map-group" class="map"></g>
-					<g id="employee-group" class="employee-group"></g>
-				</svg>
-			</div><!-- /.bubble-chart-container -->
-		</div><!-- /.chart-section -->
+		<!-- Start topic numbers & geo -->
 
+			<div class="topic-section">
 
-		<!-- Start discipline chart -->
-
-		<div class="chart-section">
-			<div class="discipline-charts-container">
-				<h3>We're working as a&hellip;</h3>
-				<svg id="unit-chart--discipline" class="chart-svg unit-chart unit-chart--discipline"></svg>
-			</div>
-		</div><!-- /.chart-section -->
-
-
-		<!-- Start age chart -->
-		<div class="chart-section">
-
-			<h3>How old are we?</h3>
-			<svg id="unit-chart--age" class="chart-svg unit-chart unit-chart--age"></svg>
-			<div id="age-info">
-				Our avarage age is
-				<div>
-					<span class="value value--primary age-years">..</span> years
-					<span class="value value--primary age-months">..</span> months
+				<div class="topic-intro">
 				</div>
-			</div>
 
-		</div><!-- /.chart-section -->
+				<div class="topic-data">
 
-		<div class="chart-section">
-			<h3>How we've grown over the years</h3>
-			<svg id="line-chart" class="chart-svg line-chart" width="960" height="500"></svg>
-		</div><!-- /.chart-section -->
+					<div class="topic-takeaways">
+						<div id="info-box--employees-general" class="info-box info-box--employees-general">
 
-		<div class="chart-section filter-charts-block">
+							<div class="emp">
+								<div class="emp__head"></div>
+								<div class="emp__body"></div>
+								<div class="emp__legs"></div>
 
-			<form id="filter-chart-form" class="filter-chart-form">
-				<label for="bucket-filter">For every&hellip;</label>
-				<select id="bucket-filter"></select>
-				Show&hellip;
-				<select id="employee-properties"></select>
-				<button type="submit">Show!</button>
-			</form>
+								<div class="emp__shadow">
+									<div class="emp__head"></div>
+									<div class="emp__body"></div>
+									<div class="emp__legs"></div>
+								</div>
+							</div>
 
-			<div id="filter-charts-container" class="filter-charts-container">
-			</div>
+							<dl>
+								<dd class="value value--primary">&hellip;</dd>
+								<dt class="nominator">Employees</dt>
+							</dl>
 
-		</div><!-- /.filter-charts-block -->
+						</div>
+					</div><!-- /.topic-takeaways -->
+
+					<div class="topic-charts">
+						<div id="bubble-chart-container" class="bubble-chart-container">
+							<svg id="bubble-chart" class="chart-svg bubble-chart bubble-chart--is-not-initiated">
+								<g id="map-group" class="map"></g>
+								<g id="employee-group" class="employee-group"></g>
+							</svg>
+						</div><!-- /.bubble-chart-container -->
+					</div><!-- /.topic-charts -->
+
+				</div><!-- /.topic-data -->
+
+			</div><!-- /.topic-section -->
+
+		<!-- End topic numbers & geo -->
+
+
+		<!-- Start topic disciplines -->
+
+			<div class="topic-section">
+
+				<div class="topic-intro">
+					<h2>We're working as a&hellip;</h2>
+				</div>
+
+				<div class="topic-data">
+
+					<div class="topic-takeaways topic-takeaways--right">
+						Most of us are devs.
+					</div><!-- /.topic-takeaways -->
+
+					<div class="topic-charts">
+						<svg id="unit-chart--discipline" class="chart-svg unit-chart unit-chart--discipline"></svg>
+					</div>
+				</div><!-- /.topic-data -->
+
+			</div><!-- /.topic-section -->
+
+		<!-- End topic disciplines -->
+
+
+		<!-- Start topic age -->
+
+			<div class="topic-section">
+
+				<div class="topic-intro">
+					<h2>How old are we?</h2>
+				</div>
+
+				<div class="topic-data">
+					<div class="topic-takeaways">
+						<div id="age-info">
+							Our avarage age is
+							<div>
+								<span class="value value--primary age-years">..</span> years
+								<span class="value value--primary age-months">..</span> months
+							</div>
+						</div>
+					</div><!-- /.topic-takeaways -->
+
+					<div class="topic-charts">
+						<svg id="unit-chart--age" class="chart-svg unit-chart unit-chart--age"></svg>
+					</div><!-- /.topic-charts -->
+				</div><!-- /.topic-data -->
+
+			</div><!-- /.topic-section -->
+
+		<!-- End topic age -->
+
+
+		<!-- Start topic growth -->
+
+			<div class="topic-section">
+
+				<div class="topic-intro">
+					<h2>How we've grown over the years</h2>
+				</div>
+
+				<div class="topic-data">
+
+					<div class="topic-takeaways topic-takeaways--right">
+						We grew.
+					</div><!-- /.topic-takeaways -->
+
+					<div class="topic-charts">
+						<svg id="line-chart" class="chart-svg line-chart" width="960" height="500"></svg>
+					</div>
+				</div><!-- /.topic-data -->
+				
+			</div><!-- /.topic-section -->
+
+		<!-- End topic growth -->
+
+
+		<!-- Start comparisons -->
+
+			<div class="topic-section">
+
+				<div class="topic-intro">
+					<h2>Compare metrics</h2>
+				</div>
+
+				<div class="topic-data">
+
+					<div class="topic-takeaways">
+						<form id="filter-charts-form" class="filter-charts-form">
+							<label for="bucket-filter">For every&hellip;</label>
+							<select id="bucket-filter"></select>
+							<label for="employee-properties">Show&hellip;</label>
+							<select id="employee-properties"></select>
+							<button type="submit">Show!</button>
+						</form>
+					</div><!-- /.topic-takeaways -->
+
+					<div class="topic-charts">
+
+						<div id="filter-charts-container" class="filter-charts-container">
+						</div>
+					</div>
+				</div><!-- /.topic-data -->
+
+			</div><!-- /.topic-section -->
+
+		<!-- End topic disciplines -->
+
+		</div><!-- /.topic-section -->
 
 
 	</div><!-- /.o-content-width -->

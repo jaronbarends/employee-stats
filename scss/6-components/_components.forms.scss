@@ -1,13 +1,25 @@
-
+$input-padding-hor: 0.5rem;
+$input-padding-vert: 0.2em;
+$input-border-color: $color-grey-light;
 
 input,
 select,
 button {
-	border-bottom: 2px solid $color-grey-xxlight;;
-	padding: 0.2em 0.5em;
+	border-bottom: 2px solid $input-border-color;
+	padding: $input-padding-vert $input-padding-hor;
+}
+
+label {
+	padding: $input-padding-vert $input-padding-hor;
 }
 
 select {
+	padding: $input-padding-vert;
+	margin: 0.5em 0 1em;
+}
+
+option {
+	padding: $input-padding-vert $input-padding-hor;
 }
 
 button {

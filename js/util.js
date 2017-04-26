@@ -130,7 +130,7 @@ window.app.util = (function($) {
 	* @param {number} firstDelay The delay of the first iteration (msec)
 	* @returns {object} {timeouts, cumulativeDelays, relativeTotalDuration}
 	*/
-	const getTimeoutsAndDelays = function(totalCount, firstDelay, decay=0.95) {
+	const getTimeoutsAndDelays = function(totalCount, firstDelay, decay=0.98) {
 		// dt[i] = dt[0]*Math.pow(decay, i)
 		let power = 2,
 			relativeTotalDuration = 0,// total duration relative to first delay (n*firstDelay)

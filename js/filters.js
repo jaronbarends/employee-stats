@@ -199,7 +199,7 @@ window.app.filters = (function($) {
 		}
 		$propertiesSelect.append(propertyOptions);
 
-		$('#filter-chart-form').on('submit', showComparison).trigger('submit');
+		$('#filter-charts-form').on('submit', showComparison).trigger('submit');
 	};
 
 	/**

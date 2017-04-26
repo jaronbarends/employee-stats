@@ -1,0 +1,39 @@
+.topic-section {
+	border-top: 1px solid #ccc;
+	padding: 3em 0;
+}
+
+.topic-intro {
+	text-align: center;
+}
+
+.topic-data {
+	display: flex;
+	justify-content: center;
+}
+
+.topic-takeaways,
+.topic-charts {
+	padding: 0 2em;
+}
+
+.topic-takeaways {
+	width: 30%;
+	border: 0px solid $color-grey-xxlight;
+	border-right-width: 1px;
+
+	&--right {
+		order: 1;
+		border-right-width: 0;
+		border-left-width: 1px;
+	}
+}
+
+.topic-charts {
+	width: 60%;
+}
+
+.chart-svg {
+	display: block;
+	// margin: 0 auto;
+}

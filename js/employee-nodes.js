@@ -29,7 +29,7 @@ window.app.nodes = (function($) {
 	*/
 	var getNodeGridPosition = function(idx, options) {
 		var defaults = {
-			gridOrigin: {x: 140, y: 20 },
+			gridOrigin: {x: 20, y: 20 },
 			gridSpacing: 8,
 			gridSize: 10,// number of nodes in each row and col
 			gridIsHorizontal: true,
@@ -105,7 +105,7 @@ window.app.nodes = (function($) {
 	const revealNodes = function() {
 		let $body = $('body'),
 			numEmployees = app.data.sgEmployees.length,
-			firstDelay = 300,
+			firstDelay = 400,
 			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, firstDelay),
 			delays = timeoutsAndDelays.cumulativeDelays,
 			animationDuration = 100;

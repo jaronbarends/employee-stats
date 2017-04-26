@@ -396,28 +396,57 @@ a {
   a img {
     border: none; }
 
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+  margin: 0 0 1em;
+  font-weight: bold; }
+
 h1,
 .h1 {
-  font-size: 7.5rem;
-  font-weight: bold;
+  font-size: 6rem;
   color: #ecedee; }
 
 h2,
 .h2 {
-  font-size: 2.4rem;
-  font-weight: bold; }
+  color: #d60042;
+  font-size: 2.4rem; }
 
 h3 {
-  color: #d60042;
-  font-weight: bold; }
+  color: #d60042; }
 
-.chart-section {
+.topic-section {
   border-top: 1px solid #ccc;
   padding: 3em 0; }
 
+.topic-intro {
+  text-align: center; }
+
+.topic-data {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+.topic-takeaways,
+.topic-charts {
+  padding: 0 2em; }
+
+.topic-takeaways {
+  width: 30%;
+  border: 0px solid #ecedee;
+  border-right-width: 1px; }
+  .topic-takeaways--right {
+    -ms-flex-order: 1;
+    order: 1;
+    border-right-width: 0;
+    border-left-width: 1px; }
+
+.topic-charts {
+  width: 60%; }
+
 .chart-svg {
-  display: block;
-  margin: 0 auto; }
+  display: block; }
 
 .axis g {
   font-size: 12px;
@@ -446,8 +475,18 @@ h3 {
 input,
 select,
 button {
-  border-bottom: 2px solid #ecedee;
-  padding: 0.2em 0.5em; }
+  border-bottom: 2px solid #ababac;
+  padding: 0.2em 0.5rem; }
+
+label {
+  padding: 0.2em 0.5rem; }
+
+select {
+  padding: 0.2em;
+  margin: 0.5em 0 1em; }
+
+option {
+  padding: 0.2em 0.5rem; }
 
 button {
   border: 2px solid #ecedee;
@@ -472,17 +511,16 @@ header {
 
 /*-- Start general styles --*/
 .bubble-chart-container {
-  width: 60%;
-  height: 80vh;
-  /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
-  min-width: 500px;
-  min-width: 900px;
-  min-height: 600px; }
+  height: 80vh; }
 
 .bubble-chart {
   display: block;
-  width: 100%;
   height: 100%;
+  /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
+  width: 60%;
+  min-width: 500px;
+  min-width: 900px;
+  min-height: 600px;
   transform-style: preserve-3d;
   transition: transform 1s; }
 
@@ -498,8 +536,7 @@ header {
 .employee {
   fill: #00bdfa;
   transition: fill 0.5s, r 2s; }
-
-@keyframes bounce {}  .bubble-chart--is-not-initiated .employee {
+  .bubble-chart--is-not-initiated .employee {
     transition: none; }
   .employee-group .employee {
     stroke: #363636;
@@ -547,6 +584,15 @@ header {
   transition: opacity 0.3s; }
   .node-filter-box--is-active {
     opacity: 1; }
+
+.filter-charts-form label {
+  display: block;
+  color: #8b8b8c;
+  font-size: 1.4rem; }
+
+.filter-charts-form select {
+  display: block;
+  width: 100%; }
 
 .filter-charts-container {
   margin: 0 auto; }
