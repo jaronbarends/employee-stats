@@ -14,9 +14,9 @@ window.app.nodes = (function($) {
 		sgDefaultNodeSpacing: 3,
 		sgNodeSpacing: 3,
 		sgInfoProp: '',// property to be shown when clicking on node
-		sgNodesChart: null,
-		sgNodesChartWidth: null,
-		sgNodesChartHeight: null,
+		sgNodesSvg: null,
+		sgNodesSvgWidth: null,
+		sgNodesSvgHeight: null,
 		sgGroupTranslate: 'translate(0,0)'
 	};
 
@@ -64,7 +64,7 @@ window.app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	var addEmployeeNodes = function() {
-		let employeeG = elements.sgNodesChart.selectAll('#employee-group')
+		let employeeG = elements.sgNodesSvg.selectAll('#employee-group')
 				.attr('transform', elements.sgGroupTranslate);
 
 		elements.sgNodes = employeeG.selectAll('.employee')
@@ -105,7 +105,8 @@ window.app.nodes = (function($) {
 	const revealNodes = function() {
 		let $body = $('body'),
 			numEmployees = app.data.sgEmployees.length,
-			firstDelay = 400,
+			// firstDelay = 400,
+			firstDelay = 4,
 			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, firstDelay),
 			delays = timeoutsAndDelays.cumulativeDelays,
 			animationDuration = 100;
@@ -133,7 +134,7 @@ window.app.nodes = (function($) {
 	*/
 	var setNodeSize = function(size) {
 		elements.sgNodeSize = size || elements.sgDefaultNodeSize;
-		elements.sgNodesChart.selectAll('.employee')
+		elements.sgNodesSvg.selectAll('.employee')
 			.attr('r', elements.sgNodeSize);
 	};
 

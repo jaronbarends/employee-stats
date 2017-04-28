@@ -55,6 +55,38 @@
 			</ul>
 		</div>
 
+
+		<!-- Start topic places -->
+
+			<div class="topic-section">
+
+				<div class="topic-intro">
+					<h2>Where we work, &hellip;</h2>
+				</div>
+
+				<div class="topic-data">
+
+					<div class="topic-takeaways topic-takeaways--right">
+					</div><!-- /.topic-takeaways -->
+
+					<div class="topic-charts">
+						<div id="geo-chart--places-container" class="bubble-chart-container">
+							<svg id="places-chart" class="chart-svg geo-chart">
+								<g class="map"></g>
+								<g class="lines-group"></g>
+								<g class="offices-group"></g>
+								<g class="hometowns-group"></g>
+								<g class="birthplaces-group"></g>
+							</svg>
+						</div><!-- /.bubble-chart-container -->
+						<svg id="geo-chart--places" class="chart-svg geo-chart--places"></svg>
+					</div><!-- /.topic-charts -->
+				</div><!-- /.topic-data -->
+
+			</div><!-- /.topic-section -->
+
+		<!-- End topic places -->
+
 		<!-- Start topic numbers & geo -->
 
 			<div class="topic-section">
@@ -89,7 +121,7 @@
 
 					<div class="topic-charts">
 						<div id="bubble-chart-container" class="bubble-chart-container">
-							<svg id="bubble-chart" class="chart-svg bubble-chart bubble-chart--is-not-initiated">
+							<svg id="bubble-chart" class="chart-svg geo-chart bubble-chart bubble-chart--is-not-initiated">
 								<g id="map-group" class="map"></g>
 								<g id="employee-group" class="employee-group"></g>
 							</svg>
@@ -227,6 +259,7 @@
 	<script src="js/dataprocessor-employees.js"></script>
 	<script src="js/dataprocessor-geo.js"></script>
 	<script src="js/map.js"></script>
+	<script src="js/geo-chart-nodes.js"></script>
 	<script src="js/employee-nodes.js"></script>
 	<script src="js/bubble-chart.js"></script>
 	<script src="js/pie-chart.js"></script>

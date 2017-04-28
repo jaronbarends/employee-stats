@@ -50,10 +50,10 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initBubbleChart = function() {
-		app.nodes.elements.sgNodesChart = d3.select('#bubble-chart');
-		app.nodes.elements.$sgNodesChart = $('#bubble-chart');
-		app.nodes.elements.sgNodesChartWidth = app.nodes.elements.$sgNodesChart.width();
-		app.nodes.elements.sgNodesChartHeight = app.nodes.elements.$sgNodesChart.height();
+		app.nodes.elements.sgNodesSvg = d3.select('#bubble-chart');
+		app.nodes.elements.$sgNodesSvg = $('#bubble-chart');
+		app.nodes.elements.sgNodesSvgWidth = app.nodes.elements.$sgNodesSvg.width();
+		app.nodes.elements.sgNodesSvgHeight = app.nodes.elements.$sgNodesSvg.height();
 	};
 
 
@@ -339,7 +339,8 @@ window.app = window.app || {};
 		app.data.employeesPerYear = employeesPerYear;
 
 		// initialize geo stuff
-		app.map.init(mapData);
+		app.map.init(mapData, app.nodes.elements.sgNodesSvg, '.map');
+
 
 		// process employee data
 		app.dataprocessorEmployees.init();
@@ -347,6 +348,12 @@ window.app = window.app || {};
 		// process all geo-related data
 		app.dataprocessorGeo.init();
 		initEmployeesPerOfficeList();
+
+		
+		let placesChartSvg = d3.select('#places-chart'),
+			placesMapSelector = '.map';
+		app.map.init(mapData, placesChartSvg, placesMapSelector);
+		app.geoChartNodes.init(placesChartSvg);
 
 		// add shapes for nodes
 		app.nodes.init();

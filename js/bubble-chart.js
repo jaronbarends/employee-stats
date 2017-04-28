@@ -35,9 +35,9 @@ window.app.bubbleChart = (function($) {
 			* @param {object} d current object's data
 			*/
 			var forceXGender = function(d) {
-				var x = app.nodes.elements.sgNodesChartWidth/4;
+				var x = app.nodes.elements.sgNodesSvgWidth/4;
 				if (d.gender.toLowerCase() === 'man') {
-					x = 3*app.nodes.elements.sgNodesChartWidth/4;
+					x = 3*app.nodes.elements.sgNodesSvgWidth/4;
 				}
 				return x;
 			};
@@ -49,11 +49,11 @@ window.app.bubbleChart = (function($) {
 			* @param {object} d current object's data
 			*/
 			var forceXDiscipline = function(d) {
-				var x = app.nodes.elements.sgNodesChartWidth/4;
+				var x = app.nodes.elements.sgNodesSvgWidth/4;
 				if (d.discipline === 'frontend development' || d.discipline === 'visual design' || d.discipline === 'interaction design') {
-					x = app.nodes.elements.sgNodesChartWidth/2;
+					x = app.nodes.elements.sgNodesSvgWidth/2;
 				} else if (d.discipline === 'backend development') {
-					x = 4*app.nodes.elements.sgNodesChartWidth / 5;
+					x = 4*app.nodes.elements.sgNodesSvgWidth / 5;
 				}
 				return x;
 			};
@@ -84,7 +84,7 @@ window.app.bubbleChart = (function($) {
 			* @param {object} d current object's data
 			*/
 			var forceXCenter = function(d) {
-				return app.nodes.elements.sgNodesChartWidth / 2;
+				return app.nodes.elements.sgNodesSvgWidth / 2;
 			};
 
 
@@ -94,7 +94,7 @@ window.app.bubbleChart = (function($) {
 			* @param {object} d current object's data
 			*/
 			var forceYCenter = function(d) {
-				return app.nodes.elements.sgNodesChartHeight / 2;
+				return app.nodes.elements.sgNodesSvgHeight / 2;
 			};
 
 		//-- End force definitions

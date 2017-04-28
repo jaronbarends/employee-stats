@@ -21,16 +21,16 @@ window.app.map = (function($) {
 	* draw map of The Netherlands
 	* @returns {undefined}
 	*/
-	var drawMap = function(geojson) {
+	var drawMap = function(geojson, map) {
 		var provinces = geojson.features;
 
-		elements.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.sgNodesChartWidth, app.nodes.elements.sgNodesChartHeight], geojson);
+		elements.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.sgNodesSvgWidth, app.nodes.elements.sgNodesSvgHeight], geojson);
 		elements.sgPath = d3.geoPath().projection(elements.sgProjection);
 
-		elements.sgMap = app.nodes.elements.sgNodesChart.selectAll('#map-group')
-			.attr('transform', app.nodes.elements.sgGroupTranslate);
+		// elements.sgMap = app.nodes.elements.sgNodesSvg.selectAll('#map-group')
+		map.attr('transform', app.nodes.elements.sgGroupTranslate);
 
-		elements.sgMap.selectAll('.province')
+		map.selectAll('.province')
 			.data(provinces)
 			.enter()
 			.append('path')
@@ -62,8 +62,8 @@ window.app.map = (function($) {
 	* add circles for offices
 	* @returns {undefined}
 	*/
-	var addOffices = function() {
-		elements.sgMap.selectAll('.office')
+	var addOffices = function(map) {
+		map.selectAll('.office')
 			.data(app.data.sgOffices)
 			.enter()
 			.append('circle')
@@ -76,7 +76,7 @@ window.app.map = (function($) {
 			.attr('cy', function(d) {
 				var coords = elements.sgProjection([d.long, d.lat]);
 				return coords[1];
-			})
+			});
 	};
 
 
@@ -96,11 +96,12 @@ window.app.map = (function($) {
 	* @returns {undefined}
 	* @param {json object} mapData mapData from csv file
 	*/
-	var init = function(mapData) {
-		var geojson = topojson.feature(mapData, mapData.objects.collection);
+	var init = function(mapData, svg, mapGroupSelector) {
+		let geojson = topojson.feature(mapData, mapData.objects.collection),
+			map = svg.selectAll(mapGroupSelector);
 
-		drawMap(geojson);
-		addOffices();
+		drawMap(geojson, map);
+		// addOffices(map);
 	};
 
 

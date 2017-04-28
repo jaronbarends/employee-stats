@@ -612,8 +612,13 @@ header {
     width: 40%;
     text-align: left; }
 
+.geo-chart {
+  width: 100%;
+  height: 100%; }
+
 .map {
   opacity: 0;
+  opacity: 1;
   transition: opacity 0.5s ease-out; }
   .map-view .map {
     opacity: 1; }
