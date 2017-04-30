@@ -629,8 +629,9 @@ header {
     stroke-width: 0.5; }
   .map .office {
     opacity: 0;
+    opacity: 1;
     transition: opacity 0.5s 1s ease-out;
-    fill: none; }
+    fill: rgba(0, 189, 250, 0.5); }
   .map-view .map .office {
     opacity: 1; }
 

@@ -101,7 +101,7 @@ window.app.map = (function($) {
 			map = svg.selectAll(mapGroupSelector);
 
 		drawMap(geojson, map);
-		// addOffices(map);
+		addOffices(map);
 	};
 
 
@@ -111,7 +111,8 @@ window.app.map = (function($) {
 		elements,
 		init,
 		show,
-		hide
+		hide,
+		addOffices
 	};
 
 	return publicMethodsAndProps;
