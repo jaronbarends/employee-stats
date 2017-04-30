@@ -27,9 +27,32 @@
 
 			// fill: rgba(0,0,0, 0.8);
 			fill: rgba($color-blue, 0.5);
-			// stroke: $color-blue;
+			stroke: $color-blue;
+			stroke-width: 2;
+			stroke-width: 0;
 			// fill: none;
+		}
 
+		$office-opacity: 0.3;
+
+		.office--utrecht {
+			stroke: $color-utrecht;
+			fill: rgba($color-utrecht, $office-opacity);
+		}
+		
+		.office--amsterdam {
+			stroke: $color-amsterdam;
+			fill: rgba($color-amsterdam, $office-opacity);
+		}
+		
+		.office--amersfoort {
+			stroke: $color-amersfoort;
+			fill: rgba($color-amersfoort, $office-opacity);
+		}
+		
+		.office--eindhoven {
+			stroke: $color-eindhoven;
+			fill: rgba($color-eindhoven, $office-opacity);
 		}
 
 		.map-view & .office {

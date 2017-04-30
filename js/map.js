@@ -67,7 +67,11 @@ window.app.map = (function($) {
 			.data(app.data.sgOffices)
 			.enter()
 			.append('circle')
-			.attr('class', 'office')
+			.attr('class', function(d) {
+				let city = d.city.toLowerCase(),
+					clss = 'office office--'+city;
+				return clss;
+			})
 			.attr('r', 20)
 			.attr('cx', function(d) {
 				var coords = elements.sgProjection([d.long, d.lat]);
@@ -111,8 +115,7 @@ window.app.map = (function($) {
 		elements,
 		init,
 		show,
-		hide,
-		addOffices
+		hide
 	};
 
 	return publicMethodsAndProps;

@@ -350,10 +350,10 @@ window.app = window.app || {};
 		initEmployeesPerOfficeList();
 
 		
-		let placesChartSvg = d3.select('#places-chart'),
-			placesMapSelector = '.map';
-		app.map.init(mapData, placesChartSvg, placesMapSelector);
-		app.geoChartNodes.init(placesChartSvg);
+		// let placesChartSvg = d3.select('#places-chart'),
+		// 	placesMapSelector = '.map';
+		// app.map.init(mapData, placesChartSvg, placesMapSelector);
+		// app.geoChartNodes.init(placesChartSvg);
 
 		// add shapes for nodes
 		app.nodes.init();

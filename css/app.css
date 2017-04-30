@@ -631,7 +631,22 @@ header {
     opacity: 0;
     opacity: 1;
     transition: opacity 0.5s 1s ease-out;
-    fill: rgba(0, 189, 250, 0.5); }
+    fill: rgba(0, 189, 250, 0.5);
+    stroke: #00bdfa;
+    stroke-width: 2;
+    stroke-width: 0; }
+  .map .office--utrecht {
+    stroke: #d60042;
+    fill: rgba(214, 0, 66, 0.3); }
+  .map .office--amsterdam {
+    stroke: #363636;
+    fill: rgba(54, 54, 54, 0.3); }
+  .map .office--amersfoort {
+    stroke: #fecc00;
+    fill: rgba(254, 204, 0, 0.3); }
+  .map .office--eindhoven {
+    stroke: #00bdfa;
+    fill: rgba(0, 189, 250, 0.3); }
   .map-view .map .office {
     opacity: 1; }
 
