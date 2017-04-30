@@ -1,0 +1,9 @@
+.info-box {
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.map-view .info-box--hometown,
+.map-view .info-box--offices {
+	opacity: 1;
+}

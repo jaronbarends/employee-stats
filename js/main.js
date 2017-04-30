@@ -78,24 +78,11 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initSortingLinks = function() {
-		
-		$('#sort-by-gender').on('click', function(e) {
-			e.preventDefault();
-			enableDefaultFilterView();
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXGender));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYCenter));
-		});
-		
-		$('#sort-by-discipline').on('click', function(e) {
-			e.preventDefault();
-			enableDefaultFilterView();
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXDiscipline));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYCenter));
-		});
 
 		// geo sorting
 		$('[data-geo-sort]').on('click', function(e) {
 			e.preventDefault();
+			app.nodes.setNodeSize(1.5);
 			app.nodes.setNodeSize(2);
 			app.nodes.setNodeSpacing(0);
 			app.map.show();
@@ -111,6 +98,10 @@ window.app = window.app || {};
 			if (coordsProp === 'officeCoords') {
 				$sgBody.addClass('highlight-office');
 			}
+
+			if (coordsProp === 'hometownCoords') {
+				setTimeout(addLines, 200);
+			}
 		});
 		
 
@@ -120,6 +111,41 @@ window.app = window.app || {};
 			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXGrid));
 			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYGrid));
 		});
+	};
+
+
+
+
+	/**
+	* add lines between hometowns and offices
+	* @returns {undefined}
+	*/
+	const addLines = function(placesChartSvg) {
+		placesChartSvg = app.nodes.elements.sgNodesSvg;
+		let svgGroup = placesChartSvg.selectAll('.lines-group'),
+			lines = svgGroup.selectAll('.line')
+				.data(app.data.sgEmployees)
+				.enter()
+				.append('line')
+				.attr('class', function(d) {
+					let clss = 'line--office line--office-'+d.office.toLowerCase();
+					console.log(clss);
+					return clss;
+				})
+				.attr('x1', function(d) {
+					return d.officeCoords.x;
+				})
+				.attr('y1', function(d) {
+					return d.officeCoords.y;
+				})
+				.attr('x2', function(d) {
+					return d.hometownCoords.x;
+				})
+				.attr('y2', function(d) {
+					return d.hometownCoords.y;
+				})
+				// .attr('stroke', 'rgba(0,0,0,0.3')
+				// .attr('stroke-width', 1);
 	};
 
 

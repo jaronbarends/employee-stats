@@ -21,17 +21,6 @@
 
 		<div id="legends" class="legends">
 		
-			<div id="info-box--hometown" class="info-box info-box--hometown">
-				<h3>Most popular hometowns</h3>
-				<ol id="hometown-list" class="hometown-list">
-				</ol>
-			</div>
-		
-			<div id="info-box--offices" class="info-box info-box--offices">
-				<h3>Employees per office</h3>
-				<ol id="office-list" class="office-list">
-				</ol>
-			</div>
 
 		</div>
 
@@ -123,12 +112,26 @@
 							</dl>
 
 						</div>
+
+						
+						<div id="info-box--offices" class="info-box info-box--offices">
+							<h3>Employees per office</h3>
+							<ol id="office-list" class="office-list">
+							</ol>
+						</div>
+						
+						<div id="info-box--hometown" class="info-box info-box--hometown">
+							<h3>Most popular hometowns</h3>
+							<ol id="hometown-list" class="hometown-list">
+							</ol>
+						</div>
 					</div><!-- /.topic-takeaways -->
 
 					<div class="topic-charts">
 						<div id="bubble-chart-container" class="bubble-chart-container">
 							<svg id="bubble-chart" class="chart-svg geo-chart bubble-chart bubble-chart--is-not-initiated">
 								<g id="map-group" class="map"></g>
+								<g class="lines-group"></g>
 								<g id="employee-group" class="employee-group"></g>
 							</svg>
 						</div><!-- /.bubble-chart-container -->

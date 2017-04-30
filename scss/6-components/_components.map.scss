@@ -25,12 +25,9 @@
 			opacity: 1;
 			transition: opacity 0.5s 1s ease-out;
 
-			// fill: rgba(0,0,0, 0.8);
 			fill: rgba($color-blue, 0.5);
 			stroke: $color-blue;
-			stroke-width: 2;
 			stroke-width: 0;
-			// fill: none;
 		}
 
 		$office-opacity: 0.3;
@@ -39,7 +36,7 @@
 			stroke: $color-utrecht;
 			fill: rgba($color-utrecht, $office-opacity);
 		}
-		
+
 		.office--amsterdam {
 			stroke: $color-amsterdam;
 			fill: rgba($color-amsterdam, $office-opacity);
@@ -61,9 +58,32 @@
 
 	}
 
+	.line--office {
+		stroke-width: 1;
+		opacity: 0.5;
+	}
+
+	.line--office-utrecht {
+		stroke: $color-utrecht;
+	}
+
+	.line--office-amsterdam{
+		stroke: $color-amsterdam;
+	}
+
+	.line--office-amersfoort {
+		stroke: $color-amersfoort;
+	}
+
+	.line--office-eindhoven {
+		stroke: $color-eindhoven;
+	}
+
+
 	.map-view {
 			.employee {
 				stroke-width: 1px;
+				// stroke-width: 0;
 				stroke: white;
 				// stroke: rgba(0,0,0,0.5);
 				// stroke: transparent;

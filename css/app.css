@@ -4,6 +4,9 @@
 /* valtech light grey */
 /* valtech red */
 /* valtech yellow */
+/* valtech lightblue */
+/* valtech lime */
+/* valtech pale green */
 /*! normalize.custom.scss v3.04 | MIT License | github.com/jaronbarends/normalize.css */
 /*! Fork of normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
@@ -524,15 +527,6 @@ header {
   transform-style: preserve-3d;
   transition: transform 1s; }
 
-.legends {
-  position: absolute;
-  top: 0;
-  right: 0; }
-
-.info-box {
-  opacity: 0;
-  transition: opacity 0.5s; }
-
 .employee {
   fill: #00bdfa;
   transition: fill 0.5s, r 2s; }
@@ -541,10 +535,6 @@ header {
   .employee-group .employee {
     stroke: #363636;
     stroke-width: 2px; }
-
-.map-view .info-box--hometown,
-.map-view .info-box--offices {
-  opacity: 1; }
 
 .axis .domain {
   stroke: transparent; }
@@ -633,7 +623,6 @@ header {
     transition: opacity 0.5s 1s ease-out;
     fill: rgba(0, 189, 250, 0.5);
     stroke: #00bdfa;
-    stroke-width: 2;
     stroke-width: 0; }
   .map .office--utrecht {
     stroke: #d60042;
@@ -649,6 +638,22 @@ header {
     fill: rgba(0, 189, 250, 0.3); }
   .map-view .map .office {
     opacity: 1; }
+
+.line--office {
+  stroke-width: 1;
+  opacity: 0.5; }
+
+.line--office-utrecht {
+  stroke: #d60042; }
+
+.line--office-amsterdam {
+  stroke: #363636; }
+
+.line--office-amersfoort {
+  stroke: #fecc00; }
+
+.line--office-eindhoven {
+  stroke: #00bdfa; }
 
 .map-view .employee {
   stroke-width: 1px;
@@ -757,6 +762,14 @@ header {
 
 .unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) text {
   display: block; }
+
+.info-box {
+  opacity: 0;
+  transition: opacity 0.5s; }
+
+.map-view .info-box--hometown,
+.map-view .info-box--offices {
+  opacity: 1; }
 
 .info-box--employees-general {
   position: relative;
