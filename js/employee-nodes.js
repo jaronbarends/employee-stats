@@ -72,30 +72,45 @@ window.app.nodes = (function($) {
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
-			// .attr('r', elements.sgNodeSize)
-			.attr('r', 0)
-			.attr('cx', function(d, i) {
-				var x = getNodeGridPosition(i)[0];
-				d.x = x; 
-				return x;
-			})
-			.attr('cy', function(d, i) {
-				var y = getNodeGridPosition(i)[1];
-				d.y = y;
-				return y;
-			})
-			.attr('x', function(d, i) {
-				return getNodeGridPosition(i)[0];
-			})
-			.attr('y', function(d, i) {
-				return getNodeGridPosition(i)[1];
-			})
+			.attr('r', 0);
+
+		setNodePosition(elements.sgNodes, getNodeGridPosition)
 			.on('click', function(d) {
 				if (elements.sgInfoProp) {
 					console.log(d[elements.sgInfoProp]);
 				}
 			});
 	};
+
+
+	/**
+	* sets the x, y, cx and cy attribute of all nodes in a selection
+	* and returns the selection for chaining
+	*
+	* @param {d3 selection} selection The d3 selection on whose nodes to set the position
+	* @param {function} positionFunction The function to call for each node; has to return [x,y]
+	* @returns {d3 selection} The modified d3 selection
+	*/
+	const setNodePosition = function(selection, positionFunction) {
+		selection.attr('cx', function(d, i) {
+				var x = positionFunction(i)[0];
+				d.x = x; 
+				return x;
+			}).attr('cy', function(d, i) {
+				var y = positionFunction(i)[1];
+				d.y = y;
+				return y;
+			})
+			.attr('x', function(d, i) {
+				return positionFunction(i)[0];
+			})
+			.attr('y', function(d, i) {
+				return positionFunction(i)[1];
+			});
+
+		return selection;
+	};
+	
 
 
 	/**

@@ -105,9 +105,11 @@ window.app = window.app || {};
 		});
 		
 
-		$('#no-sorting').on('click', function(e) {
+		$('#sort-by-grid').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
+			// simulation.stop();
+			// getGridPositions
 			app.simulation.changeForce('forceX', app.simulation.xForce(forceXGrid));
 			app.simulation.changeForce('forceY', app.simulation.yForce(forceYGrid));
 		});
@@ -143,7 +145,7 @@ window.app = window.app || {};
 				})
 				.attr('y2', function(d) {
 					return d.hometownCoords.y;
-				})
+				});
 				// .attr('stroke', 'rgba(0,0,0,0.3')
 				// .attr('stroke-width', 1);
 	};
