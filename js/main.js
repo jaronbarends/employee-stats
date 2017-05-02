@@ -49,7 +49,7 @@ window.app = window.app || {};
 	* create svg for graph
 	* @returns {undefined}
 	*/
-	var initBubbleChart = function() {
+	var initSimulation = function() {
 		app.nodes.elements.sgNodesSvg = d3.select('#bubble-chart');
 		app.nodes.elements.$sgNodesSvg = $('#bubble-chart');
 		app.nodes.elements.sgNodesSvgWidth = app.nodes.elements.$sgNodesSvg.width();
@@ -67,7 +67,7 @@ window.app = window.app || {};
 		app.map.hide();
 		app.nodes.setNodeSize();
 		app.nodes.setNodeSpacing();
-		app.bubbleChart.setDefaultCollisionForce();
+		app.simulation.setDefaultCollisionForce();
 	};
 	
 	
@@ -91,9 +91,9 @@ window.app = window.app || {};
 				coordsProp = $tgt.attr('data-geo-sort');
 			app.nodes.elements.sgInfoProp = $tgt.attr('data-info-property');
 
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(app.bubbleChart.getGeoForce('x', coordsProp, 120)));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(app.bubbleChart.getGeoForce('y', coordsProp, 20)));
-			app.bubbleChart.setDefaultCollisionForce();
+			app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, 120)));
+			app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, 20)));
+			app.simulation.setDefaultCollisionForce();
 
 			if (coordsProp === 'officeCoords') {
 				$sgBody.addClass('highlight-office');
@@ -108,8 +108,8 @@ window.app = window.app || {};
 		$('#no-sorting').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			app.bubbleChart.changeForce('forceX', app.bubbleChart.xForce(forceXGrid));
-			app.bubbleChart.changeForce('forceY', app.bubbleChart.yForce(forceYGrid));
+			app.simulation.changeForce('forceX', app.simulation.xForce(forceXGrid));
+			app.simulation.changeForce('forceY', app.simulation.yForce(forceYGrid));
 		});
 	};
 
@@ -327,14 +327,14 @@ window.app = window.app || {};
 	*/
 	const startSimulation = function() {
 		// initialize force simulation
-		app.bubbleChart.initSimulation();
+		app.simulation.initSimulation();
 		// this kicks off the animation
-		var sim = app.bubbleChart.getSimulation();
-		// console.log('app.bubbleChart.sgSimulation:', sim);
-		// console.log('app.bubbleChart.sgSimulation:', app.bubbleChart.sgSimulation);
-		// app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
+		var sim = app.simulation.getSimulation();
+		// console.log('app.simulation.sgSimulation:', sim);
+		// console.log('app.simulation.sgSimulation:', app.simulation.sgSimulation);
+		// app.simulation.sgSimulation.on('tick', app.simulation.simulationTickHandler);
 		
-		sim.on('tick', app.bubbleChart.simulationTickHandler);
+		sim.on('tick', app.simulation.simulationTickHandler);
 
 		document.getElementById('bubble-chart').classList.remove('bubble-chart--is-not-initiated');
 		document.getElementById('node-filter-box').classList.add('node-filter-box--is-active');
@@ -427,7 +427,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var init = function() {
-		initBubbleChart();
+		initSimulation();
 		initSortingLinks();
 		initHighlightLinks();
 

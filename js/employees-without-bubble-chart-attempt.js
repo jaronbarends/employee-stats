@@ -36,7 +36,7 @@ window.app = window.app || {};
 		app.map.hide();
 		app.nodes.setNodeSize();
 		app.nodes.setNodeSpacing();
-		app.bubbleChart.setDefaultCollisionForce();
+		app.simulation.setDefaultCollisionForce();
 	};
 	
 	
@@ -51,17 +51,17 @@ window.app = window.app || {};
 		$('#sort-by-gender').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			// app.bubbleChart.changeForce('forceX', xForce(forceXGender));
-			// app.bubbleChart.changeForce('forceY', yForce(forceYCenter));
-			app.bubbleChart.changeForces('gender');
+			// app.simulation.changeForce('forceX', xForce(forceXGender));
+			// app.simulation.changeForce('forceY', yForce(forceYCenter));
+			app.simulation.changeForces('gender');
 		});
 		
 		$('#sort-by-discipline').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			// app.bubbleChart.changeForce('forceX', xForce(forceXDiscipline));
-			// app.bubbleChart.changeForce('forceY', yForce(forceYCenter));
-			app.bubbleChart.changeForces('discipline');
+			// app.simulation.changeForce('forceX', xForce(forceXDiscipline));
+			// app.simulation.changeForce('forceY', yForce(forceYCenter));
+			app.simulation.changeForces('discipline');
 		});
 
 		// geo sorting
@@ -74,24 +74,24 @@ window.app = window.app || {};
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
 
-			app.bubbleChart.geoCoordsProp = coordsProp;
-			app.bubbleChart.setGeoType(coordsProp);
-			console.log('set app.bubbleChart.geoCoordsProp to', coordsProp);
+			app.simulation.geoCoordsProp = coordsProp;
+			app.simulation.setGeoType(coordsProp);
+			console.log('set app.simulation.geoCoordsProp to', coordsProp);
 			app.nodes.elements.sgInfoProp = $tgt.attr('data-info-property');
 
-			// app.bubbleChart.changeForce('forceX', xForce(getGeoForce('x', coordsProp, 120)));
-			// app.bubbleChart.changeForce('forceY', yForce(getGeoForce('y', coordsProp, 20)));
-			app.bubbleChart.changeForces('geo');
-			app.bubbleChart.setDefaultCollisionForce();
+			// app.simulation.changeForce('forceX', xForce(getGeoForce('x', coordsProp, 120)));
+			// app.simulation.changeForce('forceY', yForce(getGeoForce('y', coordsProp, 20)));
+			app.simulation.changeForces('geo');
+			app.simulation.setDefaultCollisionForce();
 		});
 		
 
 		$('#no-sorting').on('click', function(e) {
 			e.preventDefault();
 			enableDefaultFilterView();
-			app.bubbleChart.changeForces('default');
-			// app.bubbleChart.changeForce('forceX', xForce(forceXGrid));
-			// app.bubbleChart.changeForce('forceY', yForce(forceYGrid));
+			app.simulation.changeForces('default');
+			// app.simulation.changeForce('forceX', xForce(forceXGrid));
+			// app.simulation.changeForce('forceY', yForce(forceYGrid));
 		});
 	};
 	
@@ -464,10 +464,10 @@ window.app = window.app || {};
 		calculateAgeInfo();
 
 		// initialize force simulation
-		app.bubbleChart.initSimulation();
+		app.simulation.initSimulation();
 		// this kicks off the animation
 		// sgSimulation.on('tick', simulationTickHandler);
-		app.bubbleChart.sgSimulation.on('tick', app.bubbleChart.simulationTickHandler);
+		app.simulation.sgSimulation.on('tick', app.simulation.simulationTickHandler);
 
 		// initCompareTool();
 		app.filters.init();
@@ -501,7 +501,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var init = function() {
-		app.bubbleChart.init();
+		app.simulation.init();
 		initSortingLinks();
 		initHighlightLinks();
 

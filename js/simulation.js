@@ -1,6 +1,6 @@
 window.app = window.app || {};
 
-window.app.bubbleChart = (function($) {
+window.app.simulation = (function($) {
 
 	'use strict';
 
