@@ -33,6 +33,7 @@ window.app.nodes = (function($) {
 			gridSpacing: 8,
 			gridSize: 10,// number of nodes in each row and col
 			gridIsHorizontal: true,
+			nodeSize: elements.sgNodeSize
 		},
 		col,
 		row,
@@ -44,14 +45,14 @@ window.app.nodes = (function($) {
 		if (c.gridIsHorizontal) {
 			col = idx % c.gridSize + ( c.gridSize + 0.5 ) * Math.floor( idx / (c.gridSize*c.gridSize) );
 			row = Math.floor( idx / c.gridSize ) - c.gridSize * Math.floor( idx / (c.gridSize*c.gridSize) );
-			x = ( 2 * elements.sgNodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
-			y = ( 2 * elements.sgNodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
+			x = ( 2 * c.nodeSize + c.gridSpacing ) * col + c.gridOrigin.x;
+			y = ( 2 * c.nodeSize + c.gridSpacing ) * row + c.gridOrigin.y;
 		} else {
-			c.gridSpacing = elements.sgNodeSize;
+			c.gridSpacing = c.nodeSize;
 			col = idx % c.gridSize;
 			row = Math.floor(idx / c.gridSize) + 0.5 * Math.floor(idx / (c.gridSize*c.gridSize));
-			x = ( 2 * elements.sgNodeSize + c.gridSpacing) * col + c.gridOrigin.x;
-			y = ( 2 * elements.sgNodeSize + c.gridSpacing) * row + c.gridOrigin.y;
+			x = ( 2 * c.nodeSize + c.gridSpacing) * col + c.gridOrigin.x;
+			y = ( 2 * c.nodeSize + c.gridSpacing) * row + c.gridOrigin.y;
 		}
 
 		return [x,y];
@@ -74,7 +75,7 @@ window.app.nodes = (function($) {
 			.attr('class', app.util.getEmployeeClasses)
 			.attr('r', 0);
 
-		setNodePosition(elements.sgNodes, getNodeGridPosition)
+		setNodePositions(elements.sgNodes, getNodeGridPosition)
 			.on('click', function(d) {
 				if (elements.sgInfoProp) {
 					console.log(d[elements.sgInfoProp]);
@@ -91,21 +92,24 @@ window.app.nodes = (function($) {
 	* @param {function} positionFunction The function to call for each node; has to return [x,y]
 	* @returns {d3 selection} The modified d3 selection
 	*/
-	const setNodePosition = function(selection, positionFunction) {
-		selection.attr('cx', function(d, i) {
-				var x = positionFunction(i)[0];
+	const setNodePositions = function(selection, positionFunction, duration = 0, optionsForPositionFunction) {
+		selection
+			.transition()
+			.duration(duration)
+			.attr('cx', function(d, i) {
+				var x = positionFunction(i, optionsForPositionFunction)[0];
 				d.x = x; 
 				return x;
 			}).attr('cy', function(d, i) {
-				var y = positionFunction(i)[1];
+				var y = positionFunction(i, optionsForPositionFunction)[1];
 				d.y = y;
 				return y;
 			})
 			.attr('x', function(d, i) {
-				return positionFunction(i)[0];
+				return positionFunction(i, optionsForPositionFunction)[0];
 			})
 			.attr('y', function(d, i) {
-				return positionFunction(i)[1];
+				return positionFunction(i, optionsForPositionFunction)[1];
 			});
 
 		return selection;
@@ -178,11 +182,12 @@ window.app.nodes = (function($) {
 	// define public methods that are available through app
 	var publicMethodsAndPropsAndProps = {
 		elements,
+		getNodeGridPosition,
 		init,
+		revealNodes,
+		setNodePositions,
 		setNodeSize,
 		setNodeSpacing,
-		getNodeGridPosition,
-		revealNodes
 	};
 
 	return publicMethodsAndPropsAndProps;

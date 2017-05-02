@@ -103,15 +103,37 @@ window.app = window.app || {};
 				setTimeout(addLines, 200);
 			}
 		});
+
+		console.log(app.simulation);
 		
 
 		$('#sort-by-grid').on('click', function(e) {
 			e.preventDefault();
-			enableDefaultFilterView();
-			// simulation.stop();
+			console.log(app.simulation.getSimulation());
+			let simulation = app.simulation.getSimulation();
+			simulation.stop();
+			console.log(app.nodes.elements.sgDefaultNodeSize);
+
+			let duration = 1000,
+				nodeSize = app.nodes.elements.sgDefaultNodeSize,
+				optionsForPositionFunction = {
+					nodeSize: nodeSize
+				};
+
+			// app.nodes.elements.sgNodes
+			// 	.transition()
+			// 	.duration(duration)
+			// 	.attr('r', nodeSize);
+
+			app.nodes.elements.sgNodes
+				.attr('r', app.nodes.elements.sgDefaultNodeSize);
+
+			app.nodes.setNodePositions(app.nodes.elements.sgNodes, app.nodes.getNodeGridPosition, duration, optionsForPositionFunction);
+			// setNodesContext('grid');
+			// enableDefaultFilterView();
 			// getGridPositions
-			app.simulation.changeForce('forceX', app.simulation.xForce(forceXGrid));
-			app.simulation.changeForce('forceY', app.simulation.yForce(forceYGrid));
+			// app.simulation.changeForce('forceX', app.simulation.xForce(forceXGrid));
+			// app.simulation.changeForce('forceY', app.simulation.yForce(forceYGrid));
 		});
 	};
 
@@ -131,7 +153,6 @@ window.app = window.app || {};
 				.append('line')
 				.attr('class', function(d) {
 					let clss = 'line--office line--office-'+d.office.toLowerCase();
-					console.log(clss);
 					return clss;
 				})
 				.attr('x1', function(d) {
