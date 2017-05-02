@@ -764,6 +764,7 @@ header {
   display: block; }
 
 .info-box {
+  margin: 0 0 2em;
   opacity: 0;
   transition: opacity 0.5s; }
 

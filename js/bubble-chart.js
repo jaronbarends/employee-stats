@@ -29,35 +29,6 @@ window.app.bubbleChart = (function($) {
 			};
 		
 
-			/**
-			* x-force for filter by gender
-			* @returns {number}	the x coordinate to move to
-			* @param {object} d current object's data
-			*/
-			var forceXGender = function(d) {
-				var x = app.nodes.elements.sgNodesSvgWidth/4;
-				if (d.gender.toLowerCase() === 'man') {
-					x = 3*app.nodes.elements.sgNodesSvgWidth/4;
-				}
-				return x;
-			};
-
-
-			/**
-			* x-force for filtering by discipline
-			* @returns {number}	the x coordinate to move to
-			* @param {object} d current object's data
-			*/
-			var forceXDiscipline = function(d) {
-				var x = app.nodes.elements.sgNodesSvgWidth/4;
-				if (d.discipline === 'frontend development' || d.discipline === 'visual design' || d.discipline === 'interaction design') {
-					x = app.nodes.elements.sgNodesSvgWidth/2;
-				} else if (d.discipline === 'backend development') {
-					x = 4*app.nodes.elements.sgNodesSvgWidth / 5;
-				}
-				return x;
-			};
-
 
 			/**
 			* x-force for positioning all nodes on a grid
@@ -176,17 +147,6 @@ window.app.bubbleChart = (function($) {
 				.alphaDecay(0.4)
 				.restart();
 		};
-
-
-		/**
-		* 
-		* @returns {undefined}
-		*/
-		var changeForces = function(forceName) {
-			if (forceName === 'geo') {
-				
-			}
-		};
 		
 
 	//-- End force / simulation functions
@@ -196,10 +156,7 @@ window.app.bubbleChart = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		// init
 		getGeoForce,
-		forceXGender,
-		forceXDiscipline,
 		forceYGrid,
 		forceXCenter,
 		forceYCenter,
