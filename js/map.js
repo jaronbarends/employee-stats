@@ -24,11 +24,11 @@ window.app.map = (function($) {
 	var drawMap = function(geojson, map) {
 		var provinces = geojson.features;
 
-		elements.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.sgNodesSvgWidth, app.nodes.elements.sgNodesSvgHeight], geojson);
+		elements.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.nodesSvgWidth, app.nodes.elements.nodesSvgHeight], geojson);
 		elements.sgPath = d3.geoPath().projection(elements.sgProjection);
 
-		// elements.sgMap = app.nodes.elements.sgNodesSvg.selectAll('#map-group')
-		map.attr('transform', app.nodes.elements.sgGroupTranslate);
+		// elements.sgMap = app.nodes.elements.nodesSvg.selectAll('#map-group')
+		map.attr('transform', app.nodes.elements.groupTranslate);
 
 		map.selectAll('.province')
 			.data(provinces)

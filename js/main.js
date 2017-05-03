@@ -51,9 +51,9 @@ window.app = window.app || {};
 	*/
 	var initSimulation = function() {
 		let $svg = $('#bubble-chart');
-		app.nodes.elements.sgNodesSvg = d3.select('#bubble-chart');
-		app.nodes.elements.sgNodesSvgWidth = $svg.width();
-		app.nodes.elements.sgNodesSvgHeight = $svg.height();
+		app.nodes.elements.nodesSvg = d3.select('#bubble-chart');
+		app.nodes.elements.nodesSvgWidth = $svg.width();
+		app.nodes.elements.nodesSvgHeight = $svg.height();
 	};
 
 
@@ -88,7 +88,7 @@ window.app = window.app || {};
 			
 			var $tgt = $(e.currentTarget),
 				coordsProp = $tgt.attr('data-geo-sort');
-			app.nodes.elements.sgInfoProp = $tgt.attr('data-info-property');
+			app.nodes.elements.infoProp = $tgt.attr('data-info-property');
 
 			app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, 120)));
 			app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, 20)));
@@ -108,17 +108,17 @@ window.app = window.app || {};
 			let simulation = app.simulation.getSimulation();
 			simulation.stop();
 
-			let selection = app.nodes.elements.sgNodes,
+			let selection = app.nodes.elements.nodes,
 				positionFunction = app.nodes.getNodeGridPosition,
 				duration = 1000,
-				nodeSize = app.nodes.elements.sgDefaultNodeSize,
+				nodeSize = app.nodes.elements.defaultNodeSize,
 				optionsForPositionFunction = {
 					nodeSize: nodeSize
 				};
 
 			// call setNodePositions and get selection back
 			selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
-				.attr('r', app.nodes.elements.sgDefaultNodeSize);
+				.attr('r', app.nodes.elements.defaultNodeSize);
 			// setNodesContext('grid');
 			// enableDefaultFilterView();
 		});
@@ -132,7 +132,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	const addLines = function(placesChartSvg) {
-		placesChartSvg = app.nodes.elements.sgNodesSvg;
+		placesChartSvg = app.nodes.elements.nodesSvg;
 		let svgGroup = placesChartSvg.selectAll('.lines-group'),
 			lines = svgGroup.selectAll('.line')
 				.data(app.data.employees)
@@ -375,7 +375,7 @@ window.app = window.app || {};
 		app.data.employeesPerYear = employeesPerYear;
 
 		// initialize geo stuff
-		app.map.init(mapData, app.nodes.elements.sgNodesSvg, '.map');
+		app.map.init(mapData, app.nodes.elements.nodesSvg, '.map');
 
 
 		// process employee data

@@ -55,7 +55,7 @@ window.app.simulation = (function($) {
 			* @param {object} d current object's data
 			*/
 			var forceXCenter = function(d) {
-				return app.nodes.elements.sgNodesSvgWidth / 2;
+				return app.nodes.elements.nodesSvgWidth / 2;
 			};
 
 
@@ -65,7 +65,7 @@ window.app.simulation = (function($) {
 			* @param {object} d current object's data
 			*/
 			var forceYCenter = function(d) {
-				return app.nodes.elements.sgNodesSvgHeight / 2;
+				return app.nodes.elements.nodesSvgHeight / 2;
 			};
 
 		//-- End force definitions
@@ -99,7 +99,7 @@ window.app.simulation = (function($) {
 		* @returns {d3 simulation} the simulation object
 		*/
 		var setDefaultCollisionForce = function() {
-			return sgSimulation.force('collide', d3.forceCollide(app.nodes.elements.sgNodeSize + app.nodes.elements.sgNodeSpacing));
+			return sgSimulation.force('collide', d3.forceCollide(app.nodes.elements.nodeSize + app.nodes.elements.nodeSpacing));
 		};
 
 
@@ -126,7 +126,7 @@ window.app.simulation = (function($) {
 		* @returns {undefined}
 		*/
 		var simulationTickHandler = function() {
-			app.nodes.elements.sgNodes
+			app.nodes.elements.nodes
 				.attr('cx', function(d) {
 					return d.x;
 				})

@@ -8,16 +8,16 @@ window.app.nodes = (function($) {
 
 	// vars for employee nodes
 	let elements = {
-		sgNodes: null,// d3 selection of all employee nodes
-		sgDefaultNodeSize: 8,
-		sgNodeSize: 8,
-		sgDefaultNodeSpacing: 3,
-		sgNodeSpacing: 3,
-		sgInfoProp: '',// property to be shown when clicking on node
-		sgNodesSvg: null,
-		sgNodesSvgWidth: null,
-		sgNodesSvgHeight: null,
-		sgGroupTranslate: 'translate(0,0)'
+		nodes: null,// d3 selection of all employee nodes
+		defaultNodeSize: 8,
+		nodeSize: 8,
+		defaultNodeSpacing: 3,
+		nodeSpacing: 3,
+		infoProp: '',// property to be shown when clicking on node
+		nodesSvg: null,
+		nodesSvgWidth: null,
+		nodesSvgHeight: null,
+		groupTranslate: 'translate(0,0)'
 	};
 
 
@@ -33,7 +33,7 @@ window.app.nodes = (function($) {
 			gridSpacing: 8,
 			gridSize: 10,// number of nodes in each row and col
 			gridIsHorizontal: true,
-			nodeSize: elements.sgNodeSize
+			nodeSize: elements.nodeSize
 		},
 		col,
 		row,
@@ -65,20 +65,20 @@ window.app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	var addEmployeeNodes = function() {
-		let employeeG = elements.sgNodesSvg.selectAll('#employee-group')
-				.attr('transform', elements.sgGroupTranslate);
+		let employeeG = elements.nodesSvg.selectAll('#employee-group')
+				.attr('transform', elements.groupTranslate);
 
-		elements.sgNodes = employeeG.selectAll('.employee')
+		elements.nodes = employeeG.selectAll('.employee')
 			.data(app.data.employees)
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
 			.attr('r', 0);
 
-		setNodePositions(elements.sgNodes, getNodeGridPosition)
+		setNodePositions(elements.nodes, getNodeGridPosition)
 			.on('click', function(d) {
-				if (elements.sgInfoProp) {
-					console.log(d[elements.sgInfoProp]);
+				if (elements.infoProp) {
+					console.log(d[elements.infoProp]);
 				}
 			});
 	};
@@ -133,7 +133,7 @@ window.app.nodes = (function($) {
 			delays = timeoutsAndDelays.cumulativeDelays,
 			animationDuration = 100;
 
-		elements.sgNodes
+		elements.nodes
 			.transition()
 			.on('end', function(d, i) {
 				$body.trigger('nodeRevealed', {revealed: i+1});
@@ -143,7 +143,7 @@ window.app.nodes = (function($) {
 			.delay(function(d, i) {
 				return delays[i];
 			})
-			.attr('r', elements.sgNodeSize);
+			.attr('r', elements.nodeSize);
 	};
 
 	//d3.easeLinearIn
@@ -154,12 +154,12 @@ window.app.nodes = (function($) {
 	* set size of employee nodes
 	* @returns {undefined}
 	*/
-	var setNodeSize = function(size = elements.sgDefaultNodeSize, duration = 1000) {
-		elements.sgNodeSize = size;
-		elements.sgNodesSvg.selectAll('.employee')
+	var setNodeSize = function(size = elements.defaultNodeSize, duration = 1000) {
+		elements.nodeSize = size;
+		elements.nodesSvg.selectAll('.employee')
 			.transition()
 			.duration(duration)
-			.attr('r', elements.sgNodeSize);
+			.attr('r', elements.nodeSize);
 	};
 
 
@@ -169,9 +169,9 @@ window.app.nodes = (function($) {
 	*/
 	var setNodeSpacing = function(spacing) {
 		if (typeof spacing === 'undefined') {
-			spacing = elements.sgDefaultNodeSpacing;
+			spacing = elements.defaultNodeSpacing;
 		}
-		elements.sgNodeSpacing = spacing;
+		elements.nodeSpacing = spacing;
 	};
 
 	/**
