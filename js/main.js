@@ -340,10 +340,6 @@ window.app = window.app || {};
 		app.simulation.initSimulation();
 		// this kicks off the animation
 		var sim = app.simulation.getSimulation();
-		// console.log('app.simulation.sgSimulation:', sim);
-		// console.log('app.simulation.sgSimulation:', app.simulation.sgSimulation);
-		// app.simulation.sgSimulation.on('tick', app.simulation.simulationTickHandler);
-		
 		sim.on('tick', app.simulation.simulationTickHandler);
 
 		document.getElementById('bubble-chart').classList.remove('bubble-chart--is-not-initiated');

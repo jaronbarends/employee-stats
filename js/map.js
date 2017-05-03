@@ -8,9 +8,9 @@ window.app.map = (function($) {
 
 	// vars for map stuff
 	var elements = {
-		sgProjection: null,
-		sgPath: null,
-		sgMap: null
+		projection: null,
+		path: null,
+		map: null
 	};
 
 	var $sgBody = $('body');
@@ -24,10 +24,10 @@ window.app.map = (function($) {
 	var drawMap = function(geojson, map) {
 		var provinces = geojson.features;
 
-		elements.sgProjection = d3.geoMercator().fitSize([app.nodes.elements.nodesSvgWidth, app.nodes.elements.nodesSvgHeight], geojson);
-		elements.sgPath = d3.geoPath().projection(elements.sgProjection);
+		elements.projection = d3.geoMercator().fitSize([app.nodes.elements.nodesSvgWidth, app.nodes.elements.nodesSvgHeight], geojson);
+		elements.path = d3.geoPath().projection(elements.projection);
 
-		// elements.sgMap = app.nodes.elements.nodesSvg.selectAll('#map-group')
+		// elements.map = app.nodes.elements.nodesSvg.selectAll('#map-group')
 		map.attr('transform', app.nodes.elements.groupTranslate);
 
 		map.selectAll('.province')
@@ -35,7 +35,7 @@ window.app.map = (function($) {
 			.enter()
 			.append('path')
 			.attr('class', 'province')
-			.attr('d', elements.sgPath);
+			.attr('d', elements.path);
 	};
 
 
@@ -74,11 +74,11 @@ window.app.map = (function($) {
 			})
 			.attr('r', 20)
 			.attr('cx', function(d) {
-				var coords = elements.sgProjection([d.long, d.lat]);
+				var coords = elements.projection([d.long, d.lat]);
 				return coords[0];
 			})
 			.attr('cy', function(d) {
-				var coords = elements.sgProjection([d.long, d.lat]);
+				var coords = elements.projection([d.long, d.lat]);
 				return coords[1];
 			});
 	};
