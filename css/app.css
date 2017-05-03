@@ -513,15 +513,14 @@ header {
   margin-right: 1em; }
 
 /*-- Start general styles --*/
-.bubble-chart-container {
+.nodes-chart-container {
   height: 80vh; }
 
-.bubble-chart {
+.nodes-chart {
   display: block;
   height: 100%;
   /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
   width: 60%;
-  min-width: 500px;
   min-width: 900px;
   min-height: 600px;
   transform-style: preserve-3d;
@@ -530,9 +529,9 @@ header {
 .employee {
   fill: #00bdfa;
   transition: fill 0.5s; }
-  .bubble-chart--is-not-initiated .employee {
+  .nodes-chart--is-not-initiated .employee {
     transition: none; }
-  .employee-group .employee {
+  .employee-nodes-group .employee {
     stroke: #363636;
     stroke-width: 2px; }
 

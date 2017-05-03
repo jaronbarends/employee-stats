@@ -65,7 +65,7 @@ window.app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	var addEmployeeNodes = function() {
-		let employeeG = elements.nodesSvg.selectAll('#employee-group')
+		let employeeG = elements.nodesSvg.selectAll('#employee-nodes-group')
 				.attr('transform', elements.groupTranslate);
 
 		elements.nodes = employeeG.selectAll('.employee')

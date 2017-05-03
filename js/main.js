@@ -33,12 +33,6 @@ window.app = window.app || {};
 		employeesStartedPerYear: []
 	};
 
-
-	// vars for simulation
-	// var sgSimulation,
-	// 	sgForceStrength = 0.04,
-	// 	sgAlphaTarget = 0.4;
-
 	app.colors = {
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
 	};
@@ -50,8 +44,8 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initSimulation = function() {
-		let $svg = $('#bubble-chart');
-		app.nodes.elements.nodesSvg = d3.select('#bubble-chart');
+		let $svg = $('#nodes-chart');
+		app.nodes.elements.nodesSvg = d3.select('#nodes-chart');
 		app.nodes.elements.nodesSvgWidth = $svg.width();
 		app.nodes.elements.nodesSvgHeight = $svg.height();
 	};
@@ -133,7 +127,7 @@ window.app = window.app || {};
 	*/
 	const addLines = function(placesChartSvg) {
 		placesChartSvg = app.nodes.elements.nodesSvg;
-		let svgGroup = placesChartSvg.selectAll('.lines-group'),
+		let svgGroup = placesChartSvg.selectAll('.geo-lines-group'),
 			lines = svgGroup.selectAll('.line')
 				.data(app.data.employees)
 				.enter()
@@ -342,12 +336,10 @@ window.app = window.app || {};
 		var sim = app.simulation.getSimulation();
 		sim.on('tick', app.simulation.simulationTickHandler);
 
-		document.getElementById('bubble-chart').classList.remove('bubble-chart--is-not-initiated');
+		document.getElementById('nodes-chart').classList.remove('nodes-chart--is-not-initiated');
 		document.getElementById('node-filter-box').classList.add('node-filter-box--is-active');
 	};
 
-	
-	
 	
 
 	/**
@@ -380,12 +372,6 @@ window.app = window.app || {};
 		// process all geo-related data
 		app.dataprocessorGeo.init();
 		initEmployeesPerOfficeList();
-
-		
-		// let placesChartSvg = d3.select('#places-chart'),
-		// 	placesMapSelector = '.map';
-		// app.map.init(mapData, placesChartSvg, placesMapSelector);
-		// app.geoChartNodes.init(placesChartSvg);
 
 		// add shapes for nodes
 		app.nodes.init();

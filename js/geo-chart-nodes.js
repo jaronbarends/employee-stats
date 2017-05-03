@@ -38,7 +38,7 @@ window.app.geoChartNodes = (function($) {
 	* @returns {undefined}
 	*/
 	const addLines = function(placesChartSvg) {
-		let svgGroup = placesChartSvg.selectAll('.lines-group'),
+		let svgGroup = placesChartSvg.selectAll('.geo-lines-group'),
 			lines = svgGroup.selectAll('.line')
 				.data(app.data.employees)
 				.enter()

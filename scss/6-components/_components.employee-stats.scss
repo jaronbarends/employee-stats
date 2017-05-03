@@ -21,24 +21,23 @@ header {
 
 /*-- Start general styles --*/
 
-	.bubble-chart-container {
+	.nodes-chart-container {
 		height: 80vh;
 	}
 
-	.bubble-chart {
+	.nodes-chart {
 		display: block;
 		// width: 100%;
 		height: 100%;
 		/* proportions of map of netherlands is 1:1.175 or 0.85:1 */
 		width: 60%;
-		min-width: 500px;
 		min-width: 900px;// otherwise it isn't wide enough for grid
 		min-height: 600px;
 		transform-style: preserve-3d;
 		transition: transform 1s;
 	}
 
-	.map-view .bubble-chart {
+	.map-view .nodes-chart {
 		// transform: rotateX(45deg) rotateZ(10deg);
 	}
 
@@ -47,11 +46,11 @@ header {
 		// transition: fill 0.5s, r 2s;
 		transition: fill 0.5s;
 
-		.bubble-chart--is-not-initiated & {
+		.nodes-chart--is-not-initiated & {
 			transition: none;
 		}
 
-		.employee-group & {
+		.employee-nodes-group & {
 			stroke: $color-grey-xxdark;
 			stroke-width: 2px;
 		}
