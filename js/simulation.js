@@ -113,7 +113,7 @@ window.app.simulation = (function($) {
 				.force('forceY', yForce(forceYGrid));
 
 			setDefaultCollisionForce()
-				.nodes(app.data.sgEmployees);	
+				.nodes(app.data.employees);	
 		}
 
 		var getSimulation = function() {

@@ -13,7 +13,7 @@ window.app.geoChartNodes = (function($) {
 	*/
 	var addNodes = function(svgGroup, coordsProp, r, fill) {
 		let nodes = svgGroup.selectAll('.employee')
-			.data(app.data.sgEmployees)
+			.data(app.data.employees)
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
@@ -40,7 +40,7 @@ window.app.geoChartNodes = (function($) {
 	const addLines = function(placesChartSvg) {
 		let svgGroup = placesChartSvg.selectAll('.lines-group'),
 			lines = svgGroup.selectAll('.line')
-				.data(app.data.sgEmployees)
+				.data(app.data.employees)
 				.enter()
 				.append('line')
 				.attr('x1', function(d) {

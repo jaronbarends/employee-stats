@@ -27,8 +27,8 @@ app.dataprocessorGeo = (function($) {
 			}
 
 			// enrich employee-data
-			for (var j=0, len=app.data.sgEmployees.length; j<len; j++) {
-				var employee = app.data.sgEmployees[j],
+			for (var j=0, len=app.data.employees.length; j<len; j++) {
+				var employee = app.data.employees[j],
 					locationName = employee[employeeLocationProp].toLowerCase(),
 					locationFound = false;
 
@@ -116,7 +116,7 @@ app.dataprocessorGeo = (function($) {
 		*/
 		var processOfficeData = function() {
 			var officeOptions = {
-				locationData: app.data.sgOffices,
+				locationData: app.data.offices,
 				datasetLocationProp: 'city',
 				employeeLocationProp: 'office',
 				locationCoordsProp: 'officeCoords'

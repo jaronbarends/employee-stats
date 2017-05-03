@@ -17,8 +17,8 @@ window.app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var initEmployeeProperties = function() {
-		for (var prop in app.data.sgEmployees[0]) {
-			app.data.sgEmployeeProps.push(prop);
+		for (var prop in app.data.employees[0]) {
+			app.data.employeeProps.push(prop);
 		}
 	};
 
@@ -86,8 +86,8 @@ window.app.dataprocessorEmployees = (function($) {
 
 		// check if unit includes an office name
 		// when not on its own, eFocus is always preceded by office name, so it will be cut off as well
-		// for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
-		for (let office of app.data.sgOffices) {
+		// for (var i=0, len=app.data.offices.length; i<len; i++) {
+		for (let office of app.data.offices) {
 			office = office.city.toLowerCase();
 			var oIdx = unitLc.indexOf(' '+office);
 
@@ -289,8 +289,8 @@ window.app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var processDisciplinesEtc = function() {
-		// console.log(app.data.sgOffices);
-		app.data.sgEmployees.forEach(function(emp) {
+		// console.log(app.data.offices);
+		app.data.employees.forEach(function(emp) {
 			correctMDOffice(emp);
 			processDiscipline(emp);
 			processOrganisationalUnit(emp);
@@ -321,7 +321,7 @@ window.app.dataprocessorEmployees = (function($) {
 		}
 
 		// calculate avarage age
-		app.data.sgAverageAge = sgAgeSum / app.data.sgEmployees.length;
+		app.data.sgAverageAge = sgAgeSum / app.data.employees.length;
 	};
 
 
@@ -386,8 +386,8 @@ window.app.dataprocessorEmployees = (function($) {
 		processAgeData();
 
 		// now popuplate filterBuckets (buckets of employees with shared property)
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var employee = app.data.sgEmployees[i];
+		for (var i=0, len=app.data.employees.length; i<len; i++) {
+			var employee = app.data.employees[i];
 
 			// loop through employee buckets (like gender, discipline) and add this employee's data
 			for (var bucketName in app.data.buckets) {

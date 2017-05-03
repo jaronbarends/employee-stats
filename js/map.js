@@ -64,7 +64,7 @@ window.app.map = (function($) {
 	*/
 	var addOffices = function(map) {
 		map.selectAll('.office')
-			.data(app.data.sgOffices)
+			.data(app.data.offices)
 			.enter()
 			.append('circle')
 			.attr('class', function(d) {

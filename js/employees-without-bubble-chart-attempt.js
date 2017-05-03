@@ -11,7 +11,7 @@ window.app = window.app || {};
 
 	app.data = {
 		sgEmployees: [],
-		sgEmployeeProps: [],
+		employeeProps: [],
 		sgOffices: [],
 		sgHometowns: [],
 		sgPlacesWithoutGeoData: [],
@@ -145,8 +145,8 @@ window.app = window.app || {};
 
 		var $list = $('#office-list'),
 			items = '';
-		for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
-			var office = app.data.sgOffices[i];
+		for (var i=0, len=app.data.offices.length; i<len; i++) {
+			var office = app.data.offices[i];
 			items += '<li>'+office.city + '(' + office.employeeCount + ')</li>';
 		}
 
@@ -160,8 +160,8 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initEmployeeProperties = function() {
-		for (var prop in app.data.sgEmployees[0]) {
-			app.data.sgEmployeeProps.push(prop);
+		for (var prop in app.data.employees[0]) {
+			app.data.employeeProps.push(prop);
 		}
 	};
 	
@@ -174,8 +174,8 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var processEmployeeDisciplines = function() {
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var emp = app.data.sgEmployees[i],
+		for (var i=0, len=app.data.employees.length; i<len; i++) {
+			var emp = app.data.employees[i],
 				discipline = emp.disciplineWithLevel,
 				disciplineFound = false,
 				level = '';
@@ -215,8 +215,8 @@ window.app = window.app || {};
 			ageMax = 0,
 			ageSum = 0;
 
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var emp = app.data.sgEmployees[i];
+		for (var i=0, len=app.data.employees.length; i<len; i++) {
+			var emp = app.data.employees[i];
 
 			// process age data
 			app.data.sgBirthdays.push(emp.birthday);
@@ -251,7 +251,7 @@ window.app = window.app || {};
 		}
 
 		// calculate avarage age
-		app.data.sgAverageAge = ageSum / app.data.sgEmployees.length;
+		app.data.sgAverageAge = ageSum / app.data.employees.length;
 	};
 
 
@@ -290,8 +290,8 @@ window.app = window.app || {};
 		processEmployeeAges();
 
 		// now popuplate filterGroups
-		for (var i=0, len=app.data.sgEmployees.length; i<len; i++) {
-			var employee = app.data.sgEmployees[i];
+		for (var i=0, len=app.data.employees.length; i<len; i++) {
+			var employee = app.data.employees[i];
 
 			// loop through employee groups and add this employee's data
 			for (var groupName in app.filters.groups) {
@@ -412,7 +412,7 @@ window.app = window.app || {};
 	var setEmployeeCount = function() {
 		var $box = $('#info-box--employees-general'),
 			$value = $box.find('.value--primary'),
-			numEmployees = app.data.sgEmployees.length;
+			numEmployees = app.data.employees.length;
 
 		$value.text(numEmployees);
 	};
@@ -433,8 +433,8 @@ window.app = window.app || {};
 	*/
 	var loadHandler = function(error, employees, mapData, offices, cities) {
 		// create semi globals for datasets
-		app.data.sgEmployees = employees;
-		app.data.sgOffices = offices;
+		app.data.employees = employees;
+		app.data.offices = offices;
 		app.data.sgHometowns = cities;
 
 		// put original employee properties into array before we add all kind of helper props

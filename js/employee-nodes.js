@@ -69,7 +69,7 @@ window.app.nodes = (function($) {
 				.attr('transform', elements.sgGroupTranslate);
 
 		elements.sgNodes = employeeG.selectAll('.employee')
-			.data(app.data.sgEmployees)
+			.data(app.data.employees)
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
@@ -126,7 +126,7 @@ window.app.nodes = (function($) {
 	*/
 	const revealNodes = function() {
 		let $body = $('body'),
-			numEmployees = app.data.sgEmployees.length,
+			numEmployees = app.data.employees.length,
 			// firstDelay = 400,
 			firstDelay = 4,
 			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, firstDelay),

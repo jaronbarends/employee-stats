@@ -10,11 +10,11 @@ window.app = window.app || {};
 	// vars for datasets
 
 	app.data = {
-		sgEmployees: [],
-		sgEmployeeProps: [],
+		employees: [],
+		employeeProps: [],
 		buckets: {
 			// use field name in .csv as property name
-			// use the same property-names we use in app.data.sgEmployees if possible
+			// use the same property-names we use in app.data.employees if possible
 			gender: { guiName: 'Gender', dataset: []},
 			discipline: { guiName: 'Discipline', dataset: []},
 			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
@@ -50,10 +50,10 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initSimulation = function() {
+		let $svg = $('#bubble-chart');
 		app.nodes.elements.sgNodesSvg = d3.select('#bubble-chart');
-		app.nodes.elements.$sgNodesSvg = $('#bubble-chart');
-		app.nodes.elements.sgNodesSvgWidth = app.nodes.elements.$sgNodesSvg.width();
-		app.nodes.elements.sgNodesSvgHeight = app.nodes.elements.$sgNodesSvg.height();
+		app.nodes.elements.sgNodesSvgWidth = $svg.width();
+		app.nodes.elements.sgNodesSvgHeight = $svg.height();
 	};
 
 
@@ -135,7 +135,7 @@ window.app = window.app || {};
 		placesChartSvg = app.nodes.elements.sgNodesSvg;
 		let svgGroup = placesChartSvg.selectAll('.lines-group'),
 			lines = svgGroup.selectAll('.line')
-				.data(app.data.sgEmployees)
+				.data(app.data.employees)
 				.enter()
 				.append('line')
 				.attr('class', function(d) {
@@ -223,8 +223,8 @@ window.app = window.app || {};
 
 		var $list = $('#office-list'),
 			items = '';
-		for (var i=0, len=app.data.sgOffices.length; i<len; i++) {
-			var office = app.data.sgOffices[i];
+		for (var i=0, len=app.data.offices.length; i<len; i++) {
+			var office = app.data.offices[i];
 			items += '<li>'+office.city + '(' + office.employeeCount + ')</li>';
 		}
 
@@ -264,7 +264,7 @@ window.app = window.app || {};
 	var setEmployeeCount = function() {
 		let $box = $('#info-box--employees-general'),
 			$value = $box.find('.value--primary'),
-			numEmployees = app.data.sgEmployees.length;
+			numEmployees = app.data.employees.length;
 
 		// define callback function for updating employee count
 		const updateEmployeeNumber = function(e, data) {
@@ -369,8 +369,8 @@ window.app = window.app || {};
 		d3.shuffle(employees);
 
 		// create semi globals for datasets
-		app.data.sgEmployees = employees;
-		app.data.sgOffices = offices;
+		app.data.employees = employees;
+		app.data.offices = offices;
 		app.data.sgHometowns = cities;
 		app.data.employeesPerYear = employeesPerYear;
 
