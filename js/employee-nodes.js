@@ -154,9 +154,11 @@ window.app.nodes = (function($) {
 	* set size of employee nodes
 	* @returns {undefined}
 	*/
-	var setNodeSize = function(size) {
-		elements.sgNodeSize = size || elements.sgDefaultNodeSize;
+	var setNodeSize = function(size = elements.sgDefaultNodeSize, duration = 1000) {
+		elements.sgNodeSize = size;
 		elements.sgNodesSvg.selectAll('.employee')
+			.transition()
+			.duration(duration)
 			.attr('r', elements.sgNodeSize);
 	};
 

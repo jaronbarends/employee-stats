@@ -45,12 +45,9 @@ header {
 	.employee {
 		fill: $color-blue;
 		// transition: fill 0.5s, r 2s;
-		// transition: fill 0.5s, r 1s;
-		// transition: fill 0.5s;
+		transition: fill 0.5s;
 
 		.bubble-chart--is-not-initiated & {
-			// transition: r 0.1s;
-			// animation: bounce 0.1s;
 			transition: none;
 		}
 

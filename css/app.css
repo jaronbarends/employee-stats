@@ -528,7 +528,8 @@ header {
   transition: transform 1s; }
 
 .employee {
-  fill: #00bdfa; }
+  fill: #00bdfa;
+  transition: fill 0.5s; }
   .bubble-chart--is-not-initiated .employee {
     transition: none; }
   .employee-group .employee {

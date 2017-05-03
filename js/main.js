@@ -82,7 +82,6 @@ window.app = window.app || {};
 		// geo sorting
 		$('[data-geo-sort]').on('click', function(e) {
 			e.preventDefault();
-			app.nodes.setNodeSize(1.5);
 			app.nodes.setNodeSize(2);
 			app.nodes.setNodeSpacing(0);
 			app.map.show();
@@ -104,39 +103,24 @@ window.app = window.app || {};
 			}
 		});
 
-		console.log(app.simulation);
-		
-
 		$('#sort-by-grid').on('click', function(e) {
 			e.preventDefault();
-			console.log(app.simulation.getSimulation());
 			let simulation = app.simulation.getSimulation();
 			simulation.stop();
-			console.log(app.nodes.elements.sgDefaultNodeSize);
 
-			let duration = 1000,
+			let selection = app.nodes.elements.sgNodes,
+				positionFunction = app.nodes.getNodeGridPosition,
+				duration = 1000,
 				nodeSize = app.nodes.elements.sgDefaultNodeSize,
 				optionsForPositionFunction = {
 					nodeSize: nodeSize
 				};
 
-			let selection = app.nodes.elements.sgNodes;
-				// .transition()
-				// .duration(1000)
-				// .ease(d3.easeSinInOut)
-				// .attr('r', app.nodes.elements.sgDefaultNodeSize);
-
-			// app.nodes.elements.sgNodes
-			// 	.attr('r', app.nodes.elements.sgDefaultNodeSize);
-
 			// call setNodePositions and get selection back
-			selection = app.nodes.setNodePositions(selection, app.nodes.getNodeGridPosition, duration, optionsForPositionFunction)
+			selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
 				.attr('r', app.nodes.elements.sgDefaultNodeSize);
 			// setNodesContext('grid');
 			// enableDefaultFilterView();
-			// getGridPositions
-			// app.simulation.changeForce('forceX', app.simulation.xForce(forceXGrid));
-			// app.simulation.changeForce('forceY', app.simulation.yForce(forceYGrid));
 		});
 	};
 
