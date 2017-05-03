@@ -58,7 +58,7 @@ app.dataprocessorGeo = (function($) {
 				}
 
 				if (!locationFound) {
-					app.data.sgPlacesWithoutGeoData.push(employee[employeeLocationProp]);
+					app.data.placesWithoutGeoData.push(employee[employeeLocationProp]);
 				}
 			}
 
@@ -77,7 +77,7 @@ app.dataprocessorGeo = (function($) {
 		*/
 		var processHometownData = function() {
 			var options = {
-				locationData: app.data.sgHometowns,
+				locationData: app.data.hometowns,
 				datasetLocationProp: 'name',
 				employeeLocationProp: 'hometown',
 				locationCoordsProp: 'hometownCoords'
@@ -87,7 +87,7 @@ app.dataprocessorGeo = (function($) {
 			var $list = $('#hometown-list'),
 				items = '';
 			for (var i=0; i<5; i++) {
-				var hometown = app.data.sgHometowns[i];
+				var hometown = app.data.hometowns[i];
 				items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
 			}
 
@@ -101,7 +101,7 @@ app.dataprocessorGeo = (function($) {
 		*/
 		var processBirthplaceData = function() {
 			var options = {
-				locationData: app.data.sgHometowns,
+				locationData: app.data.hometowns,
 				datasetLocationProp: 'name',
 				employeeLocationProp: 'birthplace',
 				locationCoordsProp: 'birthplaceCoords'
@@ -149,7 +149,7 @@ app.dataprocessorGeo = (function($) {
 				  });
 				};
 
-				var uniqueUnknown = app.data.sgPlacesWithoutGeoData.unique(),
+				var uniqueUnknown = app.data.placesWithoutGeoData.unique(),
 					str = '\n\n';
 
 				for (var i=0, len=uniqueUnknown.length; i<len; i++) {

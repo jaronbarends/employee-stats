@@ -13,9 +13,9 @@ window.app = window.app || {};
 		sgEmployees: [],
 		employeeProps: [],
 		sgOffices: [],
-		sgHometowns: [],
-		sgPlacesWithoutGeoData: [],
-		sgLevels: ['senior', 'stagiair', 'junior'],
+		hometowns: [],
+		placesWithoutGeoData: [],
+		levels: ['senior', 'stagiair', 'junior'],
 		sgBirthdays: [],
 		sgAges: [],
 		sgAvarageAge: 0
@@ -181,8 +181,8 @@ window.app = window.app || {};
 				level = '';
 
 			// cut off level
-			for (var lv=0, lvLen = app.data.sgLevels.length; lv<lvLen; lv++) {
-				var currLevel = app.data.sgLevels[lv];
+			for (var lv=0, lvLen = app.data.levels.length; lv<lvLen; lv++) {
+				var currLevel = app.data.levels[lv];
 				
 				if (discipline.toLowerCase().indexOf(currLevel) === 0) {
 					discipline = discipline.substr(currLevel.length + 1);
@@ -435,7 +435,7 @@ window.app = window.app || {};
 		// create semi globals for datasets
 		app.data.employees = employees;
 		app.data.offices = offices;
-		app.data.sgHometowns = cities;
+		app.data.hometowns = cities;
 
 		// put original employee properties into array before we add all kind of helper props
 		initEmployeeProperties();

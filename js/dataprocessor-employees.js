@@ -36,8 +36,8 @@ window.app.dataprocessorEmployees = (function($) {
 			level = '';
 
 		// cut off level
-		for (var lv=0, lvLen = app.data.sgLevels.length; lv<lvLen; lv++) {
-			var currLevel = app.data.sgLevels[lv];
+		for (var lv=0, lvLen = app.data.levels.length; lv<lvLen; lv++) {
+			var currLevel = app.data.levels[lv];
 			
 			if (discipline.toLowerCase().indexOf(currLevel) === 0) {
 				discipline = discipline.substr(currLevel.length + 1);

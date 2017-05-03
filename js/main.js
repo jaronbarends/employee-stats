@@ -23,10 +23,10 @@ window.app = window.app || {};
 			ageRound: { guiName: 'Age', dataset: []},
 			startYear: { guiName: 'Starting year', dataset: []}
 		},
-		sgOffices: [],
-		sgHometowns: [],
-		sgPlacesWithoutGeoData: [],
-		sgLevels: ['senior', 'stagiair', 'junior'],
+		offices: [],
+		hometowns: [],
+		placesWithoutGeoData: [],
+		levels: ['senior', 'stagiair', 'junior'],
 		sgAges: [],
 		sgAvarageAge: 0,
 		employeesPerYear: [],
@@ -371,7 +371,7 @@ window.app = window.app || {};
 		// create semi globals for datasets
 		app.data.employees = employees;
 		app.data.offices = offices;
-		app.data.sgHometowns = cities;
+		app.data.hometowns = cities;
 		app.data.employeesPerYear = employeesPerYear;
 
 		// initialize geo stuff
