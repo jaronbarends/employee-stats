@@ -27,8 +27,8 @@ window.app = window.app || {};
 		hometowns: [],
 		placesWithoutGeoData: [],
 		levels: ['senior', 'stagiair', 'junior'],
-		sgAges: [],
-		sgAvarageAge: 0,
+		ages: [],
+		averageAge: 0,
 		employeesPerYear: [],
 		employeesStartedPerYear: []
 	};
@@ -241,8 +241,8 @@ window.app = window.app || {};
 		* @returns {undefined}
 		*/
 		var calculateAgeInfo = function() {
-			var avgYears = Math.floor(app.data.sgAverageAge),
-				avgMonths = Math.floor(12 * (app.data.sgAverageAge % avgYears));
+			var avgYears = Math.floor(app.data.averageAge),
+				avgMonths = Math.floor(12 * (app.data.averageAge % avgYears));
 
 			$('#age-info').find('.age-years')
 				.text(avgYears)

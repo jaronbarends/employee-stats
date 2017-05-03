@@ -314,14 +314,14 @@ window.app.dataprocessorEmployees = (function($) {
 		var ageRange = sgAgeMax - sgAgeMin;
 		for (var a = 0; a <= ageRange; a++) {
 			var currAge = sgAgeMin + a;
-			app.data.sgAges.push({
+			app.data.ages.push({
 				age: currAge,
 				employeeCount: sgAges[currAge] || 0
 			});
 		}
 
 		// calculate avarage age
-		app.data.sgAverageAge = sgAgeSum / app.data.employees.length;
+		app.data.averageAge = sgAgeSum / app.data.employees.length;
 	};
 
 

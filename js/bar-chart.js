@@ -29,24 +29,24 @@ window.app.ageChart = (function($) {
 			},
 			width = svgWidth - margin.left - margin.right,
 			height = svgHeight - margin.top - margin.bottom,
-			minAge = d3.min(app.data.sgAges, function(obj) {
+			minAge = d3.min(app.data.ages, function(obj) {
 				return obj.age;
 			}),
-			maxAge = d3.max(app.data.sgAges, function(obj) {
+			maxAge = d3.max(app.data.ages, function(obj) {
 				return obj.age + 1;// op de een of andere manier moet dit +1 zijn, anders komt laatste bar niet in schaal
 			});
 
 
 		var xScale = d3.scaleBand()
-				// .domain(d3.range(app.data.sgAges.length))
+				// .domain(d3.range(app.data.ages.length))
 				.domain(d3.range(minAge, maxAge))
 				.rangeRound([0, width])
 				.padding(0.1);
 
-				// console.log('ages:', app.data.sgAges);
+				// console.log('ages:', app.data.ages);
 
 		var yScale = d3.scaleLinear()
-				.domain([0, d3.max(app.data.sgAges, function(obj) {
+				.domain([0, d3.max(app.data.ages, function(obj) {
 						return obj.employeeCount;
 					})])
 				.range([height, 0]);
@@ -60,7 +60,7 @@ window.app.ageChart = (function($) {
 		ageChart.append('g')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 			.selectAll('.age-bar')
-			.data(app.data.sgAges)
+			.data(app.data.ages)
 			.enter()
 			.append('rect')
 			.attr('x', function(d, i) {
