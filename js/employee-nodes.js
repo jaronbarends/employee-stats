@@ -93,9 +93,12 @@ window.app.nodes = (function($) {
 	* @returns {d3 selection} The modified d3 selection
 	*/
 	const setNodePositions = function(selection, positionFunction, duration = 0, optionsForPositionFunction) {
+		if (duration) {
+			selection = selection
+				.transition()
+				.duration(duration);
+		}
 		selection
-			.transition()
-			.duration(duration)
 			.attr('cx', function(d, i) {
 				var x = positionFunction(i, optionsForPositionFunction)[0];
 				d.x = x; 

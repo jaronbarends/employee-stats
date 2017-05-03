@@ -120,15 +120,18 @@ window.app = window.app || {};
 					nodeSize: nodeSize
 				};
 
+			let selection = app.nodes.elements.sgNodes;
+				// .transition()
+				// .duration(1000)
+				// .ease(d3.easeSinInOut)
+				// .attr('r', app.nodes.elements.sgDefaultNodeSize);
+
 			// app.nodes.elements.sgNodes
-			// 	.transition()
-			// 	.duration(duration)
-			// 	.attr('r', nodeSize);
+			// 	.attr('r', app.nodes.elements.sgDefaultNodeSize);
 
-			app.nodes.elements.sgNodes
+			// call setNodePositions and get selection back
+			selection = app.nodes.setNodePositions(selection, app.nodes.getNodeGridPosition, duration, optionsForPositionFunction)
 				.attr('r', app.nodes.elements.sgDefaultNodeSize);
-
-			app.nodes.setNodePositions(app.nodes.elements.sgNodes, app.nodes.getNodeGridPosition, duration, optionsForPositionFunction);
 			// setNodesContext('grid');
 			// enableDefaultFilterView();
 			// getGridPositions
