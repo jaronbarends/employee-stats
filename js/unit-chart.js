@@ -14,7 +14,7 @@ window.app.unitChart = (function($) {
 		sgTypeScale,
 		sgTypeLabelScale,
 		sgEmployeeCountScale,
-		defaults = {
+		sgDefaults = {
 			margin: {
 				top: 20,
 				left: 20,
@@ -27,7 +27,7 @@ window.app.unitChart = (function($) {
 			employeeMargin: 2,
 			showCountLabels: true
 		},
-		settings;
+		sgSettings;
 
 
 	/**
@@ -61,25 +61,16 @@ window.app.unitChart = (function($) {
 	*/
 	const initChart = function() {
 		
-		// let svgWidth = parseInt(sgChart.style('width'), 10),
-		// 	svgHeight = parseInt(sgChart.style('height'), 10);
-
 		// calculate desired size based on dataset, radius and margin between units
 		let numberOfTypes = sgDataset.length,
 			maxCount = d3.max(sgDataset, function(elm) {
 				return elm.employees.length;
 			});
 
-		let countDirectionSize = 2*settings.radius * maxCount + settings.employeeMargin * (maxCount - 1),
-			typeDirectionSize = 2*settings.radius * numberOfTypes + settings.typeMargin * (numberOfTypes - 1);
+		let countDirectionSize = 2*sgSettings.radius * maxCount + sgSettings.employeeMargin * (maxCount - 1),
+			typeDirectionSize = 2*sgSettings.radius * numberOfTypes + sgSettings.typeMargin * (numberOfTypes - 1);
 
-		// console.log('numberOfTypes:', numberOfTypes, 'maxCount:', maxCount);
-
-
-		// sgWidth = svgWidth - settings.margin.left - settings.margin.right,
-		// sgHeight = svgHeight - settings.margin.top - settings.margin.bottom;
-
-		if (settings.isHorizontal) {
+		if (sgSettings.isHorizontal) {
 			sgWidth = countDirectionSize;
 			sgHeight = typeDirectionSize;
 		} else {
@@ -87,13 +78,11 @@ window.app.unitChart = (function($) {
 			sgHeight = countDirectionSize;
 		}
 
-		let svgWidth = sgWidth + settings.margin.left + settings.margin.right,
-			svgHeight = sgHeight + settings.margin.top + settings.margin.bottom;
+		let svgWidth = sgWidth + sgSettings.margin.left + sgSettings.margin.right,
+			svgHeight = sgHeight + sgSettings.margin.top + sgSettings.margin.bottom;
 
 		sgChart.attr('width', svgWidth)
 			.attr('height', svgHeight);
-
-		// console.log()
 	};
 	
 
@@ -131,7 +120,7 @@ window.app.unitChart = (function($) {
 		let typeScaleHeightOrWidth,
 			employeeCountHeightOrWidth;
 
-		if (settings.isHorizontal) {
+		if (sgSettings.isHorizontal) {
 			typeScaleHeightOrWidth = sgHeight;
 			employeeCountHeightOrWidth = sgWidth;
 		} else {
@@ -154,7 +143,7 @@ window.app.unitChart = (function($) {
 					return d.employees.length;
 				})]);
 
-		if (settings.isHorizontal) {
+		if (sgSettings.isHorizontal) {
 			sgEmployeeCountScale.range([0, employeeCountHeightOrWidth]);
 		} else {
 			sgEmployeeCountScale.range([employeeCountHeightOrWidth, 0]);
@@ -173,7 +162,7 @@ window.app.unitChart = (function($) {
 			yScale,
 			yTicksScale;
 
-		if (settings.isHorizontal) {
+		if (sgSettings.isHorizontal) {
 			xScale = sgEmployeeCountScale;
 			xTicksScale = xScale;
 			yScale = sgTypeScale;
@@ -193,12 +182,12 @@ window.app.unitChart = (function($) {
 		// render axes
 		sgChart.append('g')
 			.attr('class', 'axis axis--x')
-			.attr('transform', 'translate(' + settings.margin.left +',' + (settings.margin.top + sgHeight) +')')
+			.attr('transform', 'translate(' + sgSettings.margin.left +',' + (sgSettings.margin.top + sgHeight) +')')
 			.call(xAxis);
 
 		sgChart.append('g')
 			.attr('class', 'axis axis--y')
-			.attr('transform', 'translate(' + settings.margin.left + ',' + settings.margin.top + ')')
+			.attr('transform', 'translate(' + sgSettings.margin.left + ',' + sgSettings.margin.top + ')')
 			.call(yAxis);
 	};
 
@@ -214,13 +203,13 @@ window.app.unitChart = (function($) {
 		// 	r = Math.min(unitSizeAxis2, unitSizeAxis1)/2;
 
 		let eachCircle = sgChart.append('g')
-			.attr('transform', 'translate(' + settings.margin.left + ',' + settings.margin.top + ')')
+			.attr('transform', 'translate(' + sgSettings.margin.left + ',' + sgSettings.margin.top + ')')
 			.selectAll('.unit')
 			.data(sgFlatSet)
 			.enter()
 			.append('circle')
 			.attr('class', app.util.getEmployeeClasses)
-			.attr('r', settings.radius);
+			.attr('r', sgSettings.radius);
 
 		return eachCircle;
 	};
@@ -232,7 +221,7 @@ window.app.unitChart = (function($) {
 	*/
 	const addCountLabels = function() {
 		// add labels for count
-		if (settings.showCountLabels) {
+		if (sgSettings.showCountLabels) {
 			let typeAmounts = [];
 			sgDataset.forEach(function(typeObj) {
 				typeAmounts.push(typeObj.employees.length);
@@ -240,7 +229,7 @@ window.app.unitChart = (function($) {
 
 			// now add text to svg
 			let eachCountLabel = sgChart.append('g')
-				.attr('transform', 'translate(' + settings.margin.left +',' + settings.margin.top +')')
+				.attr('transform', 'translate(' + sgSettings.margin.left +',' + sgSettings.margin.top +')')
 				.selectAll('.count-label')
 				.data(typeAmounts)
 				.enter()
@@ -250,7 +239,7 @@ window.app.unitChart = (function($) {
 					return d;
 				});
 
-			if (settings.isHorizontal) {
+			if (sgSettings.isHorizontal) {
 				eachCountLabel.attr('x', function(d, i) {
 							return sgEmployeeCountScale(d+1);// put label where next unit would be
 					})
@@ -272,6 +261,35 @@ window.app.unitChart = (function($) {
 		}
 	};
 	
+
+
+	/**
+	* add all data-nodes
+	* @returns {undefined}
+	*/
+	const addNodes = function() {
+		
+		// render units
+		let eachCircle = addEachCircle(),
+			cxOrCyForType,
+			cxOrCyForEmployeeCount;
+
+		if (sgSettings.isHorizontal) {
+			cxOrCyForType = 'cy';
+			cxOrCyForEmployeeCount = 'cx';
+		} else {
+			cxOrCyForType = 'cx';
+			cxOrCyForEmployeeCount = 'cy';
+		}
+
+		eachCircle.attr(cxOrCyForType, function(d) {
+				return sgTypeScale(d.typeIdx) + getOffsetToScaleBandCenter();// put center in center of band
+			})
+			.attr(cxOrCyForEmployeeCount, function(d) {
+				return sgEmployeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+			});
+	};
+	
 	
 	
 
@@ -291,45 +309,36 @@ window.app.unitChart = (function($) {
 	* @returns {undefined}
 	*/
 	const drawChart = function(dataset, chartSelector, options) {
+		createChartContext(dataset, chartSelector, options);
+		addNodes();
+		addCountLabels();
+
+	};
+
+
+	/**
+	* create the chart context (i.e. everything but the nodes)
+	* @param {object} options {dataset:array, chartSelector:string[, sortFunction:function]}
+	* @returns {undefined}
+	*/
+	const createChartContext = function(dataset, chartSelector, options) {
 		prepareDataset(dataset, options.sortFunction);
 
-		settings = Object.assign({}, defaults, options);
+		sgSettings = Object.assign({}, sgDefaults, options);
 
 		sgChart = d3.select(chartSelector);
 		initChart();
 
 		createScales();
 		createAxes();
-
-
-		// render units
-		let eachCircle = addEachCircle(),
-			cxOrCyForType,
-			cxOrCyForEmployeeCount;
-
-		if (settings.isHorizontal) {
-			cxOrCyForType = 'cy';
-			cxOrCyForEmployeeCount = 'cx';
-		} else {
-			cxOrCyForType = 'cx';
-			cxOrCyForEmployeeCount = 'cy';
-		}
-
-		eachCircle.attr(cxOrCyForType, function(d) {
-				return sgTypeScale(d.typeIdx) + getOffsetToScaleBandCenter();// put center in center of band
-			})
-			.attr(cxOrCyForEmployeeCount, function(d) {
-				return sgEmployeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
-			});
-
-		addCountLabels();
-
 	};
+	
 
 
 
 	// define public methods that are available through app
 	let publicMethodsAndProps = {
+		createChartContext,
 		drawChart
 	};
 

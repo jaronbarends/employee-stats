@@ -44,7 +44,6 @@ window.app.pieChart = (function($) {
 
 		arcs.append('path')
 			.attr('class', function(d) {
-				// console.log(d.data);
 				return 'pie-segment pie-segment--'+ app.util.convertToClassName(d.data.prop);
 			})
 			.attr('d', arc)

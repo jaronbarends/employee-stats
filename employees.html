@@ -23,6 +23,7 @@
 				<li><a href="#" id="sort-by-office" data-geo-sort="officeCoords" data-info-property="office">Office</a></li>
 				<li><a href="#" id="sort-by-hometown" data-geo-sort="hometownCoords" data-info-property="hometown">Hometown</a></li>
 				<li><a href="#" id="sort-by-birthplace" data-geo-sort="birthplaceCoords" data-info-property="birthplace">Birthplace</a></li>
+				<li><a href="#" id="sort-by-discipline">Discipline</a></li>
 				<li><a href="#" id="sort-by-grid">Grid</a></li>
 			</ul>
 
@@ -87,6 +88,7 @@
 							<svg id="nodes-chart" class="chart-svg geo-chart nodes-chart nodes-chart--is-not-initiated">
 								<g id="map-group" class="map"></g>
 								<g class="geo-lines-group"></g>
+								<g id="nodes-chart--discipline" class="discipline-chart-group unit-chart unit-chart--discipline"></g>
 								<g id="employee-nodes-group" class="employee-nodes-group"></g>
 							</svg>
 						</div><!-- /.nodes-chart-container -->
@@ -230,6 +232,7 @@
 	<script src="js/pie-chart.js"></script>
 	<script src="js/line-chart.js"></script>
 	<script src="js/unit-chart.js"></script>
+	<script src="js/UnitChart.js"></script>
 	<script src="js/filters.js"></script>
 	<script src="js/main.js"></script>
 		

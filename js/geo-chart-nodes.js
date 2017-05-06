@@ -8,7 +8,11 @@ window.app.geoChartNodes = (function($) {
 
 
 	/**
-	* 
+	* add nodes to an svg-group
+	* @param {svg g-element} svgGroup The svg <g> element to add nodes to
+	* @param {string} coordsProp The name of the coordinates property in the employee-object
+	* @param {number} r The radius of the nodes
+	* @param {string} fill The fill color for the nodes
 	* @returns {undefined}
 	*/
 	var addNodes = function(svgGroup, coordsProp, r, fill) {
@@ -19,7 +23,6 @@ window.app.geoChartNodes = (function($) {
 			.attr('class', app.util.getEmployeeClasses)
 			.attr('r', r)
 			.attr('fill', fill)
-			// .attr('stroke', 'black')
 			.attr('stroke-width', 1)
 			.attr('cx', function(d, i) {
 				let x = d[coordsProp].x;
@@ -96,7 +99,7 @@ window.app.geoChartNodes = (function($) {
 	
 
 	/**
-	* 
+	* initialize geo chart
 	* @returns {undefined}
 	*/
 	const init = function(placesChartSvg) {

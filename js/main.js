@@ -64,6 +64,72 @@ window.app = window.app || {};
 		app.simulation.setDefaultCollisionForce();
 	};
 	
+
+
+	/**
+	* handle geo sorting
+	* @returns {undefined}
+	*/
+	const geoSortHandler = function(e) {
+		e.preventDefault();
+		app.nodes.setNodeSize(2);
+		app.nodes.setNodeSpacing(0);
+		app.map.show();
+		
+		var $tgt = $(e.currentTarget),
+			coordsProp = $tgt.attr('data-geo-sort');
+		app.nodes.elements.infoProp = $tgt.attr('data-info-property');
+
+		app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, 120)));
+		app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, 20)));
+		app.simulation.setDefaultCollisionForce();
+
+		if (coordsProp === 'officeCoords') {
+			$sgBody.addClass('highlight-office');
+		}
+
+		if (coordsProp === 'hometownCoords') {
+			setTimeout(addLines, 200);
+		}
+	};
+
+
+	/**
+	* handle grid sorting
+	* @returns {undefined}
+	*/
+	const gridSortHandler = function(e) {
+		e.preventDefault();
+		let simulation = app.simulation.getSimulation();
+		simulation.stop();
+
+		let selection = app.nodes.elements.nodes,
+			positionFunction = app.nodes.getNodeGridPosition,
+			duration = 1000,
+			nodeSize = app.nodes.elements.defaultNodeSize,
+			optionsForPositionFunction = {
+				nodeSize: nodeSize
+			};
+
+		// call setNodePositions and get selection back
+		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
+			.attr('r', app.nodes.elements.defaultNodeSize);
+		// setNodesContext('grid');
+		// enableDefaultFilterView();
+	};
+
+
+	/**
+	* 
+	* @returns {undefined}
+	*/
+	const disciplineSortHandler = function(e) {
+		e.preventDefault();
+		console.log('sort');
+	};
+	
+	
+	
 	
 
 
@@ -74,48 +140,9 @@ window.app = window.app || {};
 	var initSortingLinks = function() {
 
 		// geo sorting
-		$('[data-geo-sort]').on('click', function(e) {
-			e.preventDefault();
-			app.nodes.setNodeSize(2);
-			app.nodes.setNodeSpacing(0);
-			app.map.show();
-			
-			var $tgt = $(e.currentTarget),
-				coordsProp = $tgt.attr('data-geo-sort');
-			app.nodes.elements.infoProp = $tgt.attr('data-info-property');
-
-			app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, 120)));
-			app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, 20)));
-			app.simulation.setDefaultCollisionForce();
-
-			if (coordsProp === 'officeCoords') {
-				$sgBody.addClass('highlight-office');
-			}
-
-			if (coordsProp === 'hometownCoords') {
-				setTimeout(addLines, 200);
-			}
-		});
-
-		$('#sort-by-grid').on('click', function(e) {
-			e.preventDefault();
-			let simulation = app.simulation.getSimulation();
-			simulation.stop();
-
-			let selection = app.nodes.elements.nodes,
-				positionFunction = app.nodes.getNodeGridPosition,
-				duration = 1000,
-				nodeSize = app.nodes.elements.defaultNodeSize,
-				optionsForPositionFunction = {
-					nodeSize: nodeSize
-				};
-
-			// call setNodePositions and get selection back
-			selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
-				.attr('r', app.nodes.elements.defaultNodeSize);
-			// setNodesContext('grid');
-			// enableDefaultFilterView();
-		});
+		$('[data-geo-sort]').on('click', geoSortHandler);
+		$('#sort-by-grid').on('click', gridSortHandler);
+		$('#sort-by-discipline').on('click', disciplineSortHandler);
 	};
 
 
@@ -247,8 +274,6 @@ window.app = window.app || {};
 
 	//-- End age functions --
 
-
-
 	
 
 	/**
@@ -275,8 +300,6 @@ window.app = window.app || {};
 	};
 
 
-	
-
 
 	/**
 	* draw unit chart for disciplines
@@ -297,6 +320,31 @@ window.app = window.app || {};
 
 		app.unitChart.drawChart(dataset, chartSelector, options);
 	};
+
+
+
+	/**
+	* initialize nodes-chart for disciplines
+	* @returns {undefined}
+	*/
+	var initDisciplineNodesChart = function() {
+		let dataset = app.data.buckets.discipline.dataset,
+			chartSelector = '#nodes-chart--discipline',  
+			options = {
+				sortFunction: app.util.sortBucketByEmployeeCount,
+				margin: {
+					top: 10,
+					right: 30,
+					bottom: 30,
+					left: 200
+				}
+			};
+
+		
+		let disciplineNodesChart = new UnitChart(dataset, chartSelector, options);
+		// app.unitChart.drawChart(dataset, chartSelector, options);
+	};
+
 
 
 	/**
@@ -321,7 +369,6 @@ window.app = window.app || {};
 		app.unitChart.drawChart(dataset, chartSelector, options);
 		document.querySelector('#unit-chart--age .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
-	
 	
 
 
@@ -382,6 +429,8 @@ window.app = window.app || {};
 		calculateAgeInfo();
 
 		// app.disciplineChart.init();
+		initDisciplineNodesChart();
+
 		drawDisciplineChart();
 		drawAgeChart();
 
@@ -393,6 +442,7 @@ window.app = window.app || {};
 		// reportMissingGeoData();
 
 	};// loadHandler
+
 
 
 	/**
@@ -412,10 +462,9 @@ window.app = window.app || {};
 	};
 
 
-	// load data and kick things off
 
 	/**
-	* initialize all
+	* initialize the app
 	* @returns {undefined}
 	*/
 	var init = function() {
