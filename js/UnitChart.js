@@ -136,7 +136,7 @@ class UnitChart {
 			employeeCountHeightOrWidth;
 
 		if (this.settings.isHorizontal) {
-			typeScaleHeightOrWidth = this.Height;
+			typeScaleHeightOrWidth = this.height;
 			employeeCountHeightOrWidth = this.width;
 		} else {
 			typeScaleHeightOrWidth = this.width;
@@ -192,18 +192,17 @@ class UnitChart {
 		let xAxis = d3.axisBottom(xTicksScale),
 			yAxis = d3.axisLeft(yTicksScale)
 						.tickPadding(10);
-						
 
 		// render axes
-		// this.chart.append('g')
-		// 	.attr('class', 'axis axis--x')
-		// 	.attr('transform', 'translate(' + this.settings.margin.left +',' + (this.settings.margin.top + this.height) +')')
-		// 	.call(xAxis);
+		this.chart.append('g')
+			.attr('class', 'axis axis--x')
+			.attr('transform', 'translate(' + this.settings.margin.left +',' + (this.settings.margin.top + this.height) +')')
+			.call(xAxis);
 
-		// this.chart.append('g')
-		// 	.attr('class', 'axis axis--y')
-		// 	.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
-		// 	.call(yAxis);
+		this.chart.append('g')
+			.attr('class', 'axis axis--y')
+			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
+			.call(yAxis);
 	};
 	
 	
@@ -217,7 +216,6 @@ class UnitChart {
 		this.initChart();
 		this.createScales();
 		this.createAxes();
-		console.log('done');
 	};
 	
 
