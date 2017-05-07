@@ -1,7 +1,5 @@
 class UnitChart {
 
-	// constructor function
-
 	/**
 	* constructor function
 	* @param {object} options {dataset:array, chartSelector:string[, sortFunction:function]}
@@ -21,17 +19,11 @@ class UnitChart {
 			employeeMargin: 2,
 			showCountLabels: true
 		};
-		// let chart,
-		// 	width,
-		// 	height,
-		// 	typeScale,
-		// 	typeLabelScale,
-		// 	employeeCountScale,
 
 		// setup stuff
 		this.settings = Object.assign({}, defaults, options);
-		this.dataset = this.sortDataset(dataset);
-		this.flatSet = this.flattenDataset();
+		this.dataset = this._sortDataset(dataset);
+		this.flatSet = this._flattenDataset();
 
 		// do chart stuff
 		this.chart = d3.select(chartSelector);
@@ -48,7 +40,7 @@ class UnitChart {
 	* @param {object} dataset A dataset
 	* @returns {Object} the sorted or unaltered dataset
 	*/
-	sortDataset(dataset) {
+	_sortDataset(dataset) {
 		let sortFunction = this.settings.sortFunction;
 		if (sortFunction) {
 			dataset = dataset.sort(sortFunction);
@@ -59,13 +51,14 @@ class UnitChart {
 	};
 
 
+
 	/**
 	* flatten the dataset to employee level,
 	* so we can bind the inidiviual employees to 
 	* @param {array} dataset The dataset to flatten
 	* @returns {array} The flattened dataset
 	*/
-	flattenDataset() {
+	_flattenDataset() {
 		let dataset = this.dataset,
 			flatSet = [];
 
@@ -81,7 +74,7 @@ class UnitChart {
 
 		return flatSet;
 	};
-	
+
 
 
 	/**
@@ -89,7 +82,7 @@ class UnitChart {
 	* determine height and width etc
 	* @returns {undefined}
 	*/
-	initChart() {
+	_initChart() {
 		
 		// calculate desired size based on dataset, radius and margin between units
 		let dataset = this.dataset,
@@ -123,7 +116,7 @@ class UnitChart {
 	* create scales for number of nodes and proper type name
 	* @returns {undefined}
 	*/
-	createScales() {
+	_createScales() {
 		// we have a few different scales:
 		// the type scale is a numeric scale to calculate positions for the type-data
 		// the type label scale is a scale that can return the proper type name
@@ -166,11 +159,12 @@ class UnitChart {
 	};
 
 
+
 	/**
 	* create the axes for the chart
 	* @returns {undefined}
 	*/
-	createAxes() {
+	_createAxes() {
 		// now set the proper scale for each axis
 		let xScale,
 			xTicksScale,
@@ -205,20 +199,142 @@ class UnitChart {
 			.call(yAxis);
 	};
 	
+
+
+	/**
+	* 
+	* @returns {undefined}
+	*/
+	_addEachCircle() {
+		// determine radius of unit-circles by checking at which axis one unit is the smallest
+		// let unitSizeAxis1 = this.typeScale.bandwidth(),// this already includes padding
+		// 	unitSizeAxis2 = this.employeeCountScale(1) * 0.8,// multiply by 0.8 to create padding
+		// 	r = Math.min(unitSizeAxis2, unitSizeAxis1)/2;
+
+		let eachCircle = this.chart.append('g')
+			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
+			.selectAll('.unit')
+			.data(this.flatSet)
+			.enter()
+			.append('circle')
+			.attr('class', window.app.util.getEmployeeClasses)
+			.attr('r', this.settings.radius);
+
+		return eachCircle;
+	};
+
+
+
+	/**
+	* circles need to be placed in the center of a scale's band
+	* so calculate the offset for that
+	* @returns {undefined}
+	*/
+	_getOffsetToScaleBandCenter() {
+		return Math.ceil(this.typeScale.bandwidth()/2);
+	};
+	
 	
 
+	/**
+	* add all data-nodes
+	* @returns {undefined}
+	*/
+	addNodes() {
+		// render units
+		let eachCircle = this._addEachCircle(),
+			cxOrCyForType,
+			cxOrCyForEmployeeCount;
+
+		if (this.settings.isHorizontal) {
+			cxOrCyForType = 'cy';
+			cxOrCyForEmployeeCount = 'cx';
+		} else {
+			cxOrCyForType = 'cx';
+			cxOrCyForEmployeeCount = 'cy';
+		}
+
+		eachCircle.attr(cxOrCyForType, (d) => {
+				// yay! arrow function's this is this class's this :)
+				return this.typeScale(d.typeIdx) + this._getOffsetToScaleBandCenter();// put center in center of band
+			})
+			.attr(cxOrCyForEmployeeCount, (d) => {
+				return this.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+			});
+	};
+
+
+
+	/**
+	* add labels with employee count for every type
+	* @returns {undefined}
+	*/
+	addCountLabels() {
+		if (this.settings.showCountLabels) {
+			let typeAmounts = [];
+			this.dataset.forEach(function(typeObj) {
+				typeAmounts.push(typeObj.employees.length);
+			});
+
+			// now add text to svg
+			let eachCountLabel = this.chart.append('g')
+				.attr('transform', 'translate(' + this.settings.margin.left +',' + this.settings.margin.top +')')
+				.selectAll('.count-label')
+				.data(typeAmounts)
+				.enter()
+				.append('text')
+				.attr('class', 'count-label')
+				.text(function(d) {
+					return d;
+				});
+
+			if (this.settings.isHorizontal) {
+				eachCountLabel.attr('x', (d, i) => {
+						return this.employeeCountScale(d+1);// put label where next unit would be
+					})
+					.attr('y', (d, i) => {
+						return this.typeScale(i) + this._getOffsetToScaleBandCenter();
+					})
+					.attr('dy', '0.3em');
+			} else {
+				eachCountLabel.attr('x', (d, i) => {
+							return this.typeScale(i) + this._getOffsetToScaleBandCenter();
+					})
+					.attr('y', (d, i) => {
+							return this.employeeCountScale(d+1);// put label where next unit would be
+					})
+					.attr('dy', 0)
+					.attr('text-anchor', 'middle');
+			}
+
+		}
+	};
+	
+	
 
 	/**
 	* create the chart context (i.e. everything but the nodes)
 	* @returns {undefined}
 	*/
 	createChartContext() {
-		this.initChart();
-		this.createScales();
-		this.createAxes();
+		this._initChart();
+		this._createScales();
+		this._createAxes();
+
+		// this.addNodes();
+		// this.addCountLabels();
 	};
-	
 
 
+
+	/**
+	* create the chart and add nodes
+	* @returns {undefined}
+	*/
+	drawChart() {
+		this.createChartContext();
+		this.addNodes();
+		this.addCountLabels();
+	};
 	
 }
