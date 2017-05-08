@@ -37,6 +37,8 @@ window.app = window.app || {};
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
 	};
 
+	app.disciplinesNodesChart = null;
+
 
 
 	/**
@@ -125,7 +127,25 @@ window.app = window.app || {};
 	*/
 	const disciplineSortHandler = function(e) {
 		e.preventDefault();
-		console.log('sort');
+		let simulation = app.simulation.getSimulation();
+		simulation.stop();
+
+		// TODO: add
+		let unitChartObject = app.disciplinesNodesChart,
+			dataset = unitChartObject.dataset,
+			selection = app.nodes.elements.nodes.data(dataset),
+			positionFunction = unitChartObject.getNodePosition,
+			duration = 1000,
+			nodeSize = 4,
+			optionsForPositionFunction = {
+				ths: unitChartObject
+			};
+
+			console.log(dataset);
+
+		// call setNodePositions and get selection back
+		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
+			.attr('r', nodeSize);
 	};
 	
 	
@@ -187,7 +207,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var forceXGrid = function(d, i) {
-		return app.nodes.getNodeGridPosition(i)[0];
+		return app.nodes.getNodeGridPosition(d, i)[0];
 	};
 
 
@@ -196,7 +216,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var forceYGrid = function(d, i) {
-		return app.nodes.getNodeGridPosition(i)[1];
+		return app.nodes.getNodeGridPosition(d, i)[1];
 	};
 	
 
@@ -340,8 +360,7 @@ window.app = window.app || {};
 				}
 			};
 
-		
-		let disciplineNodesChart = new UnitChart(dataset, chartSelector, options);
+		app.disciplinesNodesChart = new UnitChart(dataset, chartSelector, options);
 		// app.unitChart.drawChart(dataset, chartSelector, options);
 	};
 

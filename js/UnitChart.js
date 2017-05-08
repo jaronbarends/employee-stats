@@ -233,6 +233,32 @@ class UnitChart {
 	_getOffsetToScaleBandCenter() {
 		return Math.ceil(this.typeScale.bandwidth()/2);
 	};
+
+
+	/**
+	* get the position for a node in the chart
+	* @returns {undefined}
+	*/
+	getNodePosition(d, i, options = {ths:this}) {
+		let x,
+			y,
+			ths = options.ths;
+			// console.log(ths);
+			// console.log(d, i);
+			// return[0,0];
+
+		if (ths.settings.isHorizontal) {
+			x = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+			y = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+		} else {
+			x = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+			y = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+		}
+
+		return [x,y];
+
+	};
+	
 	
 	
 
@@ -246,20 +272,12 @@ class UnitChart {
 			cxOrCyForType,
 			cxOrCyForEmployeeCount;
 
-		if (this.settings.isHorizontal) {
-			cxOrCyForType = 'cy';
-			cxOrCyForEmployeeCount = 'cx';
-		} else {
-			cxOrCyForType = 'cx';
-			cxOrCyForEmployeeCount = 'cy';
-		}
-
-		eachCircle.attr(cxOrCyForType, (d) => {
+		eachCircle.attr('cx', (d, i) => {
 				// yay! arrow function's this is this class's this :)
-				return this.typeScale(d.typeIdx) + this._getOffsetToScaleBandCenter();// put center in center of band
+				return this.getNodePosition(d)[0];
 			})
-			.attr(cxOrCyForEmployeeCount, (d) => {
-				return this.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+			.attr('cy', (d, i) => {
+				return this.getNodePosition(d)[1];
 			});
 	};
 

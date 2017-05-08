@@ -27,7 +27,7 @@ window.app.nodes = (function($) {
 	* @param {object} options Config options for grid
 	* @returns {Array} [x, y]
 	*/
-	var getNodeGridPosition = function(idx, options) {
+	var getNodeGridPosition = function(d, idx, options) {
 		var defaults = {
 			gridOrigin: {x: 20, y: 20 },
 			gridSpacing: 8,
@@ -100,19 +100,19 @@ window.app.nodes = (function($) {
 		}
 		selection
 			.attr('cx', function(d, i) {
-				var x = positionFunction(i, optionsForPositionFunction)[0];
+				var x = positionFunction(d, i, optionsForPositionFunction)[0];
 				d.x = x; 
 				return x;
 			}).attr('cy', function(d, i) {
-				var y = positionFunction(i, optionsForPositionFunction)[1];
+				var y = positionFunction(d, i, optionsForPositionFunction)[1];
 				d.y = y;
 				return y;
 			})
 			.attr('x', function(d, i) {
-				return positionFunction(i, optionsForPositionFunction)[0];
+				return positionFunction(d, i, optionsForPositionFunction)[0];
 			})
 			.attr('y', function(d, i) {
-				return positionFunction(i, optionsForPositionFunction)[1];
+				return positionFunction(d, i, optionsForPositionFunction)[1];
 			});
 
 		return selection;

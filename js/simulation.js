@@ -35,7 +35,7 @@ window.app.simulation = (function($) {
 			* @returns {undefined}
 			*/
 			var forceXGrid = function(d, i) {
-				return app.nodes.getNodeGridPosition(i)[0];
+				return app.nodes.getNodeGridPosition(d, i)[0];
 			};
 
 
@@ -44,7 +44,7 @@ window.app.simulation = (function($) {
 			* @returns {undefined}
 			*/
 			var forceYGrid = function(d, i) {
-				return app.nodes.getNodeGridPosition(i)[1];
+				return app.nodes.getNodeGridPosition(d, i)[1];
 			};
 			
 
