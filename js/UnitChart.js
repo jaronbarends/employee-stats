@@ -2,11 +2,14 @@ class UnitChart {
 
 	/**
 	* constructor function
+	* @param {array} dataset The dataset we want to show, i.e. app.data.buckets.discipline.dataset
+	* @param {string} chartSelector The selector for the svg-element to plot the chart context (labels, axes) in
 	* @param {object} options {originalDataset:array, chartSelector:string[, sortFunction:function]}
 	* @returns {undefined}
 	*/
 	constructor(dataset, chartSelector, options) {
 		let defaults = {
+			sortFunction: app.util.sortBucketByEmployeeCount,
 			margin: {
 				top: 20,
 				left: 20,
@@ -19,14 +22,13 @@ class UnitChart {
 			employeeMargin: 2,
 			showCountLabels: true
 		};
-		console.log(dataset);
 
 		// setup stuff
 		this.settings = Object.assign({}, defaults, options);
-		// originalDataset = Object.assign({}, originalDataset);// remove relation with original object
-		let originalDataset = dataset.slice();// remove relation with original object
-		this.originalDataset = this._sortDataset(originalDataset);
-		this.dataset = this.flattenDataset();
+		this.originalDataset = dataset;
+		this.dataset = this.sortAndFlattenDataset();
+		// this.originalDataset = this._sortDataset(dataset);
+		// this.dataset = this.flattenDataset();
 
 		// do chart stuff
 		this.chart = d3.select(chartSelector);
@@ -35,6 +37,30 @@ class UnitChart {
 
 		this.createChartContext();
 	}
+
+
+	/**
+	* return this chart's sorted and flattened dataset
+	* when doing operations on employee-objects, these changes can affect
+	* in other objects as well. So we need to re-sort and re-flatten to be sure...
+	* @returns {array} the sorted and flattened dataset
+	*/
+	getDataset() {
+		return this.sortAndFlattenDataset();
+	};
+
+
+	/**
+	* sort and flatten this chart's dataset
+	* @returns {undefined}
+	*/
+	sortAndFlattenDataset() {
+		let sortedDataset = this._sortDataset(this.originalDataset),
+			sortedFlattenedDataset = this.flattenDataset(sortedDataset);
+
+		return sortedFlattenedDataset;
+	};
+	
 
 
 
@@ -246,18 +272,10 @@ class UnitChart {
 		let x,
 			y,
 			ths = options.ths;
-			// console.log(ths);
-			// console.log(d, i);
-			// return[0,0];
-
-		// if (d.typeIdx > 28) {
-		// 	console.log('>28:', i, d.typeIdx);
-		// }
 
 		if (ths.settings.isHorizontal) {
 			x = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
 			y = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
-			// console.log(d.typeIdx, ths.typeScale(d.typeIdx), ths._getOffsetToScaleBandCenter());
 		} else {
 			x = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
 			y = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
@@ -347,22 +365,9 @@ class UnitChart {
 		this._createScales();
 		this._createAxes();
 
-		for (var i=0; i<5; i++) {
-			console.log('voor: ',i, this.dataset[i], this.dataset[i].typeIdx);
-		}
 		// this.addNodes();
 		// this.addCountLabels();
 	};
-
-
-	/**
-	* return this chart's dataset
-	* @returns {undefined}
-	*/
-	getDataset() {
-		return this.dataset;
-	};
-	
 
 
 

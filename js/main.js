@@ -145,10 +145,10 @@ window.app = window.app || {};
 				ths: unitChartObject
 			};
 
-		dataset = app.data.buckets.discipline.dataset;
-		let sortFunction = app.util.sortBucketByEmployeeCount;
-		dataset = dataset.sort(sortFunction);
-		dataset = unitChartObject.flattenDataset(dataset);
+		// dataset = app.data.buckets.discipline.dataset;
+		// let sortFunction = app.util.sortBucketByEmployeeCount;
+		// dataset = dataset.sort(sortFunction);
+		// dataset = unitChartObject.flattenDataset(dataset);
 		
 
 		// for (var i=0; i<5; i++) {
@@ -371,7 +371,6 @@ window.app = window.app || {};
 		let dataset = app.data.buckets.discipline.dataset,
 			chartSelector = '#nodes-chart--discipline',  
 			options = {
-				sortFunction: app.util.sortBucketByEmployeeCount,
 				margin: {
 					top: 10,
 					right: 30,
@@ -381,8 +380,6 @@ window.app = window.app || {};
 			};
 
 		window.sgDisciplinesChart = new UnitChart(dataset, chartSelector, options);
-		// app.disciplinesNodesChart = new UnitChart(dataset, chartSelector, options);
-		// app.unitChart.drawChart(dataset, chartSelector, options);
 	};
 
 
@@ -468,7 +465,6 @@ window.app = window.app || {};
 		// app.ageChart.init();
 		calculateAgeInfo();
 
-		// app.disciplineChart.init();
 		initDisciplineNodesChart();
 
 		drawDisciplineChart();
