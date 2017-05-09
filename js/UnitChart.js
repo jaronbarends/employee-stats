@@ -2,7 +2,7 @@ class UnitChart {
 
 	/**
 	* constructor function
-	* @param {object} options {dataset:array, chartSelector:string[, sortFunction:function]}
+	* @param {object} options {originalDataset:array, chartSelector:string[, sortFunction:function]}
 	* @returns {undefined}
 	*/
 	constructor(dataset, chartSelector, options) {
@@ -19,11 +19,14 @@ class UnitChart {
 			employeeMargin: 2,
 			showCountLabels: true
 		};
+		console.log(dataset);
 
 		// setup stuff
 		this.settings = Object.assign({}, defaults, options);
-		this.dataset = this._sortDataset(dataset);
-		this.flatSet = this._flattenDataset();
+		// originalDataset = Object.assign({}, originalDataset);// remove relation with original object
+		let originalDataset = dataset.slice();// remove relation with original object
+		this.originalDataset = this._sortDataset(originalDataset);
+		this.dataset = this.flattenDataset();
 
 		// do chart stuff
 		this.chart = d3.select(chartSelector);
@@ -32,6 +35,7 @@ class UnitChart {
 
 		this.createChartContext();
 	}
+
 
 
 
@@ -58,12 +62,11 @@ class UnitChart {
 	* @param {array} dataset The dataset to flatten
 	* @returns {array} The flattened dataset
 	*/
-	_flattenDataset() {
-		let dataset = this.dataset,
-			flatSet = [];
+	flattenDataset(originalDataset = this.originalDataset) {
+		let flatSet = [];
 
-		for (var i=0, len=dataset.length; i<len; i++) {
-			var employees = dataset[i].employees;
+		for (var i=0, len=originalDataset.length; i<len; i++) {
+			var employees = originalDataset[i].employees;
 			for (var j=0, len2=employees.length; j<len2; j++) {
 				var emp = employees[j];
 				emp.typeIdx = i;
@@ -85,10 +88,10 @@ class UnitChart {
 	_initChart() {
 		
 		// calculate desired size based on dataset, radius and margin between units
-		let dataset = this.dataset,
+		let originalDataset = this.originalDataset,
 			settings = this.settings,
-			numberOfTypes = dataset.length,
-			maxCount = d3.max(dataset, function(elm) {
+			numberOfTypes = originalDataset.length,
+			maxCount = d3.max(originalDataset, function(elm) {
 				return elm.employees.length;
 			});
 
@@ -137,17 +140,17 @@ class UnitChart {
 		}
 
 		this.typeScale = d3.scaleBand()
-			.domain(d3.range(this.dataset.length))
+			.domain(d3.range(this.originalDataset.length))
 			.rangeRound([0, typeScaleHeightOrWidth])
 			.padding(0.1);
 
 		this.typeLabelScale = d3.scaleBand()
-			.domain(this.dataset.map(function(d) {return d.type;}))
+			.domain(this.originalDataset.map(function(d) {return d.type;}))
 			.rangeRound([0, typeScaleHeightOrWidth])
 			.padding(0.1);
 
 		this.employeeCountScale = d3.scaleLinear()
-			.domain([0, d3.max(this.dataset, function(d) {
+			.domain([0, d3.max(this.originalDataset, function(d) {
 					return d.employees.length;
 				})]);
 
@@ -214,7 +217,7 @@ class UnitChart {
 		let eachCircle = this.chart.append('g')
 			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
 			.selectAll('.unit')
-			.data(this.flatSet)
+			.data(this.dataset)
 			.enter()
 			.append('circle')
 			.attr('class', window.app.util.getEmployeeClasses)
@@ -247,9 +250,14 @@ class UnitChart {
 			// console.log(d, i);
 			// return[0,0];
 
+		// if (d.typeIdx > 28) {
+		// 	console.log('>28:', i, d.typeIdx);
+		// }
+
 		if (ths.settings.isHorizontal) {
 			x = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
 			y = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+			// console.log(d.typeIdx, ths.typeScale(d.typeIdx), ths._getOffsetToScaleBandCenter());
 		} else {
 			x = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
 			y = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
@@ -290,7 +298,7 @@ class UnitChart {
 	addCountLabels() {
 		if (this.settings.showCountLabels) {
 			let typeAmounts = [];
-			this.dataset.forEach(function(typeObj) {
+			this.originalDataset.forEach(function(typeObj) {
 				typeAmounts.push(typeObj.employees.length);
 			});
 
@@ -339,9 +347,22 @@ class UnitChart {
 		this._createScales();
 		this._createAxes();
 
+		for (var i=0; i<5; i++) {
+			console.log('voor: ',i, this.dataset[i], this.dataset[i].typeIdx);
+		}
 		// this.addNodes();
 		// this.addCountLabels();
 	};
+
+
+	/**
+	* return this chart's dataset
+	* @returns {undefined}
+	*/
+	getDataset() {
+		return this.dataset;
+	};
+	
 
 
 

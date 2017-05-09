@@ -107,19 +107,6 @@ window.app.util = (function($) {
 	};
 
 
-	/**
-	* within a series of durations with easing pattern
-	* get duration for the current step
-	* @param {number} i The current index
-	* @param {number} stepCount The total number of steps
-	* @param {number} min The minimum value
-	* @param {number} max The maximum value
-	* @returns {number} The current duration
-	*/
-	const getEasedDuration = function(i, stepCount, min=1, max=10) {
-		
-	};
-
 
 	/**
 	* get timing info for an iteration
@@ -161,10 +148,8 @@ window.app.util = (function($) {
 			relativeTotalDuration
 		};
 	};
-	
 
 
-	
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
 		removeBodyClasses,

@@ -6,6 +6,8 @@ window.app = window.app || {};
 
 	var $sgBody = $('body'),
 		app = window.app;
+
+	let sgDisciplinesChart;
 	
 	// vars for datasets
 
@@ -131,9 +133,11 @@ window.app = window.app || {};
 		simulation.stop();
 
 		// TODO: add
-		let unitChartObject = app.disciplinesNodesChart,
-			dataset = unitChartObject.dataset,
-			selection = app.nodes.elements.nodes.data(dataset),
+		// let unitChartObject = app.disciplinesNodesChart,
+		// 	dataset = unitChartObject.dataset,
+		let unitChartObject = window.sgDisciplinesChart,
+			dataset = unitChartObject.getDataset(),
+			selection = app.nodes.elements.nodes,
 			positionFunction = unitChartObject.getNodePosition,
 			duration = 1000,
 			nodeSize = 4,
@@ -141,7 +145,23 @@ window.app = window.app || {};
 				ths: unitChartObject
 			};
 
-			console.log(dataset);
+		dataset = app.data.buckets.discipline.dataset;
+		let sortFunction = app.util.sortBucketByEmployeeCount;
+		dataset = dataset.sort(sortFunction);
+		dataset = unitChartObject.flattenDataset(dataset);
+		
+
+		// for (var i=0; i<5; i++) {
+		// 	console.log('na: ',i, dataset[i], dataset[i].typeIdx);
+		// }
+		selection.data(dataset);
+		// 	.attr('zup', function(d, i) {
+		// 		if (d.typeIdx > 28) {
+		// 			console.log(i, d.typeIdx, d);
+		// 		}
+		// 	});
+
+		// return;
 
 		// call setNodePositions and get selection back
 		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
@@ -360,7 +380,8 @@ window.app = window.app || {};
 				}
 			};
 
-		app.disciplinesNodesChart = new UnitChart(dataset, chartSelector, options);
+		window.sgDisciplinesChart = new UnitChart(dataset, chartSelector, options);
+		// app.disciplinesNodesChart = new UnitChart(dataset, chartSelector, options);
 		// app.unitChart.drawChart(dataset, chartSelector, options);
 	};
 

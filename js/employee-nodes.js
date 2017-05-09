@@ -103,9 +103,12 @@ window.app.nodes = (function($) {
 				var x = positionFunction(d, i, optionsForPositionFunction)[0];
 				d.x = x; 
 				return x;
-			}).attr('cy', function(d, i) {
+			})
+			.attr('cy', function(d, i) {
+				// console.log('cy; d=1:', d);
 				var y = positionFunction(d, i, optionsForPositionFunction)[1];
 				d.y = y;
+				// console.log(i, y);
 				return y;
 			})
 			.attr('x', function(d, i) {
