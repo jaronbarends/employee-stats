@@ -268,10 +268,17 @@ class UnitChart {
 	* get the position for a node in the chart
 	* @returns {undefined}
 	*/
-	getNodePosition(d, i, options = {ths:this}) {
+	getNodePosition(d, i, options) {
 		let x,
-			y,
-			ths = options.ths;
+			y;
+
+		let defaults = {
+			ths: this,
+			addChartMargins: false
+		};
+
+		let settings = Object.assign({}, defaults, options),
+			ths = settings.ths;
 
 		if (ths.settings.isHorizontal) {
 			x = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
@@ -279,6 +286,11 @@ class UnitChart {
 		} else {
 			x = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
 			y = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+		}
+
+		if (settings.addChartMargins) {
+			x += ths.settings.margin.left;
+			y += ths.settings.margin.top;
 		}
 
 		return [x,y];

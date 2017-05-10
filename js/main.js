@@ -141,7 +141,8 @@ window.app = window.app || {};
 			duration = 1000,
 			nodeSize = 4,
 			optionsForPositionFunction = {
-				ths: unitChartObject
+				ths: unitChartObject,
+				addChartMargins: true
 			};
 
 		// bind disciplines dataset to nodes in nodes-chart
