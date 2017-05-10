@@ -453,13 +453,13 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			.defer(d3.csv, 'data/employees.csv')
-			// .defer(d3.csv, 'data/employees-excerpt.csv')
-			.defer(d3.json, 'data/provinces.topojson')
-			.defer(d3.csv, 'data/offices-netherlands.csv')
-			.defer(d3.csv, 'data/hometowns-and-birthplaces.csv')
-			// .defer(d3.csv, 'data/employee-count-per-year-mockup.csv')
-			.defer(d3.csv, 'data/employee-count-per-year.csv')
+			.defer(d3.csv, '../data/employees.csv')
+			// .defer(d3.csv, '../data/employees-excerpt.csv')
+			.defer(d3.json, '../data/provinces.topojson')
+			.defer(d3.csv, '../data/offices-netherlands.csv')
+			.defer(d3.csv, '../data/hometowns-and-birthplaces.csv')
+			// .defer(d3.csv, '../data/employee-count-per-year-mockup.csv')
+			.defer(d3.csv, '../data/employee-count-per-year.csv')
 			.await(loadHandler);
 	};
 
