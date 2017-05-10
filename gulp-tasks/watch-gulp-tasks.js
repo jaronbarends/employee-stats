@@ -25,9 +25,9 @@ gulp.task('watch-sass', watchSassDescription, function() {
 // 	});
 // });
 
-// var watchHtmlDescription = false;// don't show this with gulp-help
-// gulp.task('watch-html', watchHtmlDescription, function() {
-// 	watch(config.project.src.htmlFiles, function() {
-// 		gulp.start('build-html-includes');
-// 	});
-// });
+var watchHtmlDescription = false;// don't show this with gulp-help
+gulp.task('watch-html', watchHtmlDescription, function() {
+	watch(config.project.src.htmlFiles, function() {
+		gulp.start('build-html-includes');
+	});
+});
