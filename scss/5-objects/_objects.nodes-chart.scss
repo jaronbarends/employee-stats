@@ -1,0 +1,7 @@
+// for nodes-charts, we have one group of nodes
+// and a set of chart-contexts which contain the axes, values etc for different charts
+.nodes-chart-context {
+		opacity: 0;
+		opacity: 1;
+		transition: opacity 0.5s ease-out;
+}

@@ -127,11 +127,9 @@ window.app.nodes = (function($) {
 	* reveal all employee nodes
 	* @returns {undefined}
 	*/
-	const revealNodes = function() {
+	const revealNodes = function(firstDelay = 400) {
 		let $body = $('body'),
 			numEmployees = app.data.employees.length,
-			// firstDelay = 400,
-			firstDelay = 4,
 			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, firstDelay),
 			delays = timeoutsAndDelays.cumulativeDelays,
 			animationDuration = 100;

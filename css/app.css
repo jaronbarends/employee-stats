@@ -431,15 +431,15 @@ h3 {
   -ms-flex-pack: center;
   justify-content: center; }
 
-.topic-takeaways,
+.topic-takeaways-area,
 .topic-charts {
   padding: 0 2em; }
 
-.topic-takeaways {
+.topic-takeaways-area {
   width: 30%;
   border: 0px solid #ecedee;
   border-right-width: 1px; }
-  .topic-takeaways--right {
+  .topic-takeaways-area--right {
     -ms-flex-order: 1;
     order: 1;
     border-right-width: 0;
@@ -450,6 +450,11 @@ h3 {
 
 .chart-svg {
   display: block; }
+
+.nodes-chart-context {
+  opacity: 0;
+  opacity: 1;
+  transition: opacity 0.5s ease-out; }
 
 .axis g {
   font-size: 12px;
@@ -514,15 +519,14 @@ header {
 
 /*-- Start general styles --*/
 .nodes-chart-container {
-  height: 80vh; }
-
-.nodes-chart {
-  display: block;
-  height: 100%;
+  height: 80vh;
   /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
-  width: 60%;
   min-width: 900px;
-  min-height: 600px;
+  min-height: 600px; }
+
+.chart-svg--nodes {
+  height: 100%;
+  width: 100%;
   transform-style: preserve-3d;
   transition: transform 1s; }
 
@@ -601,42 +605,41 @@ header {
     width: 40%;
     text-align: left; }
 
-.geo-chart {
-  width: 100%;
-  height: 100%; }
+.map-view .nodes-chart-context--map {
+  opacity: 1; }
 
-.map {
+.nodes-chart-context--map .province {
+  fill: #ecedee;
+  fill: #ddd;
+  stroke: #fff;
+  stroke-width: 0.5; }
+
+.nodes-chart-context--map .office {
   opacity: 0;
   opacity: 1;
-  transition: opacity 0.5s ease-out; }
-  .map-view .map {
-    opacity: 1; }
-  .map .province {
-    fill: #ecedee;
-    fill: #ddd;
-    stroke: #fff;
-    stroke-width: 0.5; }
-  .map .office {
-    opacity: 0;
-    opacity: 1;
-    transition: opacity 0.5s 1s ease-out;
-    fill: rgba(0, 189, 250, 0.5);
-    stroke: #00bdfa;
-    stroke-width: 0; }
-  .map .office--utrecht {
-    stroke: #d60042;
-    fill: rgba(214, 0, 66, 0.3); }
-  .map .office--amsterdam {
-    stroke: #363636;
-    fill: rgba(54, 54, 54, 0.3); }
-  .map .office--amersfoort {
-    stroke: #fecc00;
-    fill: rgba(254, 204, 0, 0.3); }
-  .map .office--eindhoven {
-    stroke: #00bdfa;
-    fill: rgba(0, 189, 250, 0.3); }
-  .map-view .map .office {
-    opacity: 1; }
+  transition: opacity 0.5s 1s ease-out;
+  fill: rgba(0, 189, 250, 0.5);
+  stroke: #00bdfa;
+  stroke-width: 0; }
+
+.nodes-chart-context--map .office--utrecht {
+  stroke: #d60042;
+  fill: rgba(214, 0, 66, 0.3); }
+
+.nodes-chart-context--map .office--amsterdam {
+  stroke: #363636;
+  fill: rgba(54, 54, 54, 0.3); }
+
+.nodes-chart-context--map .office--amersfoort {
+  stroke: #fecc00;
+  fill: rgba(254, 204, 0, 0.3); }
+
+.nodes-chart-context--map .office--eindhoven {
+  stroke: #00bdfa;
+  fill: rgba(0, 189, 250, 0.3); }
+
+.map-view .nodes-chart-context--map .office {
+  opacity: 1; }
 
 .line--office {
   stroke-width: 1;
@@ -762,29 +765,29 @@ header {
 .unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) text {
   display: block; }
 
-.info-box {
+.topic-takeaways {
   margin: 0 0 2em;
   opacity: 0;
   transition: opacity 0.5s; }
 
-.map-view .info-box--hometown,
-.map-view .info-box--offices {
+.map-view .topic-takeaways--hometown,
+.map-view .topic-takeaways--offices {
   opacity: 1; }
 
-.info-box--employees-general {
+.topic-takeaways--employees-general {
   position: relative;
   opacity: 1;
   text-align: center; }
-  .info-box--employees-general dl {
+  .topic-takeaways--employees-general dl {
     margin: 0 0 1em; }
-  .info-box--employees-general dd {
+  .topic-takeaways--employees-general dd {
     line-height: 1; }
-  .info-box--employees-general dt {
+  .topic-takeaways--employees-general dt {
     opacity: 0;
     transition: 1s 1s; }
-  .info-box--employees-general.infobox--is-initiated .value--primary {
+  .topic-takeaways--employees-general.infobox--is-initiated .value--primary {
     font-size: 3rem; }
-  .info-box--employees-general.infobox--is-initiated dt {
+  .topic-takeaways--employees-general.infobox--is-initiated dt {
     opacity: 1; }
 
 /*-- Start employee-icon --*/

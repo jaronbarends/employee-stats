@@ -1,0 +1,10 @@
+.topic-takeaways {
+	margin: 0 0 2em;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.map-view .topic-takeaways--hometown,
+.map-view .topic-takeaways--offices {
+	opacity: 1;
+}

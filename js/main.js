@@ -46,8 +46,8 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initSimulation = function() {
-		let $svg = $('#nodes-chart');
-		app.nodes.elements.nodesSvg = d3.select('#nodes-chart');
+		let $svg = $('#nodes-chart-svg');
+		app.nodes.elements.nodesSvg = d3.select('#nodes-chart-svg');
 		app.nodes.elements.nodesSvgWidth = $svg.width();
 		app.nodes.elements.nodesSvgHeight = $svg.height();
 	};
@@ -91,7 +91,7 @@ window.app = window.app || {};
 		}
 
 		if (coordsProp === 'hometownCoords') {
-			setTimeout(addLines, 200);
+			setTimeout(addLines, 2000);
 		}
 	};
 
@@ -179,7 +179,7 @@ window.app = window.app || {};
 	*/
 	const addLines = function(placesChartSvg) {
 		placesChartSvg = app.nodes.elements.nodesSvg;
-		let svgGroup = placesChartSvg.selectAll('.geo-lines-group'),
+		let svgGroup = placesChartSvg.select('#nodes-chart-context--city-lines'),
 			lines = svgGroup.selectAll('.line')
 				.data(app.data.employees)
 				.enter()
@@ -204,25 +204,6 @@ window.app = window.app || {};
 				// .attr('stroke-width', 1);
 	};
 
-
-
-
-	/**
-	* x-force for positioning all nodes on a grid
-	* @returns {undefined}
-	*/
-	var forceXGrid = function(d, i) {
-		return app.nodes.getNodeGridPosition(d, i)[0];
-	};
-
-
-	/**
-	* y-force for positioning all nodes on a grid
-	* @returns {undefined}
-	*/
-	var forceYGrid = function(d, i) {
-		return app.nodes.getNodeGridPosition(d, i)[1];
-	};
 	
 
 	/**
@@ -306,7 +287,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var setEmployeeCount = function() {
-		let $box = $('#info-box--employees-general'),
+		let $box = $('#topic-takeaways--employees-general'),
 			$value = $box.find('.value--primary'),
 			numEmployees = app.data.employees.length;
 
@@ -354,7 +335,7 @@ window.app = window.app || {};
 	*/
 	var initDisciplineNodesChart = function() {
 		let dataset = app.data.buckets.discipline.dataset,
-			chartSelector = '#nodes-chart--discipline',  
+			chartSelector = '#nodes-chart-context--discipline',  
 			options = {
 				margin: {
 					top: 10,
@@ -405,7 +386,7 @@ window.app = window.app || {};
 		var sim = app.simulation.getSimulation();
 		sim.on('tick', app.simulation.simulationTickHandler);
 
-		document.getElementById('nodes-chart').classList.remove('nodes-chart--is-not-initiated');
+		document.getElementById('nodes-chart-svg').classList.remove('nodes-chart--is-not-initiated');
 		document.getElementById('node-filter-box').classList.add('node-filter-box--is-active');
 	};
 
@@ -432,7 +413,7 @@ window.app = window.app || {};
 		app.data.employeesPerYear = employeesPerYear;
 
 		// initialize geo stuff
-		app.map.init(mapData, app.nodes.elements.nodesSvg, '.map');
+		app.map.init(mapData, app.nodes.elements.nodesSvg, '#nodes-chart-context--map');
 
 
 		// process employee data
@@ -445,7 +426,7 @@ window.app = window.app || {};
 		// add shapes for nodes
 		app.nodes.init();
 		setEmployeeCount();
-		app.nodes.revealNodes();
+		app.nodes.revealNodes(1);
 
 		// app.ageChart.init();
 		calculateAgeInfo();

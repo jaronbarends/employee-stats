@@ -26,11 +26,9 @@
 
 
 // 5. Objects: Cosmetic-free design patterns
-// @import "scss/5-objects/objects.clearfix";
-// @import "scss/5-objects/objects.layout";
-// @import "scss/5-objects/objects.list-bare";
-// @import "scss/5-objects/objects.grid";
 @import "scss/5-objects/objects.topic-section";
+@import "scss/6-objects/objects.topic-takeaways";
+@import "scss/5-objects/objects.nodes-chart";
 @import "scss/5-objects/objects.axes";
 @import "scss/5-objects/objects.bar-chart";
 @import "scss/5-objects/objects.unit-chart";
@@ -41,14 +39,13 @@
 @import "scss/6-components/components.employee-stats";
 @import "scss/6-components/components.node-filter";
 @import "scss/6-components/components.filter-charts";
-@import "scss/6-components/components.map";
+@import "scss/6-components/components.nodes-chart--map";
 @import "scss/6-components/components.pie-chart";
 @import "scss/6-components/components.line-chart";
 @import "scss/6-components/components.bar-chart--discipline";
 @import "scss/6-components/components.unit-chart--discipline";
 @import "scss/6-components/components.unit-chart--age";
-@import "scss/6-components/components.takeaways";
-@import "scss/6-components/components.info-box--employees";
+@import "scss/6-components/components.topic-takeaway--employees";
 
 // 7. Trumps: Helpers and overrides
 // @import "scss/7-trumps/trumps.utilities";

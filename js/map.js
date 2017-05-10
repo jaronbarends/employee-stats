@@ -27,7 +27,7 @@ window.app.map = (function($) {
 		elements.projection = d3.geoMercator().fitSize([app.nodes.elements.nodesSvgWidth, app.nodes.elements.nodesSvgHeight], geojson);
 		elements.path = d3.geoPath().projection(elements.projection);
 
-		// elements.map = app.nodes.elements.nodesSvg.selectAll('#map-group')
+		// elements.map = app.nodes.elements.nodesSvg.selectAll('#nodes-chart-context--map')
 		map.attr('transform', app.nodes.elements.groupTranslate);
 
 		map.selectAll('.province')

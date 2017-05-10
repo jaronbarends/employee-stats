@@ -12,12 +12,12 @@
 	justify-content: center;
 }
 
-.topic-takeaways,
+.topic-takeaways-area,
 .topic-charts {
 	padding: 0 2em;
 }
 
-.topic-takeaways {
+.topic-takeaways-area {
 	width: 30%;
 	border: 0px solid $color-grey-xxlight;
 	border-right-width: 1px;
@@ -35,5 +35,4 @@
 
 .chart-svg {
 	display: block;
-	// margin: 0 auto;
 }

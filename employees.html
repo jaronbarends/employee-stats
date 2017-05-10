@@ -47,8 +47,9 @@
 
 				<div class="topic-data">
 
-					<div class="topic-takeaways">
-						<div id="info-box--employees-general" class="info-box info-box--employees-general">
+					<div class="topic-takeaways-area">
+					
+						<div id="topic-takeaways--employees-general" class="topic-takeaways topic-takeaways--employees-general">
 
 							<div class="emp">
 								<div class="emp__head"></div>
@@ -70,26 +71,30 @@
 						</div>
 
 						
-						<div id="info-box--offices" class="info-box info-box--offices">
+
+						<div id="topic-takeaways--offices" class="topic-takeaways topic-takeaways--offices">
 							<h3>Employees per office</h3>
 							<ol id="office-list" class="office-list">
 							</ol>
 						</div>
 						
-						<div id="info-box--hometown" class="info-box info-box--hometown">
+						<div id="topic-takeaways--hometown" class="topic-takeaways topic-takeaways--hometown">
 							<h3>Most popular hometowns</h3>
 							<ol id="hometown-list" class="hometown-list">
 							</ol>
 						</div>
-					</div><!-- /.topic-takeaways -->
+					</div><!-- /.topic-takeaways-area -->
 
 					<div class="topic-charts">
 						<div id="nodes-chart-container" class="nodes-chart-container">
-							<svg id="nodes-chart" class="chart-svg geo-chart nodes-chart nodes-chart--is-not-initiated">
-								<g id="map-group" class="map"></g>
-								<g class="geo-lines-group"></g>
-								<g id="nodes-chart--discipline" class="discipline-chart-group unit-chart unit-chart--discipline"></g>
+							<svg id="nodes-chart-svg" class="chart-svg chart-svg--nodes nodes-chart--is-not-initiated">
+
+								<g id="nodes-chart-context--map" class="nodes-chart-context nodes-chart-context--map"></g>
+								<g id="nodes-chart-context--city-lines" class="nodes-chart-context--city-lines"></g>
+								<g id="nodes-chart-context--discipline" class="nodes-chart-context--discipline unit-chart unit-chart--discipline"></g>
+
 								<g id="employee-nodes-group" class="employee-nodes-group"></g>
+
 							</svg>
 						</div><!-- /.nodes-chart-container -->
 					</div><!-- /.topic-charts -->
@@ -111,9 +116,9 @@
 
 				<div class="topic-data">
 
-					<div class="topic-takeaways topic-takeaways--right">
+					<div class="topic-takeaways-area topic-takeaways-area--right">
 						Most of us are devs.
-					</div><!-- /.topic-takeaways -->
+					</div><!-- /.topic-takeaways-area -->
 
 					<div class="topic-charts">
 						<svg id="unit-chart--discipline" class="chart-svg unit-chart unit-chart--discipline"></svg>
@@ -134,7 +139,7 @@
 				</div>
 
 				<div class="topic-data">
-					<div class="topic-takeaways">
+					<div class="topic-takeaways-area">
 						<div id="age-info">
 							Our avarage age is
 							<div>
@@ -142,7 +147,7 @@
 								<span class="value value--primary age-months">..</span> months
 							</div>
 						</div>
-					</div><!-- /.topic-takeaways -->
+					</div><!-- /.topic-takeaways-area -->
 
 					<div class="topic-charts">
 						<svg id="unit-chart--age" class="chart-svg unit-chart unit-chart--age"></svg>
@@ -164,9 +169,9 @@
 
 				<div class="topic-data">
 
-					<div class="topic-takeaways topic-takeaways--right">
+					<div class="topic-takeaways-area topic-takeaways-area--right">
 						We grew.
-					</div><!-- /.topic-takeaways -->
+					</div><!-- /.topic-takeaways-area -->
 
 					<div class="topic-charts">
 						<svg id="line-chart" class="chart-svg line-chart" width="960" height="500"></svg>
@@ -188,7 +193,7 @@
 
 				<div class="topic-data">
 
-					<div class="topic-takeaways">
+					<div class="topic-takeaways-area">
 						<form id="filter-charts-form" class="filter-charts-form">
 							<label for="bucket-filter">For every&hellip;</label>
 							<select id="bucket-filter"></select>
@@ -196,7 +201,7 @@
 							<select id="employee-properties"></select>
 							<button type="submit">Show!</button>
 						</form>
-					</div><!-- /.topic-takeaways -->
+					</div><!-- /.topic-takeaways-area -->
 
 					<div class="topic-charts">
 
