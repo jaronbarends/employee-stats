@@ -36,5 +36,5 @@ gulp.task('build-sass', sassDescription, function() {
 		.pipe(rename(config.project.dest.cssMinFilename))
 		.pipe(sourcemaps.write(config.project.dest.sourcemapDir))//needs to be used after minify
 		.pipe(gulp.dest(config.project.dest.cssDir))
-		.pipe(notify({title: 'Sass built', message:config.getCompliment()}));
+		.pipe(notify({title: 'Sass built', message:config.getCompliment(), onLast: true}));
 });

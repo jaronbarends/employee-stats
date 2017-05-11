@@ -13,8 +13,8 @@ module.exports = {
 				'!./Frontend/components/**/demo.js'
 			],
 			scssFiles: [
-				'./*.scss',
-				'./scss/**/*.scss',
+				'./Frontend/*.scss',
+				'./Frontend/scss/**/*.scss',
 				// '!./Frontend/scss/libs/*/**/*.scss',//exclude subfolders of libs
 				// './Frontend/components/**/*.scss'
 			],
@@ -36,7 +36,7 @@ module.exports = {
 			cssFilename: 	'app.css',
 			cssMinFilename: 'app.min.css',
 			jsDir: 			'./dist/js/',
-			cssDir: 		'./css/',
+			cssDir: 		'./dist/css/',
 			fontsDir: 		'./dist/assets/fonts/',
 			htmlDir:       './dist/',
 			imgDir: 		'./dist/assets/img/',

@@ -17,5 +17,5 @@ gulp.task('build-html-includes', includeDescription, function() {
 		.pipe(include())
 			.on('error', console.log)
 		.pipe(gulp.dest(config.project.dest.htmlDir))
-		.pipe(notify('html includes built'));
+		.pipe(notify({title: 'html includes built', message:config.getCompliment(), onLast: true}));
 });
