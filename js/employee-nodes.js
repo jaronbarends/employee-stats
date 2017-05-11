@@ -191,10 +191,8 @@ window.app.nodes = (function($) {
 		chartContexts.forEach((context) => {
 			const id = context.getAttribute('id');
 			if (activeContextIds.indexOf(id) > -1) {
-				console.log('context found:', id);
 				context.classList.add(clss);
 			} else {
-				console.log('not found: ', id);
 				context.classList.remove(clss);
 			}
 		});

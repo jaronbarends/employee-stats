@@ -372,6 +372,14 @@ label {
   cursor: pointer; }
 
 /*-- End stuff added by Jarón --*/
+.o-content-width {
+  margin: 0 auto;
+  max-width: 100em; }
+
+header {
+  margin: 0 0 4em;
+  text-align: center; }
+
 * {
   margin: 0;
   padding: 0;
@@ -462,9 +470,10 @@ h3 {
 
 .nodes-chart-context {
   opacity: 0;
-  transition: opacity 1s ease-out; }
+  transition: opacity 0.9s 0.2s ease-out; }
   .nodes-chart-context--is-active {
-    opacity: 1; }
+    opacity: 1;
+    transition: opacity 0.9s 0.2s ease-out; }
 
 .axis g {
   font-size: 12px;
@@ -511,14 +520,6 @@ button {
   padding-bottom: 0;
   background: white; }
 
-.o-content-width {
-  margin: 0 auto;
-  max-width: 100em; }
-
-header {
-  margin: 0 0 4em;
-  text-align: center; }
-
 .filter-heading,
 .filter-list {
   display: inline-block; }
@@ -546,8 +547,8 @@ header {
   .nodes-chart--is-not-initiated .employee {
     transition: none; }
   .employee-nodes-group .employee {
-    stroke: #363636;
-    stroke-width: 2px; }
+    stroke: white;
+    stroke-width: 1px; }
 
 .axis .domain {
   stroke: transparent; }
@@ -560,26 +561,6 @@ header {
   font-weight: bold; }
 
 /*-- End general styles --*/
-.highlight-gender .employee--female,
-.highlight-gender .employee--vrouw {
-  fill: pink; }
-
-.highlight-gender .employee--male,
-.highlight-gender .employee--man {
-  fill: #00bdfa; }
-
-.highlight-office g .employee--office-utrecht {
-  fill: #d60042; }
-
-.highlight-office g .employee--office-amsterdam {
-  fill: #363636; }
-
-.highlight-office g .employee--office-amersfoort {
-  fill: #fecc00; }
-
-.highlight-office g .employee--office-eindhoven {
-  fill: #00bdfa; }
-
 .node-filter-box {
   margin: 0 0 1em auto;
   text-align: center;
@@ -648,29 +629,21 @@ header {
   stroke: #00bdfa;
   fill: rgba(0, 189, 250, 0.3); }
 
-.map-view .nodes-chart-context--map .office {
-  opacity: 1; }
-
-.line--office {
+.nodes-chart-context--city-lines .line--office {
   stroke-width: 1;
   opacity: 0.5; }
 
-.line--office-utrecht {
+.nodes-chart-context--city-lines .line--office-utrecht {
   stroke: #d60042; }
 
-.line--office-amsterdam {
+.nodes-chart-context--city-lines .line--office-amsterdam {
   stroke: #363636; }
 
-.line--office-amersfoort {
+.nodes-chart-context--city-lines .line--office-amersfoort {
   stroke: #fecc00; }
 
-.line--office-eindhoven {
+.nodes-chart-context--city-lines .line--office-eindhoven {
   stroke: #00bdfa; }
-
-.map-view .employee {
-  stroke-width: 1px;
-  stroke: white;
-  fill: #363636; }
 
 .pie-chart {
   width: 100px;
@@ -855,3 +828,22 @@ header {
   height: 6px; }
 
 /*-- End employee-icon --*/
+.highlight-gender .employee--female,
+.highlight-gender .employee--vrouw {
+  fill: pink; }
+
+.highlight-gender .employee--male,
+.highlight-gender .employee--man {
+  fill: #00bdfa; }
+
+.highlight-office g .employee--office-utrecht {
+  fill: #d60042; }
+
+.highlight-office g .employee--office-amsterdam {
+  fill: #363636; }
+
+.highlight-office g .employee--office-amersfoort {
+  fill: #fecc00; }
+
+.highlight-office g .employee--office-eindhoven {
+  fill: #00bdfa; }

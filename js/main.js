@@ -60,7 +60,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var enableDefaultFilterView = function() {
-		app.map.hide();
+		// app.map.hide();
 		app.nodes.setNodeSize();
 		app.nodes.setNodeSpacing();
 		app.simulation.setDefaultCollisionForce();
@@ -75,14 +75,8 @@ window.app = window.app || {};
 	const geoSortHandler = function(e) {
 		e.preventDefault();
 
-		let selection = app.nodes.elements.nodes,
-			dataset =  app.data.employees;
-
-		app.nodes.changeNodesChartTopic(selection, dataset);
-
 		app.nodes.setNodeSize(2);
 		app.nodes.setNodeSpacing(0);
-		app.map.show();
 		
 		var $tgt = $(e.currentTarget),
 			coordsProp = $tgt.attr('data-geo-sort');
@@ -92,13 +86,23 @@ window.app = window.app || {};
 		app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, 20)));
 		app.simulation.setDefaultCollisionForce();
 
+
+		// set chart-context and highlights
+		let selection = app.nodes.elements.nodes,
+			dataset =  app.data.employees,
+			activeContextIds = ['nodes-chart-context--map'];
+
 		if (coordsProp === 'officeCoords') {
 			$sgBody.addClass('highlight-office');
 		}
 
 		if (coordsProp === 'hometownCoords') {
+			activeContextIds.push('nodes-chart-context--city-lines');
 			setTimeout(addLines, 2000);
 		}
+
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds);
+
 	};
 
 
@@ -185,6 +189,7 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	const addLines = function(placesChartSvg) {
+		console.log('add lines');
 		placesChartSvg = app.nodes.elements.nodesSvg;
 		let svgGroup = placesChartSvg.select('#nodes-chart-context--city-lines'),
 			lines = svgGroup.selectAll('.line')

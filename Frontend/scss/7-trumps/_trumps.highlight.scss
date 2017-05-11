@@ -1,0 +1,35 @@
+.highlight-gender {
+	.employee--female,
+	.employee--vrouw {
+		fill: pink;
+	}
+
+	.employee--male,
+	.employee--man {
+		fill: $color-blue;
+	}
+}
+
+.highlight-office {
+
+	g {// add g-selector for specificity
+
+		.employee--office-utrecht {
+			fill: $color-utrecht;
+		}
+		
+		.employee--office-amsterdam {
+			fill: $color-amsterdam;
+		}
+		
+		.employee--office-amersfoort {
+			fill: $color-amersfoort;
+		}
+		
+		.employee--office-eindhoven {
+			fill: $color-eindhoven;
+		}
+
+	}
+
+}

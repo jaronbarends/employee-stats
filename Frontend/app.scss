@@ -19,6 +19,7 @@
 // @import "scss/libs/libs-css";//this one has to have extension .scss to be imported when compiling
 // @import "scss/libs/libs-scss";
 @import "scss/3-generic/normalize.custom";
+@import "scss/3-generic/generic.layout";
 
 
 // 4. Base: Unclassed elements
@@ -40,6 +41,8 @@
 @import "scss/6-components/components.node-filter";
 @import "scss/6-components/components.filter-charts";
 @import "scss/6-components/components.nodes-chart--map";
+@import "scss/6-components/components.nodes-chart--city-lines";
+@import "scss/6-components/components.nodes-chart--discipline";
 @import "scss/6-components/components.pie-chart";
 @import "scss/6-components/components.line-chart";
 @import "scss/6-components/components.bar-chart--discipline";
@@ -48,7 +51,7 @@
 @import "scss/6-components/components.topic-takeaway--employees";
 
 // 7. Trumps: Helpers and overrides
-// @import "scss/7-trumps/trumps.utilities";
+@import "scss/7-trumps/trumps.highlight";
 
 
 // Components

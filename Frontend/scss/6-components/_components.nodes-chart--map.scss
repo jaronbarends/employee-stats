@@ -1,85 +1,66 @@
-//-- Start topographic stuff --
-	.nodes-chart-context--map {
+.nodes-chart-context--map {
 
-		.map-view & {
-			opacity: 1;
-		}
-
-		.province {
-			fill: $color-grey-xxlight;
-			fill: #ddd;
-			stroke: #fff;
-			stroke-width: 0.5;
-		}
-
-		.office {
-			opacity: 0;
-			opacity: 1;
-			transition: opacity 0.5s 1s ease-out;
-
-			fill: rgba($color-blue, 0.5);
-			stroke: $color-blue;
-			stroke-width: 0;
-		}
-
-		$office-opacity: 0.3;
-
-		.office--utrecht {
-			stroke: $color-utrecht;
-			fill: rgba($color-utrecht, $office-opacity);
-		}
-
-		.office--amsterdam {
-			stroke: $color-amsterdam;
-			fill: rgba($color-amsterdam, $office-opacity);
-		}
-		
-		.office--amersfoort {
-			stroke: $color-amersfoort;
-			fill: rgba($color-amersfoort, $office-opacity);
-		}
-		
-		.office--eindhoven {
-			stroke: $color-eindhoven;
-			fill: rgba($color-eindhoven, $office-opacity);
-		}
-
-		.map-view & .office {
-			opacity: 1;
-		}
-
+	.map-view & {
+		opacity: 1;
 	}
 
-	.line--office {
-		stroke-width: 1;
-		opacity: 0.5;
+	.province {
+		fill: $color-grey-xxlight;
+		fill: #ddd;
+		stroke: #fff;
+		stroke-width: 0.5;
 	}
 
-	.line--office-utrecht {
+	.office {
+		opacity: 0;
+		opacity: 1;
+		transition: opacity 0.5s 1s ease-out;
+
+		fill: rgba($color-blue, 0.5);
+		stroke: $color-blue;
+		stroke-width: 0;
+	}
+
+	$office-opacity: 0.3;
+
+	.office--utrecht {
 		stroke: $color-utrecht;
+		fill: rgba($color-utrecht, $office-opacity);
 	}
 
-	.line--office-amsterdam{
+	.office--amsterdam {
 		stroke: $color-amsterdam;
+		fill: rgba($color-amsterdam, $office-opacity);
 	}
-
-	.line--office-amersfoort {
+	
+	.office--amersfoort {
 		stroke: $color-amersfoort;
+		fill: rgba($color-amersfoort, $office-opacity);
 	}
-
-	.line--office-eindhoven {
+	
+	.office--eindhoven {
 		stroke: $color-eindhoven;
+		fill: rgba($color-eindhoven, $office-opacity);
 	}
 
 
-	.map-view {
-			.employee {
-				stroke-width: 1px;
-				// stroke-width: 0;
-				stroke: white;
-				// stroke: rgba(0,0,0,0.5);
-				// stroke: transparent;
-				fill: $color-grey-xxdark;
-			}
+	// .map-view {
+	// 		.employee {
+	// 			stroke-width: 1px;
+	// 			stroke: white;
+	// 			// fill: $color-grey-xxdark;
+	// 		}
+
+
+
+	//-- Start employee settings
+
+	&.nodes-chart-context--is-active ~ .employee-nodes-group {
+		.employee {
+			// stroke-width: 1px;
+			// stroke: white;
+			// fill: $color-grey-xxdark;
+		}
 	}
-//-- End topographic stuff --
+
+}

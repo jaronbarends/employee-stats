@@ -1,14 +1,4 @@
 
-.o-content-width {
-	margin: 0 auto;
-	max-width: 100em;
-}
-
-header {
-	margin: 0 0 4em;
-	text-align: center;
-}
-
 .filter-heading,
 .filter-list {
 	display: inline-block;
@@ -53,8 +43,10 @@ header {
 		}
 
 		.employee-nodes-group & {
-			stroke: $color-grey-xxdark;
-			stroke-width: 2px;
+			// stroke: $color-grey-xxdark;
+			// stroke-width: 2px;
+			stroke: white;
+			stroke-width: 1px;
 		}
 	}
 
@@ -72,43 +64,3 @@ header {
 	}
 
 /*-- End general styles --*/
-
-
-
-
-
-.highlight-gender {
-	.employee--female,
-	.employee--vrouw {
-		fill: pink;
-	}
-
-	.employee--male,
-	.employee--man {
-		fill: $color-blue;
-	}
-}
-
-.highlight-office {
-
-	g {// add g-selector for specificity
-
-		.employee--office-utrecht {
-			fill: $color-utrecht;
-		}
-		
-		.employee--office-amsterdam {
-			fill: $color-amsterdam;
-		}
-		
-		.employee--office-amersfoort {
-			fill: $color-amersfoort;
-		}
-		
-		.employee--office-eindhoven {
-			fill: $color-eindhoven;
-		}
-
-	}
-
-}

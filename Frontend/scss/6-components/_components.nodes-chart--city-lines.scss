@@ -1,0 +1,24 @@
+.nodes-chart-context--city-lines {
+
+	.line--office {
+		stroke-width: 1;
+		opacity: 0.5;
+	}
+
+	.line--office-utrecht {
+		stroke: $color-utrecht;
+	}
+
+	.line--office-amsterdam{
+		stroke: $color-amsterdam;
+	}
+
+	.line--office-amersfoort {
+		stroke: $color-amersfoort;
+	}
+
+	.line--office-eindhoven {
+		stroke: $color-eindhoven;
+	}
+
+}
