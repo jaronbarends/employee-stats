@@ -6,13 +6,11 @@
 
 
 .pie-segment--vrouw {
-	fill: pink;
-	/*fill: rgba(0, 0, 0, 0.2);*/
+	fill: $color-female;
 }
 
 .pie-segment--man {
-	fill: $color-blue;
-	/*fill: rgba(0, 0, 0, 0.3);*/
+	fill: $color-male;
 }
 
 /*-- parttime percentages --*/

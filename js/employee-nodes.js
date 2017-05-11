@@ -177,6 +177,30 @@ window.app.nodes = (function($) {
 
 
 	/**
+	* show active elements for the nodes-chart (context, takeaways)
+	* @returns {undefined}
+	*/
+	const showActiveElements = function(allElements, activeIds, activeClass, inactiveClass) {
+		allElements = Array.from(allElements);
+		allElements.forEach((elm) => {
+			const id = elm.getAttribute('id');
+			if (activeIds.indexOf(id) > -1) {
+				elm.classList.add(activeClass);
+				if (inactiveClass) {
+					elm.classList.remove(inactiveClass);
+				}
+			} else {
+				elm.classList.remove(activeClass);
+				if (inactiveClass) {
+					elm.classList.add(inactiveClass);
+				}
+			}
+		});
+	};
+	
+
+
+	/**
 	* show the active chart-context(s) for the nodes-chart and hide the others
 	* i.e. show correct axes etc
 	* @param {array} activeContextIds Ids of the context-elements to show
@@ -184,19 +208,26 @@ window.app.nodes = (function($) {
 	*/
 	const showActiveContexts = function(activeContextIds = []) {
 		const svg = document.getElementById('nodes-chart-svg'),
-			clss = 'nodes-chart-context--is-active';
-		let chartContexts = svg.querySelectorAll('.nodes-chart-context');
+			allElements = svg.querySelectorAll('.nodes-chart-context'),
+			activeClass = 'nodes-chart-context--is-active';
 
-		chartContexts = Array.from(chartContexts);
-		chartContexts.forEach((context) => {
-			const id = context.getAttribute('id');
-			if (activeContextIds.indexOf(id) > -1) {
-				context.classList.add(clss);
-			} else {
-				context.classList.remove(clss);
-			}
-		});
+		showActiveElements(allElements, activeContextIds, activeClass);
 	};
+
+
+	/**
+	* show the active chart's takeaways and hide the others
+	* @param {array} activeTakeawayIds Ids of the takeaway-elements to show
+	* @returns {undefined}
+	*/
+	const showActiveTakeaways = function(activeTakeawayIds = []) {
+		const allElements = document.querySelectorAll('#topic-section--nodes-chart .topic-takeaways'),
+			activeClass = 'topic-takeaways--is-active',
+			inactiveClass = 'topic-takeaways--is-inactive';
+
+		showActiveElements(allElements, activeTakeawayIds, activeClass, inactiveClass);
+	};
+	
 	
 
 
@@ -205,10 +236,12 @@ window.app.nodes = (function($) {
 	* i.e. show correct axes etc, bind correct dataset.
 	* @returns {undefined}
 	*/
-	const changeNodesChartTopic = function(selection, dataset, activeContextIds) {
+	const changeNodesChartTopic = function(selection, dataset, activeContextIds, activeTakeawayIds) {
 		// set class nodes-chart-context--is-active on active context(s)
 		selection.data(dataset);
 		showActiveContexts(activeContextIds);
+		console.log('go show');
+		showActiveTakeaways(activeTakeawayIds);
 	};
 
 

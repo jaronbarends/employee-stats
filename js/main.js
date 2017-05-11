@@ -60,10 +60,9 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var enableDefaultFilterView = function() {
-		// app.map.hide();
-		app.nodes.setNodeSize();
-		app.nodes.setNodeSpacing();
-		app.simulation.setDefaultCollisionForce();
+		// app.nodes.setNodeSize();
+		// app.nodes.setNodeSpacing();
+		// app.simulation.setDefaultCollisionForce();
 	};
 	
 
@@ -90,18 +89,21 @@ window.app = window.app || {};
 		// set chart-context and highlights
 		let selection = app.nodes.elements.nodes,
 			dataset =  app.data.employees,
-			activeContextIds = ['nodes-chart-context--map'];
+			activeContextIds = ['nodes-chart-context--map'],
+			activeTakeawayIds;
 
 		if (coordsProp === 'officeCoords') {
 			$sgBody.addClass('highlight-office');
+			activeTakeawayIds = ['topic-takeaways--offices'];
 		}
 
 		if (coordsProp === 'hometownCoords') {
 			activeContextIds.push('nodes-chart-context--city-lines');
+			activeTakeawayIds = ['topic-takeaways--hometown'];
 			setTimeout(addLines, 2000);
 		}
 
-		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds);
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
 
 	};
 
@@ -153,10 +155,11 @@ window.app = window.app || {};
 				ths: unitChartObject,
 				addChartMargins: true
 			},
-			activeContextIds = ['nodes-chart-context--discipline'];
+			activeContextIds = ['nodes-chart-context--discipline'],
+			activeTakeawayIds = ['topic-takeaways--discipline'];
 
 		// bind disciplines dataset to nodes in nodes-chart
-		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds);
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
 		// selection.data(dataset);
 
 		// call setNodePositions and get selection back

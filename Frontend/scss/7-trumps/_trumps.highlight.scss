@@ -1,12 +1,12 @@
 .highlight-gender {
 	.employee--female,
 	.employee--vrouw {
-		fill: pink;
+		fill: $color-female;
 	}
 
 	.employee--male,
 	.employee--man {
-		fill: $color-blue;
+		fill: $color-male;
 	}
 }
 

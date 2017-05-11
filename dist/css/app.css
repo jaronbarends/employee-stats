@@ -463,10 +463,10 @@ h3 {
   margin: 0 0 2em;
   opacity: 0;
   transition: opacity 0.5s; }
-
-.map-view .topic-takeaways--hometown,
-.map-view .topic-takeaways--offices {
-  opacity: 1; }
+  .topic-takeaways--is-hidden {
+    opacity: 0; }
+  .topic-takeaways--is-active {
+    opacity: 1; }
 
 .nodes-chart-context {
   opacity: 0;
@@ -650,12 +650,10 @@ button {
   height: 100px; }
 
 .pie-segment--vrouw {
-  fill: pink;
-  /*fill: rgba(0, 0, 0, 0.2);*/ }
+  fill: rgba(214, 0, 66, 0.4); }
 
 .pie-segment--man {
-  fill: #00bdfa;
-  /*fill: rgba(0, 0, 0, 0.3);*/ }
+  fill: #00bdfa; }
 
 /*-- parttime percentages --*/
 .pie-segment--100-00 {
@@ -830,7 +828,7 @@ button {
 /*-- End employee-icon --*/
 .highlight-gender .employee--female,
 .highlight-gender .employee--vrouw {
-  fill: pink; }
+  fill: rgba(214, 0, 66, 0.4); }
 
 .highlight-gender .employee--male,
 .highlight-gender .employee--man {
