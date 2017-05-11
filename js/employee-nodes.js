@@ -175,6 +175,46 @@ window.app.nodes = (function($) {
 		elements.nodeSpacing = spacing;
 	};
 
+
+	/**
+	* show the active chart-context(s) for the nodes-chart and hide the others
+	* i.e. show correct axes etc
+	* @param {array} activeContextIds Ids of the context-elements to show
+	* @returns {undefined}
+	*/
+	const showActiveContexts = function(activeContextIds = []) {
+		const svg = document.getElementById('nodes-chart-svg'),
+			clss = 'nodes-chart-context--is-active';
+		let chartContexts = svg.querySelectorAll('.nodes-chart-context');
+
+		chartContexts = Array.from(chartContexts);
+		chartContexts.forEach((context) => {
+			const id = context.getAttribute('id');
+			if (activeContextIds.indexOf(id) > -1) {
+				console.log('context found:', id);
+				context.classList.add(clss);
+			} else {
+				console.log('not found: ', id);
+				context.classList.remove(clss);
+			}
+		});
+	};
+	
+
+
+	/**
+	* change the topic of the nodes chart (i.e. office, discipline, ...)
+	* i.e. show correct axes etc, bind correct dataset.
+	* @returns {undefined}
+	*/
+	const changeNodesChartTopic = function(selection, dataset, activeContextIds) {
+		// set class nodes-chart-context--is-active on active context(s)
+		selection.data(dataset);
+		showActiveContexts(activeContextIds);
+	};
+
+
+
 	/**
 	* 
 	* @returns {undefined}
@@ -192,6 +232,7 @@ window.app.nodes = (function($) {
 		init,
 		revealNodes,
 		setNodePositions,
+		changeNodesChartTopic,
 		setNodeSize,
 		setNodeSpacing,
 	};

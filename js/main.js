@@ -74,6 +74,12 @@ window.app = window.app || {};
 	*/
 	const geoSortHandler = function(e) {
 		e.preventDefault();
+
+		let selection = app.nodes.elements.nodes,
+			dataset =  app.data.employees;
+
+		app.nodes.changeNodesChartTopic(selection, dataset);
+
 		app.nodes.setNodeSize(2);
 		app.nodes.setNodeSpacing(0);
 		app.map.show();
@@ -116,7 +122,6 @@ window.app = window.app || {};
 		// call setNodePositions and get selection back
 		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
 			.attr('r', app.nodes.elements.defaultNodeSize);
-		// setNodesContext('grid');
 		// enableDefaultFilterView();
 	};
 
@@ -143,10 +148,12 @@ window.app = window.app || {};
 			optionsForPositionFunction = {
 				ths: unitChartObject,
 				addChartMargins: true
-			};
+			},
+			activeContextIds = ['nodes-chart-context--discipline'];
 
 		// bind disciplines dataset to nodes in nodes-chart
-		selection.data(dataset);
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds);
+		// selection.data(dataset);
 
 		// call setNodePositions and get selection back
 		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
@@ -454,6 +461,7 @@ window.app = window.app || {};
 	var loadData = function() {
 		d3.queue()
 			.defer(d3.csv, '../data/employees.csv')
+			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
 			.defer(d3.csv, '../data/offices-netherlands.csv')

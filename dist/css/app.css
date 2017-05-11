@@ -462,8 +462,9 @@ h3 {
 
 .nodes-chart-context {
   opacity: 0;
-  opacity: 1;
-  transition: opacity 0.5s ease-out; }
+  transition: opacity 1s ease-out; }
+  .nodes-chart-context--is-active {
+    opacity: 1; }
 
 .axis g {
   font-size: 12px;
