@@ -54,19 +54,6 @@ window.app = window.app || {};
 
 
 
-
-	/**
-	* enable the default view for filters (hide map, set collision etc)
-	* @returns {undefined}
-	*/
-	var enableDefaultFilterView = function() {
-		// app.nodes.setNodeSize();
-		// app.nodes.setNodeSpacing();
-		// app.simulation.setDefaultCollisionForce();
-	};
-	
-
-
 	/**
 	* handle geo sorting
 	* @returns {undefined}
@@ -114,9 +101,11 @@ window.app = window.app || {};
 	*/
 	const gridSortHandler = function(e) {
 		e.preventDefault();
+
 		let simulation = app.simulation.getSimulation();
 		simulation.stop();
 
+		// do positioning stuff
 		let selection = app.nodes.elements.nodes,
 			positionFunction = app.nodes.getNodeGridPosition,
 			duration = 1000,
@@ -125,10 +114,15 @@ window.app = window.app || {};
 				nodeSize: nodeSize
 			};
 
-		// call setNodePositions and get selection back
-		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
+		app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
 			.attr('r', app.nodes.elements.defaultNodeSize);
-		// enableDefaultFilterView();
+
+		// do context stuff
+		let dataset =  app.data.employees,
+			activeContextIds = [],
+			activeTakeawayIds = ['topic-takeaways--employees-general'];
+
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
 	};
 
 
@@ -141,10 +135,6 @@ window.app = window.app || {};
 		let simulation = app.simulation.getSimulation();
 		simulation.stop();
 
-		// TODO: add
-		// let unitChartObject = app.disciplinesNodesChart,
-		// 	dataset = unitChartObject.dataset,
-		// let unitChartObject = window.sgDisciplinesChart,
 		let unitChartObject = app.disciplinesNodesChart,
 			dataset = unitChartObject.getDataset(),
 			selection = app.nodes.elements.nodes,
@@ -158,13 +148,13 @@ window.app = window.app || {};
 			activeContextIds = ['nodes-chart-context--discipline'],
 			activeTakeawayIds = ['topic-takeaways--discipline'];
 
-		// bind disciplines dataset to nodes in nodes-chart
-		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
-		// selection.data(dataset);
-
-		// call setNodePositions and get selection back
-		selection = app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
+		// call setNodePositions
+		app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
 			.attr('r', nodeSize);
+
+		// do context stuff
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
+
 	};
 	
 	

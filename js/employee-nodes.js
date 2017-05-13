@@ -118,6 +118,7 @@ window.app.nodes = (function($) {
 				return positionFunction(d, i, optionsForPositionFunction)[1];
 			});
 
+		// ? does not always return proper selection?!
 		return selection;
 	};
 	
@@ -229,7 +230,6 @@ window.app.nodes = (function($) {
 		showActiveElements(allElements, activeTakeawayIds, activeClass, inactiveClass);
 	};
 	
-	
 
 
 	/**
@@ -239,9 +239,9 @@ window.app.nodes = (function($) {
 	*/
 	const changeNodesChartTopic = function(selection, dataset, activeContextIds, activeTakeawayIds) {
 		// set class nodes-chart-context--is-active on active context(s)
+		console.log('sel:',selection);
 		selection.data(dataset);
 		showActiveContexts(activeContextIds);
-		console.log('go show');
 		showActiveTakeaways(activeTakeawayIds);
 	};
 
