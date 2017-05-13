@@ -18,6 +18,7 @@
 }
 
 .topic-takeaways-area {
+	position: relative;// so we can absolutely position takeaways
 	width: 30%;
 	border: 0px solid $color-grey-xxlight;
 	border-right-width: 1px;

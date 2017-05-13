@@ -1,15 +1,21 @@
 // for nodes-charts, we have one group of nodes
 // and a set of chart-contexts which contain the axes, values etc for different charts
 .nodes-chart-context {
-		$fade-out-duration: 0.9s;
-		$fade-out-delay: 0.2s;
-		$fade-in-duration: 0.9s;
-		$fade-in-delay: 0.2s;
-		opacity: 0;
-		transition: opacity $fade-out-duration $fade-out-delay ease-out;
+	$fade-out-duration: 0.9s;
+	$fade-out-delay: 0.2s;
+	$fade-in-duration: 0.9s;
+	$fade-in-delay: 0.2s;
 
-		&--is-active {
-			opacity: 1;
-			transition: opacity $fade-in-duration $fade-in-delay ease-out;
-		}
+	transition: opacity $fade-out-duration $fade-out-delay ease-out;
+
+	&--is-inactive {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	&--is-active {
+		opacity: 1;
+		transition: opacity $fade-in-duration $fade-in-delay ease-out;
+		pointer-events: initial;
+	}
 }

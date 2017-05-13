@@ -444,6 +444,7 @@ h3 {
   padding: 0 2em; }
 
 .topic-takeaways-area {
+  position: relative;
   width: 30%;
   border: 0px solid #ecedee;
   border-right-width: 1px; }
@@ -460,20 +461,25 @@ h3 {
   display: block; }
 
 .topic-takeaways {
+  position: absolute;
   margin: 0 0 2em;
-  opacity: 0;
-  transition: opacity 0.5s; }
-  .topic-takeaways--is-hidden {
-    opacity: 0; }
+  transition: opacity 0.5s 0s ease-out; }
+  .topic-takeaways--is-inactive {
+    opacity: 0;
+    pointer-events: none; }
   .topic-takeaways--is-active {
-    opacity: 1; }
+    transition: opacity 0.5s 2s ease-out;
+    pointer-events: initial; }
 
 .nodes-chart-context {
-  opacity: 0;
   transition: opacity 0.9s 0.2s ease-out; }
+  .nodes-chart-context--is-inactive {
+    opacity: 0;
+    pointer-events: none; }
   .nodes-chart-context--is-active {
     opacity: 1;
-    transition: opacity 0.9s 0.2s ease-out; }
+    transition: opacity 0.9s 0.2s ease-out;
+    pointer-events: initial; }
 
 .axis g {
   font-size: 12px;
@@ -747,8 +753,6 @@ button {
   display: block; }
 
 .topic-takeaways--employees-general {
-  position: relative;
-  opacity: 1;
   text-align: center; }
   .topic-takeaways--employees-general dl {
     margin: 0 0 1em; }
@@ -845,3 +849,7 @@ button {
 
 .highlight-office g .employee--office-eindhoven {
   fill: #00bdfa; }
+
+.u-centered {
+  left: 50%;
+  transform: translateX(-50%); }

@@ -192,7 +192,6 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	const addLines = function(placesChartSvg) {
-		console.log('add lines');
 		placesChartSvg = app.nodes.elements.nodesSvg;
 		let svgGroup = placesChartSvg.select('#nodes-chart-context--city-lines'),
 			lines = svgGroup.selectAll('.line')
@@ -262,12 +261,11 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initEmployeesPerOfficeList = function() {
-
 		var $list = $('#office-list'),
 			items = '';
 		for (var i=0, len=app.data.offices.length; i<len; i++) {
 			var office = app.data.offices[i];
-			items += '<li>'+office.city + '(' + office.employeeCount + ')</li>';
+			items += '<li class="office-list-item--"' + office.city.toLowerCase() + '>'+office.city + ': ' + office.employeeCount + '</li>';
 		}
 
 		$list.append(items);

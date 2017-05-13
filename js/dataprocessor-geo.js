@@ -88,7 +88,7 @@ app.dataprocessorGeo = (function($) {
 				items = '';
 			for (var i=0; i<5; i++) {
 				var hometown = app.data.hometowns[i];
-				items += '<li>'+hometown.name + '(' + hometown.employeeCount + ')</li>';
+				items += '<li>'+hometown.name + ' (' + hometown.employeeCount + ')</li>';
 			}
 
 			$list.append(items);
