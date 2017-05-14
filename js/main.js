@@ -254,8 +254,13 @@ window.app = window.app || {};
 		var $list = $('#office-list'),
 			items = '';
 		for (var i=0, len=app.data.offices.length; i<len; i++) {
-			var office = app.data.offices[i];
-			items += '<li class="office-list-item--"' + office.city.toLowerCase() + '>'+office.city + ': ' + office.employeeCount + '</li>';
+			let office = app.data.offices[i],
+				item = '';
+				
+			items += '<li class="takeaway__office takeaway__office--' + office.city.toLowerCase() + '"">';
+			items += '	<span class="takeaway__office-name">' + office.city + '</span>';
+			items += '	<span class="takeaway__office-metric">' + office.employeeCount + '</span>';
+			items += '</li>';
 		}
 
 		$list.append(items);

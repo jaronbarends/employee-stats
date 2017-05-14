@@ -426,6 +426,17 @@ h2,
 h3 {
   color: #d60042; }
 
+/* ==========================================================================
+   #LIST-BARE
+   ========================================================================== */
+/**
+ * Strip list-like appearance from lists by removing their bullets, and any
+ * indentation.
+ */
+.o-list-bare {
+  list-style: none;
+  margin-left: 0; }
+
 .topic-section {
   border-top: 1px solid #ccc;
   padding: 3em 0; }
@@ -471,6 +482,25 @@ h3 {
     transition: opacity 0.5s 2s ease-out;
     pointer-events: initial; }
 
+.takeaway__office-metric {
+  display: inline-block;
+  margin-left: 0.3em;
+  border-radius: 1em;
+  padding: 0 0.6em;
+  background: #00bdfa;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold; }
+  .takeaway__office--utrecht .takeaway__office-metric {
+    background: #d60042; }
+  .takeaway__office--amsterdam .takeaway__office-metric {
+    background: #363636; }
+  .takeaway__office--amersfoort .takeaway__office-metric {
+    background: #fecc00;
+    color: #363636; }
+  .takeaway__office--eindhoven .takeaway__office-metric {
+    background: #00bdfa; }
+
 .nodes-chart-context {
   transition: opacity 0.9s 0.2s ease-out; }
   .nodes-chart-context--is-inactive {
@@ -503,7 +533,11 @@ h3 {
 
 .unit-chart .count-label {
   font-size: 12px;
-  fill: #8b8b8c; }
+  fill: #8b8b8c;
+  transition: opacity 1s 1s; }
+
+.unit-chart.nodes-chart-context--is-inactive .count-label {
+  opacity: 0; }
 
 input,
 select,

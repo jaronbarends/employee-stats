@@ -34,6 +34,7 @@ class UnitChart {
 		this.chart = d3.select(chartSelector);
 		this.width = 0;
 		this.height = 0;
+		this.countLabels = null;
 
 		this.createChartContext();
 	}
@@ -334,6 +335,7 @@ class UnitChart {
 
 			// now add text to svg
 			let eachCountLabel = this.chart.append('g')
+				.attr('class', 'count-labels')
 				.attr('transform', 'translate(' + this.settings.margin.left +',' + this.settings.margin.top +')')
 				.selectAll('.count-label')
 				.data(typeAmounts)
@@ -363,10 +365,12 @@ class UnitChart {
 					.attr('text-anchor', 'middle');
 			}
 
+			this.countLabels = eachCountLabel;
+
 		}
 	};
-	
-	
+
+
 
 	/**
 	* create the chart context (i.e. everything but the nodes)
@@ -378,7 +382,7 @@ class UnitChart {
 		this._createAxes();
 
 		// this.addNodes();
-		// this.addCountLabels();
+		this.addCountLabels();
 	};
 
 

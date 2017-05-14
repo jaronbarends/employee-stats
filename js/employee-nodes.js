@@ -211,7 +211,7 @@ window.app.nodes = (function($) {
 		const svg = document.getElementById('nodes-chart-svg'),
 			allElements = svg.querySelectorAll('.nodes-chart-context'),
 			activeClass = 'nodes-chart-context--is-active',
-			inactiveClass = 'topic-takeaways--is-inactive';
+			inactiveClass = 'nodes-chart-context--is-inactive';
 
 		showActiveElements(allElements, activeContextIds, activeClass, inactiveClass);
 	};
@@ -239,7 +239,6 @@ window.app.nodes = (function($) {
 	*/
 	const changeNodesChartTopic = function(selection, dataset, activeContextIds, activeTakeawayIds) {
 		// set class nodes-chart-context--is-active on active context(s)
-		console.log('sel:',selection);
 		selection.data(dataset);
 		showActiveContexts(activeContextIds);
 		showActiveTakeaways(activeTakeawayIds);

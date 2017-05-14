@@ -20,3 +20,31 @@
 		pointer-events: initial;
 	}
 }
+
+.takeaway__office-metric {
+	display: inline-block;
+	margin-left: 0.3em;
+	border-radius: 1em;
+	padding: 0 0.6em;
+	background: $color-primary;
+	color: $color-white;
+	font-size: $font-size-tiny;
+	font-weight: bold;
+
+	.takeaway__office--utrecht & {
+		background: $color-utrecht;
+	}
+
+	.takeaway__office--amsterdam & {
+		background: $color-amsterdam;
+	}
+
+	.takeaway__office--amersfoort & {
+		background: $color-amersfoort;
+		color: $color-grey-xxdark;
+	}
+
+	.takeaway__office--eindhoven & {
+		background: $color-eindhoven;
+	}
+}

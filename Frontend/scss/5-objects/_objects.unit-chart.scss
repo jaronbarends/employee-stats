@@ -17,5 +17,14 @@
 	.count-label {
 		font-size: 12px;
 		fill: $color-grey-medium;
+		transition: opacity 1s 1s;
+
+		
+	}
+
+	&.nodes-chart-context--is-inactive {
+		.count-label {
+			opacity: 0;
+		}
 	}
 }
