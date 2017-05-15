@@ -37,8 +37,6 @@ window.app = window.app || {};
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
 	};
 
-	// app.disciplinesNodesChart = null;
-
 
 
 	/**
@@ -88,6 +86,10 @@ window.app = window.app || {};
 			activeContextIds.push('nodes-chart-context--city-lines');
 			activeTakeawayIds = ['topic-takeaways--hometown'];
 			setTimeout(addLines, 2000);
+		}
+
+		if (coordsProp === 'birthplaceCoords') {
+			activeTakeawayIds = ['topic-takeaways--birthplace'];
 		}
 
 		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
@@ -311,28 +313,6 @@ window.app = window.app || {};
 
 		$sgBody.on('nodeRevealed', updateEmployeeNumber);
 		$box.addClass('infobox--is-initiated');
-	};
-
-
-
-	/**
-	* draw unit chart for disciplines
-	* @returns {undefined}
-	*/
-	var drawDisciplineChart = function() {
-		let dataset = app.data.buckets.discipline.dataset,
-			chartSelector = '#unit-chart--discipline',  
-			options = {
-				sortFunction: app.util.sortBucketByEmployeeCount,
-				margin: {
-					top: 10,
-					right: 30,
-					bottom: 30,
-					left: 200
-				}
-			};
-
-		app.unitChart.drawChart(dataset, chartSelector, options);
 	};
 
 
