@@ -37,7 +37,7 @@ window.app = window.app || {};
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
 	};
 
-	app.disciplinesNodesChart = null;
+	// app.disciplinesNodesChart = null;
 
 
 
@@ -135,7 +135,7 @@ window.app = window.app || {};
 		let simulation = app.simulation.getSimulation();
 		simulation.stop();
 
-		let unitChartObject = app.disciplinesNodesChart,
+		let unitChartObject = app.disciplinesNodesChart.getChart(),
 			dataset = unitChartObject.getDataset(),
 			selection = app.nodes.elements.nodes,
 			positionFunction = unitChartObject.getNodePosition,
@@ -337,29 +337,9 @@ window.app = window.app || {};
 
 
 
-	/**
-	* initialize nodes-chart for disciplines
-	* @returns {undefined}
-	*/
-	var initDisciplineNodesChart = function() {
-		let dataset = app.data.buckets.discipline.dataset,
-			chartSelector = '#nodes-chart-context--discipline',  
-			options = {
-				margin: {
-					top: 10,
-					right: 30,
-					bottom: 30,
-					left: 200
-				}
-			};
-
-		app.disciplinesNodesChart = new UnitChart(dataset, chartSelector, options);
-	};
-
-
 
 	/**
-	* draw unit chart for disciplines
+	* draw unit chart for ages
 	* @returns {undefined}
 	*/
 	var drawAgeChart = function() {
@@ -434,15 +414,15 @@ window.app = window.app || {};
 		// add shapes for nodes
 		app.nodes.init();
 		setEmployeeCount();
+
 		let firstDelay = 200;
 		app.nodes.revealNodes(firstDelay);
 
 		// app.ageChart.init();
 		calculateAgeInfo();
 
-		initDisciplineNodesChart();
+		app.disciplinesNodesChart.init();
 
-		// drawDisciplineChart();
 		drawAgeChart();
 
 		app.filters.init();
