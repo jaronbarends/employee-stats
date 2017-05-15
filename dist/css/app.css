@@ -377,7 +377,6 @@ label {
   max-width: 100em; }
 
 header {
-  margin: 0 0 4em;
   text-align: center; }
 
 * {
@@ -415,6 +414,7 @@ h3, .h3 {
 
 h1,
 .h1 {
+  margin-bottom: 0.2em;
   font-size: 6rem;
   color: #ecedee; }
 
