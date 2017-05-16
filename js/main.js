@@ -126,41 +126,6 @@ window.app = window.app || {};
 
 		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
 	};
-
-
-	/**
-	* 
-	* @returns {undefined}
-	*/
-	const disciplineSortHandler = function(e) {
-		e.preventDefault();
-		let simulation = app.simulation.getSimulation();
-		simulation.stop();
-
-		let unitChartObject = app.disciplinesNodesChart.getChart(),
-			dataset = unitChartObject.getDataset(),
-			selection = app.nodes.elements.nodes,
-			positionFunction = unitChartObject.getNodePosition,
-			duration = 1000,
-			nodeSize = 4,
-			optionsForPositionFunction = {
-				ths: unitChartObject,
-				addChartMargins: true
-			},
-			activeContextIds = ['nodes-chart-context--discipline'],
-			activeTakeawayIds = ['topic-takeaways--discipline'];
-
-		// call setNodePositions
-		app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
-			.attr('r', nodeSize);
-
-		// do context stuff
-		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
-
-	};
-	
-	
-	
 	
 
 
@@ -173,7 +138,8 @@ window.app = window.app || {};
 		// geo sorting
 		$('[data-geo-sort]').on('click', geoSortHandler);
 		$('#sort-by-grid').on('click', gridSortHandler);
-		$('#sort-by-discipline').on('click', disciplineSortHandler);
+		$('#sort-by-discipline').on('click', app.disciplinesNodesChart.activate);
+		// $('#sort-by-discipline').on('click', disciplineSortHandler);
 	};
 
 
@@ -395,7 +361,8 @@ window.app = window.app || {};
 		app.nodes.init();
 		setEmployeeCount();
 
-		let firstDelay = 200;
+		// let firstDelay = 200;
+		let firstDelay = 1;
 		app.nodes.revealNodes(firstDelay);
 
 		// app.ageChart.init();
