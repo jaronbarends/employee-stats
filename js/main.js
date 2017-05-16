@@ -303,6 +303,8 @@ window.app = window.app || {};
 			lowestAge = dataset[0].type,
 			showTicks5nPlus = 6 - lowestAge%5;
 
+			console.log('drawageChart dataset[0]: ', dataset[0]);
+
 		app.unitChart.drawChart(dataset, chartSelector, options);
 		document.querySelector('#unit-chart--age .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
@@ -369,7 +371,7 @@ window.app = window.app || {};
 		calculateAgeInfo();
 
 		app.disciplinesNodesChart.init();
-		// app.agesNodesChart.init();
+		app.agesNodesChart.init();
 
 		drawAgeChart();
 

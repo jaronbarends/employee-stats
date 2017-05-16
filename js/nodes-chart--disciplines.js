@@ -57,6 +57,7 @@ window.app.disciplinesNodesChart = (function($) {
 		let dataset = app.data.buckets.discipline.dataset,
 			chartSelector = '#nodes-chart-context--discipline',  
 			options = {
+				sortFunction: app.util.sortBucketByEmployeeCount,
 				margin: {
 					top: 10,
 					right: 30,

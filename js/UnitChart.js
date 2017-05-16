@@ -9,7 +9,8 @@ class UnitChart {
 	*/
 	constructor(dataset, chartSelector, options) {
 		let defaults = {
-			sortFunction: app.util.sortBucketByEmployeeCount,
+			// sortFunction: app.util.sortBucketByEmployeeCount,
+			sortFunction: null,// assume datasets are usually already in right order
 			margin: {
 				top: 20,
 				left: 20,
@@ -56,6 +57,7 @@ class UnitChart {
 	* @returns {undefined}
 	*/
 	sortAndFlattenDataset() {
+		console.log('sort and flatten');
 		let sortedDataset = this._sortDataset(this.originalDataset),
 			sortedFlattenedDataset = this.flattenDataset(sortedDataset);
 
