@@ -45,7 +45,7 @@
 
 
 		
-				<li><a href="#" id="sort-by-hometown" data-geo-sort="hometownCoords" data-info-property="hometown">Hometown</a></li>
+				<li><a href="#" id="sort-by-hometown" data-geo-sort="hometownCoords" data-info-property="hometown">Residence</a></li>
 
 
 
@@ -58,6 +58,12 @@
 
 		
 				<li><a href="#" id="sort-by-discipline">Discipline</a></li>
+
+
+
+
+		
+				<li><a href="#" id="sort-by-age">Age</a></li>
 
 
 
@@ -199,15 +205,15 @@
 						</div>
 						
 						<div id="topic-takeaways--hometown" class="topic-takeaways  topic-takeaways--is-inactive">
-							<h3>Most popular hometowns</h3>
+							<h3>Most popular residences</h3>
 							<ol id="hometown-list" class="hometown-list">
 							</ol>
 							
-							<h3>Other hometown facts</h3>
+							<h3>Other residence facts</h3>
 							<ul>
 								<li>x people live in their birthplace</li>
-								<li>y people work in their hometown</li>
-								<li>z people have an office in their hometown, but work at another office</li>
+								<li>y people work in their residence</li>
+								<li>z people have an office in their residence, but work at another office</li>
 							</ul>
 						</div>
 						
@@ -232,8 +238,16 @@
 				
 								<g id="nodes-chart-context--map" class="nodes-chart-context nodes-chart-context--map nodes-chart-context--is-inactive"></g>
 								<g id="nodes-chart-context--city-lines" class="nodes-chart-context nodes-chart-context--city-lines nodes-chart-context--is-inactive"></g>
-								<g id="nodes-chart-context--discipline" class="nodes-chart-context nodes-chart-context--discipline unit-chart unit-chart--discipline nodes-chart-context--is-inactive"></g>
-								<g id="nodes-chart-context--age" class="nodes-chart-context nodes-chart-context--age unit-chart unit-chart--age nodes-chart-context--is-inactive"></g>
+								<g id="nodes-chart-context--discipline"
+									class="	nodes-chart-context
+											nodes-chart-context--discipline
+											unit-chart unit-chart--discipline
+											nodes-chart-context--is-inactive"></g>
+								<g id="nodes-chart-context--age"
+									class="	nodes-chart-context
+											nodes-chart-context--age
+											unit-chart unit-chart--age
+											nodes-chart-context--is-inactive"></g>
 				
 								<g id="employee-nodes-group" class="employee-nodes-group"></g>
 				
@@ -369,6 +383,7 @@
 		<script src="../js/simulation.js"></script>
 		<script src="../js/nodes-charts.js"></script>
 		<script src="../js/nodes-chart--disciplines.js"></script>
+		<script src="../js/nodes-chart--age.js"></script>
 		<script src="../js/pie-chart.js"></script>
 		<script src="../js/line-chart.js"></script>
 		<script src="../js/unit-chart.js"></script>

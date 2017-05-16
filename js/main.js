@@ -134,11 +134,11 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var initSortingLinks = function() {
-
 		// geo sorting
 		$('[data-geo-sort]').on('click', geoSortHandler);
 		$('#sort-by-grid').on('click', gridSortHandler);
 		$('#sort-by-discipline').on('click', app.disciplinesNodesChart.activate);
+		$('#sort-by-age').on('click', app.agesNodesChart.activate);
 		// $('#sort-by-discipline').on('click', disciplineSortHandler);
 	};
 
@@ -369,6 +369,7 @@ window.app = window.app || {};
 		calculateAgeInfo();
 
 		app.disciplinesNodesChart.init();
+		// app.agesNodesChart.init();
 
 		drawAgeChart();
 
