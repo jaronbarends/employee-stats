@@ -1,3 +1,5 @@
+
+
 window.app = window.app || {};
 
 window.app.dataprocessorEmployees = (function($) {
@@ -13,26 +15,13 @@ window.app.dataprocessorEmployees = (function($) {
 
 
 	/**
-	* put comparable employee properties into array
-	* @returns {undefined}
-	*/
-	var initEmployeeProperties = function() {
-		for (var prop in app.data.employees[0]) {
-			app.data.employeeProps.push(prop);
-		}
-	};
-
-
-	/**
 	* handle an employee's discipline data
-	* - fill disciplines array
 	* - put level into separate field
 	* @param {object} emp The current employee's data-object
 	* @returns {undefined}
 	*/
-	var processDiscipline = function(emp) {
+	var cleanDiscipline = function(emp) {
 		var discipline = emp.disciplineWithLevel,
-			disciplineFound = false,
 			level = '';
 
 		// cut off level
@@ -67,12 +56,13 @@ window.app.dataprocessorEmployees = (function($) {
 	/**
 	* handle an employee's organisational unit data
 	* - cut of office name and "eFocus"
-	* - fill orgnisational units array
+	* - when it's just "eFocus", that's the MT, so change that
+	* - update the emp's organisationalUnit property with the cleant one
 	* in dataset, values may look like "Marketing & Communicatie", "Development Utrecht eFocus" or just "eFocus" (mt)
 	* @param {object} emp The current employee's data-object
 	* @returns {undefined}
 	*/
-	var processOrganisationalUnit = function(emp) {
+	var cleanOrganisationalUnit = function(emp) {
 		var unit = emp.organisationalUnit,
 			unitLc = unit.toLowerCase(),
 			unitFound = false;
@@ -80,13 +70,10 @@ window.app.dataprocessorEmployees = (function($) {
 		// rename just eFocus to Management Team
 		if (unitLc === 'efocus') {
 			unit = 'Management Team';
-			// emp.organisationalUnit = unit;
-
 		}
 
 		// check if unit includes an office name
 		// when not on its own, eFocus is always preceded by office name, so it will be cut off as well
-		// for (var i=0, len=app.data.offices.length; i<len; i++) {
 		for (let office of app.data.offices) {
 			office = office.city.toLowerCase();
 			var oIdx = unitLc.indexOf(' '+office);
@@ -127,8 +114,9 @@ window.app.dataprocessorEmployees = (function($) {
 
 
 	/**
-	* process an employee's age data: push all birthdays into array
-	* and start creating groups per age
+	* process an employee's age data
+	* - add properties: emp.ageRound and emp.ageExact
+	* - create array-like object with items for every rounded age
 	* @returns {undefined}
 	*/
 	var processAge = function(emp) {
@@ -136,12 +124,8 @@ window.app.dataprocessorEmployees = (function($) {
 		var age = app.util.getYearsUntilToday(emp.birthday),
 			ageRound = Math.floor(age);
 
-
 		emp.ageRound = ageRound;
 		emp.ageExact = age;
-
-		// addEmployeeToBucket(emp, 'age')
-
 
 		// keep track of min and max ages, and the sum
 		sgAgeMin = Math.min(ageRound, sgAgeMin);
@@ -164,8 +148,8 @@ window.app.dataprocessorEmployees = (function($) {
 	/**
 	* process the employee's start date
 	* put them into bucket for starting year
-	* calculate how long they've been working at Valtech
-	* calculate their age when they started
+	* (future:) calculate how long they've been working at Valtech
+	* (future:) calculate their age when they started
 	* @returns {undefined}
 	*/
 	var processStartDate = function(emp) {
@@ -283,23 +267,21 @@ window.app.dataprocessorEmployees = (function($) {
 	
 
 	/**
-	* handle an employee's discipline data
-	* - fill disciplines array
-	* - put level into separate field
+	* loop through all employees; collect info and do data-cleaning
+	* handle an employee's data
 	* @returns {undefined}
 	*/
 	var processDisciplinesEtc = function() {
 		// console.log(app.data.offices);
-		app.data.employees.forEach(function(emp) {
-			correctMDOffice(emp);
-			processDiscipline(emp);
-			processOrganisationalUnit(emp);
-			processAge(emp);
-			processStartDate(emp);
-		});
+		// app.data.employees.forEach(function(emp) {
+		// 	correctMDOffice(emp);
+		// 	cleanDiscipline(emp);// separate discipline and level;
+		// 	cleanOrganisationalUnit(emp);// remove office name, fix mt's unit
+		// 	processAge(emp);// add props for age
+		// 	processStartDate(emp);// add info to employeesStartedPerYear array
+		// });
 
-		sortAndCompleteStartYearArray();
-		// console.log(app.data.employeesStartedPerYear);
+		// sortAndCompleteStartYearArray();
 	};
 	
 
@@ -308,7 +290,7 @@ window.app.dataprocessorEmployees = (function($) {
 	* process age data we collected while looping through employees
 	* @returns {undefined}
 	*/
-	var processAgeData = function() {
+	var processOverallAgeData = function() {
 
 		// check if every age between min and max is present
 		var ageRange = sgAgeMax - sgAgeMin;
@@ -346,7 +328,7 @@ window.app.dataprocessorEmployees = (function($) {
 
 	/**
 	* add employee to bucket which specific prop
-	* @param {string} employee The current employee
+	* @param {object} employee The current employee
 	* @param {string} bucketName The property-name of the bucket
 	* @returns {undefined}
 	*/
@@ -377,15 +359,10 @@ window.app.dataprocessorEmployees = (function($) {
 
 
 	/**
-	* process data of employees (like fetching disciplines)
+	* fill all predefined buckets with employees
 	* @returns {undefined}
 	*/
-	var processEmployeeData = function() {
-		// process data we want to manipulate before use
-		processDisciplinesEtc();
-		processAgeData();
-
-		// now popuplate filterBuckets (buckets of employees with shared property)
+	const populateBuckets = function() {
 		for (var i=0, len=app.data.employees.length; i<len; i++) {
 			var employee = app.data.employees[i];
 
@@ -394,6 +371,31 @@ window.app.dataprocessorEmployees = (function($) {
 				addEmployeeToBucket(employee, bucketName);
 			}
 		}
+	};
+	
+
+
+	/**
+	* process data of employees (like fetching disciplines)
+	* @returns {undefined}
+	*/
+	var processEmployeeData = function() {
+		// process data we want to manipulate before use
+		// loop through all employees; collect info and do data-cleaning
+		app.data.employees.forEach(function(emp) {
+			correctMDOffice(emp);
+			cleanDiscipline(emp);// separate discipline and level;
+			cleanOrganisationalUnit(emp);// remove office name, fix mt's unit
+			processAge(emp);// add props for age; collect overall age info
+			processStartDate(emp);// add info to employeesStartedPerYear array
+		});
+
+		sortAndCompleteStartYearArray();
+
+		processOverallAgeData();
+
+		// now popuplate filterBuckets (buckets of employees with shared property)
+		populateBuckets();
 
 		sortAndCompleteAgeArray();// make sure age array has all consecutive values
 		sortTimeBuckets();
@@ -405,8 +407,6 @@ window.app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var init = function() {
-		// put original employee properties into array before we add all kind of helper props
-		initEmployeeProperties();
 		// process employee data (disciplines etc)
 		processEmployeeData();
 	};

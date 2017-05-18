@@ -37,7 +37,7 @@ window.app.agesNodesChart = (function($) {
 				addChartMargins: true
 			},
 			activeContextIds = ['nodes-chart-context--age'],
-			activeTakeawayIds = ['topic-takeaways--discipline'];
+			activeTakeawayIds = ['topic-takeaways--age'];
 
 		// call setNodePositions
 		app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
@@ -68,10 +68,7 @@ window.app.agesNodesChart = (function($) {
 			lowestAge = dataset[0].type,
 			showTicks5nPlus = 6 - lowestAge%5;
 
-		console.log('nodes-chart-age dataset[0]: ', dataset[0]);
-
 		chart = new UnitChart(dataset, chartSelector, options);
-		// app.unitChart.drawChart(dataset, chartSelector, options);
 		document.querySelector(chartSelector+' .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
 	

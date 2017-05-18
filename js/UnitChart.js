@@ -57,7 +57,6 @@ class UnitChart {
 	* @returns {undefined}
 	*/
 	sortAndFlattenDataset() {
-		console.log('sort and flatten');
 		let sortedDataset = this._sortDataset(this.originalDataset),
 			sortedFlattenedDataset = this.flattenDataset(sortedDataset);
 

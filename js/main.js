@@ -10,8 +10,7 @@ window.app = window.app || {};
 	// vars for datasets
 
 	app.data = {
-		employees: [],
-		employeeProps: [],
+		employees: [],// this is the array with all the employees. All reference to an employee points to an item in this array.
 		buckets: {
 			// use field name in .csv as property name
 			// use the same property-names we use in app.data.employees if possible
@@ -303,8 +302,6 @@ window.app = window.app || {};
 			lowestAge = dataset[0].type,
 			showTicks5nPlus = 6 - lowestAge%5;
 
-			console.log('drawageChart dataset[0]: ', dataset[0]);
-
 		app.unitChart.drawChart(dataset, chartSelector, options);
 		document.querySelector('#unit-chart--age .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
@@ -373,8 +370,6 @@ window.app = window.app || {};
 		app.disciplinesNodesChart.init();
 		app.agesNodesChart.init();
 
-		drawAgeChart();
-
 		app.filters.init();
 
 		app.lineChart.init();
@@ -392,8 +387,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			.defer(d3.csv, '../data/employees.csv')
-			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
+			// .defer(d3.csv, '../data/employees.csv')
+			.defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
 			.defer(d3.csv, '../data/offices-netherlands.csv')

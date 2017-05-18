@@ -77,9 +77,10 @@ window.app.nodes = (function($) {
 
 		setNodePositions(elements.nodes, getNodeGridPosition)
 			.on('click', function(d) {
-				if (elements.infoProp) {
-					console.log(d[elements.infoProp]);
-				}
+				// if (elements.infoProp) {
+				// 	console.log(d[elements.infoProp]);
+				// }
+				console.log(d, 'typeIdx:', d.typeIdx, 'employeeOfTypeIdx:', d.employeeOfTypeIdx);
 			});
 	};
 
