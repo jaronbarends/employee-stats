@@ -57,6 +57,8 @@ app.dataprocessorGeo = (function($) {
 					}
 				}
 
+				// checkLocationOverlap(employee);
+
 				if (!locationFound) {
 					app.data.placesWithoutGeoData.push(employee[employeeLocationProp]);
 				}
@@ -68,6 +70,50 @@ app.dataprocessorGeo = (function($) {
 			});
 
 		};
+
+
+		/**
+		* check if employee has overlapping location data
+		* i.e. does he live/work/was born in same location?
+		* @returns {undefined}
+		*/
+		const checkLocationOverlap = function() {
+			app.data.employees.forEach(function(emp) {
+				const office = emp.office.toLowerCase(),
+					hometown = emp.hometown.toLowerCase(),
+					birthplace = emp.birthplace.toLowerCase();
+				let hometownIsBirthplace = false,
+					hometownIsOffice = false,
+					birthplaceIsOffice = false,
+					hometownIsBirthplaceIsOffice = false;
+
+				if (hometown === birthplace) {
+					hometownIsBirthplace = true;
+					app.data.employeesResidenceIsBirthplace++;
+				}
+
+				if (hometown === office) {
+					hometownIsOffice = true;
+					app.data.employeesResidenceIsOffice++;
+				}
+
+				if (birthplace === office) {
+					birthplaceIsOffice = true;
+					app.data.employeesBirthplaceIsOffice++;
+				}
+
+				if (hometownIsBirthplace && hometownIsOffice) {
+					hometownIsBirthplaceIsOffice = true;
+					app.data.employeesResidenceIsBirthplaceIsOffice++;
+				}
+
+				emp.hometownIsBirthplace = hometownIsBirthplace;
+				emp.hometownIsOffice = hometownIsOffice;
+				emp.birthplaceIsOffice = birthplaceIsOffice;
+				emp.hometownIsBirthplaceIsOffice = hometownIsBirthplaceIsOffice;
+			});
+		};
+		
 		
 
 
@@ -125,14 +171,6 @@ app.dataprocessorGeo = (function($) {
 		};
 
 
-		/**
-		* process data about locations
-		* @returns {undefined}
-		*/
-		var processGeoData = function() {
-		};
-
-		
 
 		//-- Start debugging functions
 
@@ -172,6 +210,12 @@ app.dataprocessorGeo = (function($) {
 		processHometownData();
 		processBirthplaceData();
 		processOfficeData();
+		checkLocationOverlap();
+
+		console.log('res is birth:', app.data.employeesResidenceIsBirthplace);
+		console.log('res is off:', app.data.employeesResidenceIsOffice);
+		console.log('birth is off:', app.data.employeesBirthplaceIsOffice);
+		console.log('all:', app.data.employeesResidenceIsBirthplaceIsOffice);
 	};
 
 

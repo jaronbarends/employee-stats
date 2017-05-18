@@ -46,7 +46,6 @@ a {
 h1, .h1,
 h2, .h2,
 h3, .h3 {
-	margin: 0 0 1em;
 	font-weight: bold;
 }
 
@@ -59,11 +58,13 @@ h1,
 
 h2,
 .h2 {
+	margin-bottom: 1em;
 	color: $color-red;
 	font-size: 2.4rem;
 }
 
 h3 {
+	margin-bottom: 0.5em;
 	color: $color-red;
 }
 

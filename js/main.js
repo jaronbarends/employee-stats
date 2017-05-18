@@ -29,7 +29,11 @@ window.app = window.app || {};
 		ages: [],
 		averageAge: 0,
 		employeesPerYear: [],
-		employeesStartedPerYear: []
+		employeesStartedPerYear: [],
+		employeesResidenceIsBirthplace: 0,
+		employeesResidenceIsOffice: 0,
+		employeesBirthplaceIsOffice: 0,
+		employeesResidenceIsBirthplaceIsOffice: 0,
 	};
 
 	app.colors = {
@@ -387,8 +391,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			// .defer(d3.csv, '../data/employees.csv')
-			.defer(d3.csv, '../data/employees-excerpt-real-data.csv')
+			.defer(d3.csv, '../data/employees.csv')
+			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
 			.defer(d3.csv, '../data/offices-netherlands.csv')

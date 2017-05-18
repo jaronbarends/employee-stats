@@ -1,0 +1,5 @@
+the nodes are bound to the original dataset.
+when we re-assign a (changed) dataset to the nodes, the elements still keep their original classes, so these will be wrong.
+but also some nodes still end up at the wrong position in the unit-charts
+klik op age,
+klik op discipline. Nu staan nodes verkeerd. klik nog een keer op discipline. Nu staan ze goed. ???
