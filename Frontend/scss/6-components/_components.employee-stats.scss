@@ -11,44 +11,7 @@
 
 /*-- Start general styles --*/
 
-	.nodes-chart-container {
-		height: 80vh;
-		/* proportions of map of netherlands is 1:1.175 or 0.85:1 */
-		min-width: 900px;// otherwise it isn't wide enough for grid
-		min-height: 600px;
-	}
 
-	.chart-svg--nodes {
-		height: 100%;
-		width: 100%;
-		transform-style: preserve-3d;
-		transition: transform 1s;
-
-		.map-view & {
-			// transform: rotateX(45deg) rotateZ(10deg);
-		}
-	}
-
-	.nodes-chart {
-	}
-
-
-	.employee {
-		fill: $color-blue;
-		// transition: fill 0.5s, r 2s;
-		transition: fill 0.5s;
-
-		.nodes-chart--is-not-initiated & {
-			transition: none;
-		}
-
-		.employee-nodes-group & {
-			// stroke: $color-grey-xxdark;
-			// stroke-width: 2px;
-			stroke: white;
-			stroke-width: 1px;
-		}
-	}
 
 	.axis .domain {
 		stroke: transparent;

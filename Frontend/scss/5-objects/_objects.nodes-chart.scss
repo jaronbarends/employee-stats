@@ -1,3 +1,45 @@
+
+.nodes-chart-container {
+	position: relative;
+	height: 80vh;
+	/* proportions of map of netherlands is 1:1.175 or 0.85:1 */
+	min-width: 900px;// otherwise it isn't wide enough for grid
+	min-height: 600px;
+}
+
+.chart-svg--nodes {
+	height: 100%;
+	width: 100%;
+	transform-style: preserve-3d;
+	transition: transform 1s;
+
+	.map-view & {
+		// transform: rotateX(45deg) rotateZ(10deg);
+	}
+}
+
+.nodes-chart {
+}
+
+
+.employee {
+	fill: $color-blue;
+	// transition: fill 0.5s, r 2s;
+	transition: fill 0.5s;
+
+	.nodes-chart--is-not-initiated & {
+		transition: none;
+	}
+
+	.employee-nodes-group & {
+		// stroke: $color-grey-xxdark;
+		// stroke-width: 2px;
+		stroke: white;
+		stroke-width: 1px;
+	}
+}
+
+
 // for nodes-charts, we have one group of nodes
 // and a set of chart-contexts which contain the axes, values etc for different charts
 .nodes-chart-context {
@@ -17,5 +59,28 @@
 		opacity: 1;
 		transition: opacity $fade-in-duration $fade-in-delay ease-out;
 		pointer-events: initial;
+	}
+}
+
+.nodes-chart-context--unknown {
+	$unknown-area-radius: 15px;
+	position: absolute;
+	bottom: 50px;// same as default value for getGeoForce
+	right: 50px;// same as default value for getGeoForce
+	font-size: $font-size-tiny;
+	color: $color-grey-xlight;
+	height: 2*$unknown-area-radius;
+	border: 1px dotted $color-grey-light;
+	width: 2*$unknown-area-radius;
+	transform: translate(50%, 50%);
+	border-radius: 50%;
+
+	&::after {
+		position: absolute;
+		display: block;
+		content: 'unknown';
+		top: 0.5em;
+		right: 100%;
+		width: 5em;
 	}
 }

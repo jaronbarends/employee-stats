@@ -14,21 +14,38 @@
 
 	g {// add g-selector for specificity
 
+		.employee {
+			stroke: rgba(white, 0.7);
+		}
+
 		.employee--office-utrecht {
 			fill: $color-utrecht;
+			// stroke: $color-utrecht;
+			// fill: rgba($color-utrecht, 0.3);
+			// fill: $color-grey-xxlight;
 		}
 		
 		.employee--office-amsterdam {
 			fill: $color-amsterdam;
+			// stroke: $color-amsterdam;
+			// fill: rgba($color-amsterdam, 0.3);
+			// fill: $color-grey-xxlight;
 		}
 		
 		.employee--office-amersfoort {
 			fill: $color-amersfoort;
+			// stroke: $color-amersfoort;
+			// fill: rgba($color-amersfoort, 0.3);
+			// fill: $color-grey-xxlight;
 		}
 		
 		.employee--office-eindhoven {
 			fill: $color-eindhoven;
+			// stroke: $color-eindhoven;
+			// fill: rgba($color-eindhoven, 0.3);
+			// fill: $color-grey-xxlight;
 		}
+
 
 	}
 

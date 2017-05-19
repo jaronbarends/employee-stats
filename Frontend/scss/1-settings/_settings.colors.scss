@@ -26,6 +26,10 @@
 	$color-grey-light: nth($color-scale-grey, 5);
 	$color-grey-xlight: nth($color-scale-grey, 6);
 
+	// for provinces, grey xxlight is too light; xlight too dark;
+	// create this value just for that purpose
+	$grey-between-xlight-and-xxlight: #dcdcdd;
+
 $color-white: #fff;
 
 // map colors to defined colors

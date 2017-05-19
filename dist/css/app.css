@@ -505,6 +505,28 @@ h3 {
 .takeaway-list {
   margin-bottom: 2em; }
 
+.nodes-chart-container {
+  position: relative;
+  height: 80vh;
+  /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
+  min-width: 900px;
+  min-height: 600px; }
+
+.chart-svg--nodes {
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s; }
+
+.employee {
+  fill: #00bdfa;
+  transition: fill 0.5s; }
+  .nodes-chart--is-not-initiated .employee {
+    transition: none; }
+  .employee-nodes-group .employee {
+    stroke: white;
+    stroke-width: 1px; }
+
 .nodes-chart-context {
   transition: opacity 0.9s 0.2s ease-out; }
   .nodes-chart-context--is-inactive {
@@ -515,8 +537,27 @@ h3 {
     transition: opacity 0.9s 0.2s ease-out;
     pointer-events: initial; }
 
+.nodes-chart-context--unknown {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  font-size: 1.2rem;
+  color: #cbcccc;
+  height: 30px;
+  border: 1px dotted #ababac;
+  width: 30px;
+  transform: translate(50%, 50%);
+  border-radius: 50%; }
+  .nodes-chart-context--unknown::after {
+    position: absolute;
+    display: block;
+    content: 'unknown';
+    top: 0.5em;
+    right: 100%;
+    width: 5em; }
+
 .axis g {
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #363636; }
 
 .axis--y .tick text {
@@ -536,7 +577,7 @@ h3 {
   display: none; }
 
 .unit-chart .count-label {
-  font-size: 12px;
+  font-size: 1.2rem;
   fill: #8b8b8c;
   transition: opacity 1s 1s; }
 
@@ -573,27 +614,6 @@ button {
   margin-right: 1em; }
 
 /*-- Start general styles --*/
-.nodes-chart-container {
-  height: 80vh;
-  /* proportions of map of netherlands is 1:1.175 or 0.85:1 */
-  min-width: 900px;
-  min-height: 600px; }
-
-.chart-svg--nodes {
-  height: 100%;
-  width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 1s; }
-
-.employee {
-  fill: #00bdfa;
-  transition: fill 0.5s; }
-  .nodes-chart--is-not-initiated .employee {
-    transition: none; }
-  .employee-nodes-group .employee {
-    stroke: white;
-    stroke-width: 1px; }
-
 .axis .domain {
   stroke: transparent; }
 
@@ -644,8 +664,8 @@ button {
   opacity: 1; }
 
 .nodes-chart-context--map .province {
+  fill: #dcdcdd;
   fill: #ecedee;
-  fill: #ddd;
   stroke: #fff;
   stroke-width: 0.5; }
 
@@ -875,6 +895,9 @@ button {
 .highlight-gender .employee--male,
 .highlight-gender .employee--man {
   fill: #00bdfa; }
+
+.highlight-office g .employee {
+  stroke: rgba(255, 255, 255, 0.7); }
 
 .highlight-office g .employee--office-utrecht {
   fill: #d60042; }

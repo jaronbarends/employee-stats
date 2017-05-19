@@ -209,8 +209,7 @@ window.app.nodes = (function($) {
 	* @returns {undefined}
 	*/
 	const showActiveContexts = function(activeContextIds = []) {
-		const svg = document.getElementById('nodes-chart-svg'),
-			allElements = svg.querySelectorAll('.nodes-chart-context'),
+		const allElements = document.querySelectorAll('.nodes-chart-context'),
 			activeClass = 'nodes-chart-context--is-active',
 			inactiveClass = 'nodes-chart-context--is-inactive';
 

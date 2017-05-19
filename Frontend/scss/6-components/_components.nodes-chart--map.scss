@@ -5,8 +5,8 @@
 	}
 
 	.province {
+		fill: $grey-between-xlight-and-xxlight;// grey xxlight is too light; xlight too dark; this one 
 		fill: $color-grey-xxlight;
-		fill: #ddd;
 		stroke: #fff;
 		stroke-width: 0.5;
 	}
@@ -43,24 +43,5 @@
 		fill: rgba($color-eindhoven, $office-opacity);
 	}
 
-
-	// .map-view {
-	// 		.employee {
-	// 			stroke-width: 1px;
-	// 			stroke: white;
-	// 			// fill: $color-grey-xxdark;
-	// 		}
-
-
-
-	//-- Start employee settings
-
-	&.nodes-chart-context--is-active ~ .employee-nodes-group {
-		.employee {
-			// stroke-width: 1px;
-			// stroke: white;
-			// fill: $color-grey-xxdark;
-		}
-	}
 
 }

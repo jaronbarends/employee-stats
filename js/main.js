@@ -67,11 +67,13 @@ window.app = window.app || {};
 		app.nodes.setNodeSpacing(0);
 		
 		var $tgt = $(e.currentTarget),
-			coordsProp = $tgt.attr('data-geo-sort');
+			coordsProp = $tgt.attr('data-geo-sort'),
+			defaultX = app.nodes.elements.nodesSvgWidth -50,
+			defaultY = app.nodes.elements.nodesSvgHeight -50;
 		app.nodes.elements.infoProp = $tgt.attr('data-info-property');
 
-		app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, 120)));
-		app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, 20)));
+		app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, defaultX)));
+		app.simulation.changeForce('forceY', app.simulation.yForce(app.simulation.getGeoForce('y', coordsProp, defaultY)));
 		app.simulation.setDefaultCollisionForce();
 
 
@@ -94,6 +96,7 @@ window.app = window.app || {};
 		}
 
 		if (coordsProp === 'birthplaceCoords') {
+			activeContextIds.push('nodes-chart-context--unknown');
 			activeTakeawayIds = ['topic-takeaways--birthplace'];
 		}
 
