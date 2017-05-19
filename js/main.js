@@ -32,6 +32,7 @@ window.app = window.app || {};
 		employeesStartedPerYear: [],
 		employeesResidenceIsBirthplace: 0,
 		employeesResidenceIsOffice: 0,
+		employeesResidenceIsOtherOffice: 0,
 		employeesBirthplaceIsOffice: 0,
 		employeesResidenceIsBirthplaceIsOffice: 0,
 	};

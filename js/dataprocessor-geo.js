@@ -57,8 +57,6 @@ app.dataprocessorGeo = (function($) {
 					}
 				}
 
-				// checkLocationOverlap(employee);
-
 				if (!locationFound) {
 					app.data.placesWithoutGeoData.push(employee[employeeLocationProp]);
 				}
@@ -78,6 +76,11 @@ app.dataprocessorGeo = (function($) {
 		* @returns {undefined}
 		*/
 		const checkLocationOverlap = function() {
+			let officeNames = [];
+			app.data.offices.forEach(function(officeObj) {
+				officeNames.push(officeObj.city.toLowerCase());
+			});
+
 			app.data.employees.forEach(function(emp) {
 				const office = emp.office.toLowerCase(),
 					hometown = emp.hometown.toLowerCase(),
@@ -95,6 +98,8 @@ app.dataprocessorGeo = (function($) {
 				if (hometown === office) {
 					hometownIsOffice = true;
 					app.data.employeesResidenceIsOffice++;
+				} else if (officeNames.indexOf(hometown) > -1) {
+					app.data.employeesResidenceIsOtherOffice++;
 				}
 
 				if (birthplace === office) {
@@ -112,8 +117,13 @@ app.dataprocessorGeo = (function($) {
 				emp.birthplaceIsOffice = birthplaceIsOffice;
 				emp.hometownIsBirthplaceIsOffice = hometownIsBirthplaceIsOffice;
 			});
+
+			$('#takeaway-work-in-residence').text(app.data.employeesBirthplaceIsOffice);
+			$('#takeaway-residence-has-other-office').text(app.data.employeesResidenceIsOtherOffice);
+			$('#takeaway-live-in-birthplace').text(app.data.employeesResidenceIsBirthplace);
+			$('#takeaway-work-in-birthplace').text(app.data.employeesBirthplaceIsOffice);
+			$('#takeaway-live-work-in-birthplace').text(app.data.employeesResidenceIsBirthplaceIsOffice);
 		};
-		
 		
 
 
@@ -211,11 +221,6 @@ app.dataprocessorGeo = (function($) {
 		processBirthplaceData();
 		processOfficeData();
 		checkLocationOverlap();
-
-		console.log('res is birth:', app.data.employeesResidenceIsBirthplace);
-		console.log('res is off:', app.data.employeesResidenceIsOffice);
-		console.log('birth is off:', app.data.employeesBirthplaceIsOffice);
-		console.log('all:', app.data.employeesResidenceIsBirthplaceIsOffice);
 	};
 
 
