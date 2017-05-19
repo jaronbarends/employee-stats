@@ -105,8 +105,6 @@ class UnitChart {
 					typeIdx: i,
 					employeeOfTypeIdx: j
 				};
-				emp.typeIdx = i;
-				emp.employeeOfTypeIdx = j;
 				flatSet.push(emp);
 			}
 		}
