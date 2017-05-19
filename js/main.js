@@ -87,6 +87,7 @@ window.app = window.app || {};
 		}
 
 		if (coordsProp === 'hometownCoords') {
+			$sgBody.addClass('highlight-office');
 			activeContextIds.push('nodes-chart-context--city-lines');
 			activeTakeawayIds = ['topic-takeaways--hometown'];
 			setTimeout(addLines, 2000);
@@ -392,8 +393,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			.defer(d3.csv, '../data/employees.csv')
-			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
+			// .defer(d3.csv, '../data/employees.csv')
+			.defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
 			.defer(d3.csv, '../data/offices-netherlands.csv')

@@ -34,17 +34,18 @@ window.app.disciplinesNodesChart = (function($) {
 			nodeSize = 4,
 			optionsForPositionFunction = {
 				ths: unitChartObject,
-				addChartMargins: true
+				addChartMargins: true,
+				id: 'discipline'
 			},
 			activeContextIds = ['nodes-chart-context--discipline'],
 			activeTakeawayIds = ['topic-takeaways--discipline'];
 
+		// do context stuff
+		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
+
 		// call setNodePositions
 		app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
 			.attr('r', nodeSize);
-
-		// do context stuff
-		app.nodes.changeNodesChartTopic(selection, dataset, activeContextIds, activeTakeawayIds);
 
 	};
 	
@@ -55,6 +56,7 @@ window.app.disciplinesNodesChart = (function($) {
 	*/
 	const init = function() {
 		let dataset = app.data.buckets.discipline.dataset,
+			unitChartObjId = 'discipline',// will be used to identify this unit chart on employee object
 			chartSelector = '#nodes-chart-context--discipline',  
 			options = {
 				sortFunction: app.util.sortBucketByEmployeeCount,
@@ -66,7 +68,7 @@ window.app.disciplinesNodesChart = (function($) {
 				}
 			};
 
-		chart = new UnitChart(dataset, chartSelector, options);
+		chart = new UnitChart(dataset, chartSelector, unitChartObjId, options);
 	};
 	
 

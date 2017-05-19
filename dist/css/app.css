@@ -878,6 +878,14 @@ button {
 .highlight-gender .employee--man {
   fill: #00bdfa; }
 
+.employee--discipline-directiesecretaresse {
+  stroke: green !important;
+  stroke-width: 2 !important; }
+
+.employee--discipline-academy-coördinator {
+  stroke: black !important;
+  stroke-width: 2 !important; }
+
 .highlight-office g .employee--office-utrecht {
   fill: #d60042; }
 

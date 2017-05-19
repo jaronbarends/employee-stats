@@ -240,7 +240,7 @@ window.app.nodes = (function($) {
 	*/
 	const changeNodesChartTopic = function(selection, dataset, activeContextIds, activeTakeawayIds) {
 		// set class nodes-chart-context--is-active on active context(s)
-		selection.data(dataset);
+		// selection.data(dataset);// we should NOT rebind data: we want every node to remain representing the same employee!
 		showActiveContexts(activeContextIds);
 		showActiveTakeaways(activeTakeawayIds);
 	};

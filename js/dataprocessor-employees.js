@@ -182,6 +182,16 @@ window.app.dataprocessorEmployees = (function($) {
 
 
 	/**
+	* add object that will hold data for all unitCharts
+	* @returns {undefined}
+	*/
+	const addUnitChartDataObject = function(emp) {
+		emp.unitChartData = {};
+	};
+	
+
+
+	/**
 	* complete the age array - make sure we have an object for every year
 	* @returns {undefined}
 	*/
@@ -262,26 +272,6 @@ window.app.dataprocessorEmployees = (function($) {
 		}
 
 		app.data.employeesStartedPerYear = newArr;
-	};
-	
-	
-
-	/**
-	* loop through all employees; collect info and do data-cleaning
-	* handle an employee's data
-	* @returns {undefined}
-	*/
-	var processDisciplinesEtc = function() {
-		// console.log(app.data.offices);
-		// app.data.employees.forEach(function(emp) {
-		// 	correctMDOffice(emp);
-		// 	cleanDiscipline(emp);// separate discipline and level;
-		// 	cleanOrganisationalUnit(emp);// remove office name, fix mt's unit
-		// 	processAge(emp);// add props for age
-		// 	processStartDate(emp);// add info to employeesStartedPerYear array
-		// });
-
-		// sortAndCompleteStartYearArray();
 	};
 	
 
@@ -388,6 +378,7 @@ window.app.dataprocessorEmployees = (function($) {
 			cleanOrganisationalUnit(emp);// remove office name, fix mt's unit
 			processAge(emp);// add props for age; collect overall age info
 			processStartDate(emp);// add info to employeesStartedPerYear array
+			addUnitChartDataObject(emp);
 		});
 
 		sortAndCompleteStartYearArray();

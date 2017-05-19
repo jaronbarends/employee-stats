@@ -34,10 +34,13 @@ window.app.agesNodesChart = (function($) {
 			nodeSize = 4,
 			optionsForPositionFunction = {
 				ths: unitChartObject,
-				addChartMargins: true
+				addChartMargins: true,
+				id: 'age'
 			},
 			activeContextIds = ['nodes-chart-context--age'],
 			activeTakeawayIds = ['topic-takeaways--age'];
+
+		// dataset = app.
 
 		// call setNodePositions
 		app.nodes.setNodePositions(selection, positionFunction, duration, optionsForPositionFunction)
@@ -55,6 +58,7 @@ window.app.agesNodesChart = (function($) {
 	*/
 	const init = function() {
 		let dataset = app.data.buckets.ageRound.dataset,
+			unitChartObjId = 'age',// will be used to identify this unit chart on employee object
 			chartSelector = '#nodes-chart-context--age',  
 			options = {
 				isHorizontal: false,
@@ -68,7 +72,7 @@ window.app.agesNodesChart = (function($) {
 			lowestAge = dataset[0].type,
 			showTicks5nPlus = 6 - lowestAge%5;
 
-		chart = new UnitChart(dataset, chartSelector, options);
+		chart = new UnitChart(dataset, chartSelector, unitChartObjId, options);
 		document.querySelector(chartSelector+' .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
 	};
 	

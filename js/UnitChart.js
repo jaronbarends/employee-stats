@@ -7,7 +7,7 @@ class UnitChart {
 	* @param {object} options {originalDataset:array, chartSelector:string[, sortFunction:function]}
 	* @returns {undefined}
 	*/
-	constructor(dataset, chartSelector, options) {
+	constructor(dataset, chartSelector, id, options) {
 		let defaults = {
 			// sortFunction: app.util.sortBucketByEmployeeCount,
 			sortFunction: null,// assume datasets are usually already in right order
@@ -24,8 +24,10 @@ class UnitChart {
 			showCountLabels: true
 		};
 
+
 		// setup stuff
 		this.settings = Object.assign({}, defaults, options);
+		this.id = id;
 		this.originalDataset = dataset;
 		this.dataset = this.sortAndFlattenDataset();
 		// this.originalDataset = this._sortDataset(dataset);
@@ -96,7 +98,13 @@ class UnitChart {
 		for (var i=0, len=originalDataset.length; i<len; i++) {
 			var employees = originalDataset[i].employees;
 			for (var j=0, len2=employees.length; j<len2; j++) {
-				var emp = employees[j];
+				let emp = employees[j],
+					ucObj = emp.unitChartData;
+
+				ucObj[this.id] = {
+					typeIdx: i,
+					employeeOfTypeIdx: j
+				};
 				emp.typeIdx = i;
 				emp.employeeOfTypeIdx = j;
 				flatSet.push(emp);
@@ -282,12 +290,14 @@ class UnitChart {
 		let settings = Object.assign({}, defaults, options),
 			ths = settings.ths;
 
+		let ucData = d.unitChartData[settings.id];
+
 		if (ths.settings.isHorizontal) {
-			x = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
-			y = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+			x = ths.employeeCountScale(ucData.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+			y = ths.typeScale(ucData.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
 		} else {
-			x = ths.typeScale(d.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
-			y = ths.employeeCountScale(d.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+			x = ths.typeScale(ucData.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+			y = ths.employeeCountScale(ucData.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
 		}
 
 		if (settings.addChartMargins) {
@@ -312,12 +322,16 @@ class UnitChart {
 			cxOrCyForType,
 			cxOrCyForEmployeeCount;
 
+		let options = {
+			id: this.id
+		};
+
 		eachCircle.attr('cx', (d, i) => {
 				// yay! arrow function's this is this class's this :)
-				return this.getNodePosition(d)[0];
+				return this.getNodePosition(d, i, options)[0];
 			})
 			.attr('cy', (d, i) => {
-				return this.getNodePosition(d)[1];
+				return this.getNodePosition(d, i, options)[1];
 			});
 	};
 
