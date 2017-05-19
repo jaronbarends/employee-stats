@@ -1,0 +1,16 @@
+.topic-takeaways--age {
+	margin: 0 auto;
+	text-align: center;
+
+	.age-years {
+		float: left;
+		width: 50%;
+		margin-right: 0.5em;
+		text-align: right;
+	}
+
+	.age-months {
+		overflow: hidden;
+		text-align: left;
+	}
+}

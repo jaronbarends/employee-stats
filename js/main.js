@@ -255,10 +255,11 @@ window.app = window.app || {};
 			var avgYears = Math.floor(app.data.averageAge),
 				avgMonths = Math.floor(12 * (app.data.averageAge % avgYears));
 
-			$('#age-info').find('.age-years')
+			$('#topic-takeaways--age').find('.age-years__number')
 				.text(avgYears)
 				.end()
-				.find('.age-months').text(avgMonths);
+				.find('.age-months__number')
+				.text(avgMonths);
 		};
 
 

@@ -888,6 +888,18 @@ button {
   height: 6px; }
 
 /*-- End employee-icon --*/
+.topic-takeaways--age {
+  margin: 0 auto;
+  text-align: center; }
+  .topic-takeaways--age .age-years {
+    float: left;
+    width: 50%;
+    margin-right: 0.5em;
+    text-align: right; }
+  .topic-takeaways--age .age-months {
+    overflow: hidden;
+    text-align: left; }
+
 .highlight-gender .employee--female,
 .highlight-gender .employee--vrouw {
   fill: rgba(214, 0, 66, 0.4); }
