@@ -891,14 +891,24 @@ button {
 .topic-takeaways--age {
   margin: 0 auto;
   text-align: center; }
+  .topic-takeaways--age .age-years,
+  .topic-takeaways--age .age-months {
+    color: #00bdfa; }
+    .topic-takeaways--age .age-years__number,
+    .topic-takeaways--age .age-months__number {
+      color: inherit;
+      font-weight: inherit; }
   .topic-takeaways--age .age-years {
     float: left;
     width: 50%;
     margin-right: 0.5em;
-    text-align: right; }
+    text-align: right;
+    font-weight: bold; }
   .topic-takeaways--age .age-months {
     overflow: hidden;
-    text-align: left; }
+    text-align: left;
+    font-weight: normal;
+    color: #ababac; }
 
 .highlight-gender .employee--female,
 .highlight-gender .employee--vrouw {

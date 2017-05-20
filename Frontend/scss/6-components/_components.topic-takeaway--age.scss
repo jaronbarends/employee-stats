@@ -2,15 +2,28 @@
 	margin: 0 auto;
 	text-align: center;
 
+	.age-years,
+	.age-months {
+		color: $color-blue;
+
+		&__number {
+			color: inherit;
+			font-weight: inherit;
+		}
+	}
+
 	.age-years {
 		float: left;
 		width: 50%;
 		margin-right: 0.5em;
 		text-align: right;
+		font-weight: bold;
 	}
 
 	.age-months {
 		overflow: hidden;
 		text-align: left;
+		font-weight: normal;
+		color: $color-grey-light;
 	}
 }
