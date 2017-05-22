@@ -69,7 +69,7 @@ window.app = window.app || {};
 		var $tgt = $(e.currentTarget),
 			coordsProp = $tgt.attr('data-geo-sort'),
 			defaultX = app.nodes.elements.nodesSvgWidth -50,
-			defaultY = app.nodes.elements.nodesSvgHeight -50;
+			defaultY = 50;
 		app.nodes.elements.infoProp = $tgt.attr('data-info-property');
 
 		app.simulation.changeForce('forceX', app.simulation.xForce(app.simulation.getGeoForce('x', coordsProp, defaultX)));

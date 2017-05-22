@@ -539,21 +539,22 @@ h3 {
 
 .nodes-chart-context--unknown {
   position: absolute;
-  bottom: 50px;
+  top: 50px;
   right: 50px;
   font-size: 1.2rem;
   color: #cbcccc;
   height: 30px;
   border: 1px dotted #ababac;
   width: 30px;
-  transform: translate(50%, 50%);
+  transform: translate(50%, -50%);
   border-radius: 50%; }
   .nodes-chart-context--unknown::after {
     position: absolute;
     display: block;
     content: 'unknown';
-    top: 0.5em;
-    right: 100%;
+    top: 100%;
+    left: 0;
+    margin: 0.5em 0 0 -1em;
     width: 5em; }
 
 .axis g {

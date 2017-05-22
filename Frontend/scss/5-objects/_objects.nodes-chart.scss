@@ -65,22 +65,23 @@
 .nodes-chart-context--unknown {
 	$unknown-area-radius: 15px;
 	position: absolute;
-	bottom: 50px;// same as default value for getGeoForce
+	top: 50px;// same as default value for getGeoForce
 	right: 50px;// same as default value for getGeoForce
 	font-size: $font-size-tiny;
 	color: $color-grey-xlight;
 	height: 2*$unknown-area-radius;
 	border: 1px dotted $color-grey-light;
 	width: 2*$unknown-area-radius;
-	transform: translate(50%, 50%);
+	transform: translate(50%, -50%);
 	border-radius: 50%;
 
 	&::after {
 		position: absolute;
 		display: block;
 		content: 'unknown';
-		top: 0.5em;
-		right: 100%;
+		top: 100%;
+		left: 0;
+		margin: 0.5em 0 0 -1em;
 		width: 5em;
 	}
 }
