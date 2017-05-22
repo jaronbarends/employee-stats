@@ -92,7 +92,7 @@ window.app = window.app || {};
 			$sgBody.addClass('highlight-office');
 			activeContextIds.push('nodes-chart-context--city-lines');
 			activeTakeawayIds = ['topic-takeaways--hometown'];
-			setTimeout(addLines, 2000);
+			setTimeout(addResidenceLines, 2000);
 		}
 
 		if (coordsProp === 'birthplaceCoords') {
@@ -157,31 +157,34 @@ window.app = window.app || {};
 	* add lines between hometowns and offices
 	* @returns {undefined}
 	*/
-	const addLines = function(placesChartSvg) {
-		placesChartSvg = app.nodes.elements.nodesSvg;
-		let svgGroup = placesChartSvg.select('#nodes-chart-context--city-lines'),
-			lines = svgGroup.selectAll('.line')
-				.data(app.data.employees)
-				.enter()
-				.append('line')
-				.attr('class', function(d) {
-					let clss = 'line--office line--office-'+d.office.toLowerCase();
-					return clss;
-				})
-				.attr('x1', function(d) {
-					return d.officeCoords.x;
-				})
-				.attr('y1', function(d) {
-					return d.officeCoords.y;
-				})
-				.attr('x2', function(d) {
-					return d.hometownCoords.x;
-				})
-				.attr('y2', function(d) {
-					return d.hometownCoords.y;
-				});
-				// .attr('stroke', 'rgba(0,0,0,0.3')
-				// .attr('stroke-width', 1);
+	const addResidenceLines = function(placesChartSvg) {
+		let linesGroup = document.getElementById('nodes-chart-context--city-lines');
+		if (!linesGroup.firstChild) {
+			// somehow using enter() does not prevent repeated adding of lines,
+			// so check if the group contains lines already
+			placesChartSvg = app.nodes.elements.nodesSvg;
+			let svgGroup = placesChartSvg.select('#nodes-chart-context--city-lines'),
+				lines = svgGroup.selectAll('.line')
+					.data(app.data.employees)
+					.enter()
+					.append('line')
+					.attr('class', function(d) {
+						let clss = 'line--office line--office-'+d.office.toLowerCase();
+						return clss;
+					})
+					.attr('x1', function(d) {
+						return d.officeCoords.x;
+					})
+					.attr('y1', function(d) {
+						return d.officeCoords.y;
+					})
+					.attr('x2', function(d) {
+						return d.hometownCoords.x;
+					})
+					.attr('y2', function(d) {
+						return d.hometownCoords.y;
+					});
+		}
 	};
 
 	
@@ -397,8 +400,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			.defer(d3.csv, '../data/employees.csv')
-			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
+			// .defer(d3.csv, '../data/employees.csv')
+			.defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
 			.defer(d3.csv, '../data/offices-netherlands.csv')
