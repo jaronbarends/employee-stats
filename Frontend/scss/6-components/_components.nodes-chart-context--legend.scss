@@ -1,5 +1,6 @@
 .nodes-chart-context--legend {
 	font-size: $font-size-tiny;
+	color: $color-grey-xlight;
 
 	.highlight-office & {
 		@extend .nodes-chart-context--is-active;
@@ -8,6 +9,7 @@
 
 .nodes-legend-list {
 	display: inline-block;
+	color: $color-grey-dark;
 }
 
 
