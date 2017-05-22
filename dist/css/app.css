@@ -529,10 +529,10 @@ h3 {
 
 .nodes-chart-context {
   transition: opacity 0.9s 0.2s ease-out; }
-  .nodes-chart-context--is-inactive {
+  .nodes-chart-context--is-inactive, .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--legend {
     opacity: 0;
     pointer-events: none; }
-  .nodes-chart-context--is-active {
+  .nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--legend {
     opacity: 1;
     transition: opacity 0.9s 0.2s ease-out;
     pointer-events: initial; }
@@ -582,7 +582,7 @@ h3 {
   fill: #8b8b8c;
   transition: opacity 1s 1s; }
 
-.unit-chart.nodes-chart-context--is-inactive .count-label {
+.unit-chart.nodes-chart-context--is-inactive .count-label, .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--is-active .count-label, .highlight-office .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--legend .count-label {
   opacity: 0; }
 
 input,
@@ -709,6 +709,29 @@ button {
 
 .nodes-chart-context--city-lines .line--office-eindhoven {
   stroke: #00bdfa; }
+
+.nodes-chart-context--legend {
+  font-size: 1.2rem; }
+
+.nodes-legend-list {
+  display: inline-block; }
+
+.legend-entry-employee {
+  display: inline-block;
+  margin: -0.1em 0.3em 0.1em 1em;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  background: #fecc00; }
+  .legend-entry-employee--amsterdam {
+    background: #363636; }
+  .legend-entry-employee--eindhoven {
+    background: #00bdfa; }
+  .legend-entry-employee--utrecht {
+    background: #d60042; }
+
+.legend-definition-employee {
+  display: inline-block; }
 
 .pie-chart {
   width: 100px;

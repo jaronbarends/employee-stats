@@ -1,5 +1,13 @@
 .nodes-chart-context--city-lines {
 
+	&.nodes-chart-context--is-active {
+		@extend .nodes-chart-context--is-inactive;
+
+		.highlight-office & {
+			@extend .nodes-chart-context--is-active;
+		}	
+	}
+
 	.line--office {
 		stroke-width: 1;
 		opacity: 0.5;
