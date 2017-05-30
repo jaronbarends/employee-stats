@@ -129,12 +129,16 @@ window.app.nodes = (function($) {
 	* reveal all employee nodes
 	* @returns {undefined}
 	*/
-	const revealNodes = function(firstDelay = 400) {
+	const revealNodes = function(firstDelay = 400, devMode = false) {
 		let $body = $('body'),
 			numEmployees = app.data.employees.length,
 			timeoutsAndDelays = app.util.getTimeoutsAndDelays(numEmployees, firstDelay),
 			delays = timeoutsAndDelays.cumulativeDelays,
 			animationDuration = 100;
+
+		if (devMode) {
+			animationDuration = 1;	
+		}
 
 		elements.nodes
 			.transition()
@@ -144,6 +148,9 @@ window.app.nodes = (function($) {
 			.ease(d3.easeBackOut)
 			.duration(animationDuration)
 			.delay(function(d, i) {
+				if (devMode) {
+					return 0;
+				}
 				return delays[i];
 			})
 			.attr('r', elements.nodeSize);
