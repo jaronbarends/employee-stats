@@ -57,7 +57,8 @@ window.app.disciplinesNodesChart = (function($) {
 	const init = function() {
 		let dataset = app.data.buckets.discipline.dataset,
 			unitChartObjId = 'discipline',// will be used to identify this unit chart on employee object
-			chartSelector = '#nodes-chart-context--discipline',  
+			chartSelector = '#nodes-chart-context--discipline',
+			sortProps = [{name: 'length', order: 'desc'}, {name: 'discipline'}],
 			options = {
 				sortFunction: app.util.sortBucketByEmployeeCount,
 				margin: {
@@ -66,7 +67,7 @@ window.app.disciplinesNodesChart = (function($) {
 					bottom: 30,
 					left: 200
 				}
-			};
+			}; 
 
 		chart = new UnitChart(dataset, chartSelector, unitChartObjId, options);
 	};

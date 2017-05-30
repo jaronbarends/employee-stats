@@ -78,13 +78,39 @@ window.app.util = (function($) {
 	};
 
 
+
 	/**
 	* sorting function to sort the types in a bucket array by the number of employees
 	* this function will be passed to the bucket array's sort function
 	* @returns {number} a number which determines the sorting behavior
 	*/
 	var sortBucketByEmployeeCount = function(a, b) {
-		return b.employees.length - a.employees.length;
+		let result = b.employees.length - a.employees.length;
+
+		// when count is equal, sort by type
+		if (result === 0 && a.type && b.type) {
+			if (a.type > b.type) {
+				result = 1;
+			} else {
+				result = -1;
+			}
+		}
+		return result;
+	};
+
+
+
+	/**
+	* get sorting order (ascending or descending)
+	* @returns {undefined}
+	*/
+	const getOrder = function(orderStr) {
+		let order = 1;// ascending
+		if (orderStr === 'desc') {
+			order = -1;
+		}
+
+		return order;
 	};
 	
 
@@ -152,13 +178,13 @@ window.app.util = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		removeBodyClasses,
 		convertToClassName,
-		randomizeArray,
-		sortBucketByEmployeeCount,
-		getYearsUntilToday,
 		getEmployeeClasses,
-		getTimeoutsAndDelays
+		getTimeoutsAndDelays,
+		getYearsUntilToday,
+		randomizeArray,
+		removeBodyClasses,
+		sortBucketByEmployeeCount,
 	};
 
 	return publicMethodsAndProps;

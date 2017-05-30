@@ -9,7 +9,6 @@ class UnitChart {
 	*/
 	constructor(dataset, chartSelector, id, options) {
 		let defaults = {
-			// sortFunction: app.util.sortBucketByEmployeeCount,
 			sortFunction: null,// assume datasets are usually already in right order
 			margin: {
 				top: 20,
