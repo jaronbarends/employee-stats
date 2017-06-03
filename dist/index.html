@@ -309,6 +309,36 @@
 		<!-- End topic growth -->
 
 
+		<!-- Start gender-comparisons -->
+
+			<div class="topic-section">
+				<div class="topic-intro">
+					<h2>Compare metrics per gender</h2>
+				</div>
+				
+				<div class="topic-data">
+				
+					<div class="topic-takeaways-area">
+						<form id="gender-charts-form" class="filter-charts-form" data-charts-container-id="gender-charts-container">
+							<label for="gender-filter--bucket">Show gender distribution for every&hellip;</label>
+							<select id="gender-filter--bucket" class="filter--bucket"></select>
+							<label for="gender-filter--properties">Show&hellip;</label>
+							<select id="gender-filter--properties" class="filter--properties"></select>
+							<button type="submit">Show!</button>
+						</form>
+					</div><!-- /.topic-takeaways-area -->
+				
+					<div class="topic-charts">
+				
+						<div id="gender-charts-container" class="filter-charts-container">
+						</div>
+					</div>
+				</div><!-- /.topic-data -->
+			</div><!-- /.topic-section -->
+
+		<!-- End gender-comparisons -->
+
+
 		<!-- Start comparisons -->
 
 			<div class="topic-section">
@@ -319,11 +349,11 @@
 				<div class="topic-data">
 				
 					<div class="topic-takeaways-area">
-						<form id="filter-charts-form" class="filter-charts-form">
+						<form id="filter-charts-form" class="filter-charts-form" data-charts-container-id="filter-charts-container">
 							<label for="bucket-filter">For every&hellip;</label>
-							<select id="bucket-filter"></select>
+							<select id="bucket-filter" class="filter--bucket"></select>
 							<label for="employee-properties">Show&hellip;</label>
-							<select id="employee-properties"></select>
+							<select id="employee-properties" class="filter--properties"></select>
 							<button type="submit">Show!</button>
 						</form>
 					</div><!-- /.topic-takeaways-area -->
@@ -388,6 +418,7 @@
 		<script src="../js/unit-chart.js"></script>
 		<script src="../js/UnitChart.js"></script>
 		<script src="../js/filters.js"></script>
+		<script src="../js/gender-filters.js"></script>
 		<script src="../js/main.js"></script>
 	
 	<!-- End custom scripts -->

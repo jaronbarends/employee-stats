@@ -6,6 +6,7 @@
 
 	position: absolute;
 	margin: 0 0 2em;
+	max-width: calc(100% - 4em);// takeaways-area has padding of 2em
 	transition: opacity $fade-out-duration $fade-out-delay ease-out;
 
 	&--is-inactive {

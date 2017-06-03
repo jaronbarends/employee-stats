@@ -28,9 +28,8 @@ window.app.filters = (function($) {
 		* @param {object} options {chartType:like pieChart, chartIdx, extent:[]}
 		* @returns {undefined}
 		*/
-		var createFilterChart = function(dataset, options) {
-			var $container = $('#filter-charts-container'),
-				containerId = 'chart-box-' + options.chartIdx,
+		var createFilterChart = function(dataset, options, $container) {
+			var containerId = 'chart-box-' + options.chartIdx,
 				html = '<div id="' + containerId +'" class="chart-box chart-box--' + options.chartType + '"></div>';
 
 			$container.append(html);
@@ -111,12 +110,13 @@ window.app.filters = (function($) {
 		* @param {string} propName The property to show for every type in the bucket (e.g. gender, unit)
 		* @returns {undefined}
 		*/
-		var createChartsByFilter = function(bucketName, propName) {
+		var createChartsByFilter = function(bucketName, propName, chartsContainerId) {
 			// we'll distinguish buckets and types: a bucket consists of several types,
 			// like the bucket offices consists of types utrecht, amersfoors, ...
 
 			// remove any previous charts
-			$('#filter-charts-container').empty();
+			const $container = $('#'+chartsContainerId);
+			$container.empty();
 
 			var joinedDatasets = joinBucketAndPropData(bucketName, propName);
 
@@ -129,6 +129,7 @@ window.app.filters = (function($) {
 			var extent = d3.extent(joinedDatasets, function(arr) {
 				return arr[0].typeCount;
 			});
+
  			for (var i=0, len=joinedDatasets.length; i<len; i++) {
 				var dataset = joinedDatasets[i],
 					options = {
@@ -137,7 +138,7 @@ window.app.filters = (function($) {
 						extent
 					};
 
-				createFilterChart(dataset, options);
+				createFilterChart(dataset, options, $container);
 			}
 
 
@@ -157,11 +158,12 @@ window.app.filters = (function($) {
 		e.preventDefault();
 
 		var $form = $(e.currentTarget),
-			bucketName = $form.find('#bucket-filter').val(),
-			propName = $form.find('#employee-properties').val();
+			bucketName = $form.find('.filter--bucket').val(),
+			propName = $form.find('.filter--properties').val(),
+			chartsContainerId = $form.attr('data-charts-container-id');
 
 		// decide which type of chart to show
-		createChartsByFilter(bucketName, propName);
+		createChartsByFilter(bucketName, propName, chartsContainerId);
 	};
 	
 
@@ -173,33 +175,88 @@ window.app.filters = (function($) {
 	var initCompareTool = function() {
 		var $bucketSelect = $('#bucket-filter'),
 			$propertiesSelect = $('#employee-properties'),
-			bucketOptions = '',
-			propertyOptions = '';
+			bucketOptionsHtml = '',
+			propertyOptionsHtml = '';
+
+			// console.log(app.data.buckets);
 
 		for (var bucketName in app.data.buckets) {
 			var guiName = app.data.buckets[bucketName].guiName;
 
-			bucketOptions += '<option value="' + bucketName +'"';
+			bucketOptionsHtml += '<option value="' + bucketName +'"';
 			if (bucketName === 'office') {
-				bucketOptions += ' selected="selected"'
+				bucketOptionsHtml += ' selected="selected"'
 			}
-			bucketOptions += '>' + guiName + '</option>';
+			bucketOptionsHtml += '>' + guiName + '</option>';
 		}
-		$bucketSelect.append(bucketOptions);
+		$bucketSelect.append(bucketOptionsHtml);
 
 
 		// generate props to show
 		// console.log(app.filters.props);
 		for (var propName in app.filters.props) {
-			propertyOptions += '<option value="' + propName + '"';
+			propertyOptionsHtml += '<option value="' + propName + '"';
 			if (propName === 'gender') {
-				propertyOptions += ' selected="selected"';
+				propertyOptionsHtml += ' selected="selected"';
 			}
-			propertyOptions += '>' + app.filters.props[propName].guiName + '</option>';	
+			propertyOptionsHtml += '>' + app.filters.props[propName].guiName + '</option>';	
 		}
-		$propertiesSelect.append(propertyOptions);
+		$propertiesSelect.append(propertyOptionsHtml);
 
 		$('#filter-charts-form').on('submit', showComparison).trigger('submit');
+	};
+
+
+	/**
+	* hide select and corresponding label if it has only one value
+	* @returns {undefined}
+	*/
+	const hideOneValueSelect = function($elm) {
+		if ($elm.children().length <= 1) {
+			const id = $elm.attr('id'),
+				$label = $elm.closest('form')
+					.find('label[for="' + id + '"]')
+					.addClass('u-hidden');
+			$elm.addClass('u-hidden');
+
+			console.log(id, $label.length);
+		}
+	};
+	
+	
+
+
+	/**
+	* initialize comparison tool
+	* @returns {undefined}
+	*/
+	var initCompareToolGeneric = function(options) {
+		var $form = $('#' + options.formId),
+			$bucketSelect = $form.find('.filter--bucket'),
+			$propertiesSelect = $form.find('.filter--properties'),
+			bucketOptionsHtml = '',
+			propertyOptionsHtml = '';
+
+		options.bucketNames.forEach((bucketName) => {
+			var guiName = app.data.buckets[bucketName].guiName;
+
+			bucketOptionsHtml += '<option value="' + bucketName +'"';
+			bucketOptionsHtml += '>' + guiName + '</option>';
+		});
+		$bucketSelect.append(bucketOptionsHtml);
+
+
+		// generate props to show
+		options.propNames.forEach( (propName) => {
+			propertyOptionsHtml += '<option value="' + propName + '"';
+			propertyOptionsHtml += '>' + app.filters.props[propName].guiName + '</option>';	
+		});
+		$propertiesSelect.append(propertyOptionsHtml);
+		// hide if it has only one option
+		hideOneValueSelect($propertiesSelect);
+
+		$form.on('submit', showComparison)
+			.trigger('submit');// trigger now for first time
 	};
 
 	/**
@@ -212,10 +269,12 @@ window.app.filters = (function($) {
 
 
 
+
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		props,
-		init
+		init,
+		initCompareToolGeneric,
+		props
 	};
 
 	return publicMethodsAndProps;

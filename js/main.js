@@ -384,6 +384,7 @@ window.app = window.app || {};
 		app.agesNodesChart.init();
 
 		app.filters.init();
+		app.genderFilters.init();
 
 		app.lineChart.init();
 

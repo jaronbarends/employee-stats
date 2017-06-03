@@ -475,6 +475,7 @@ h3 {
 .topic-takeaways {
   position: absolute;
   margin: 0 0 2em;
+  max-width: calc(100% - 4em);
   transition: opacity 0.5s 0s ease-out; }
   .topic-takeaways--is-inactive {
     opacity: 0;
@@ -962,3 +963,6 @@ button {
 .u-centered {
   left: 50%;
   transform: translateX(-50%); }
+
+.u-hidden {
+  display: none !important; }
