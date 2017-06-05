@@ -295,32 +295,6 @@ window.app = window.app || {};
 
 
 
-
-	/**
-	* draw unit chart for ages
-	* @returns {undefined}
-	*/
-	var drawAgeChart = function() {
-		let dataset = app.data.buckets.ageRound.dataset,
-			chartSelector = '#unit-chart--age',  
-			options = {
-				isHorizontal: false,
-				margin: {
-					top: 30,
-					right: 10,
-					bottom: 50,
-					left: 30
-				}
-			},
-			lowestAge = dataset[0].type,
-			showTicks5nPlus = 6 - lowestAge%5;
-
-		app.unitChart.drawChart(dataset, chartSelector, options);
-		document.querySelector('#unit-chart--age .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
-	};
-	
-
-
 	/**
 	* initialize and start the bubble chart simulation
 	* @returns {undefined}
@@ -377,7 +351,6 @@ window.app = window.app || {};
 			devMode = true;// skip delays while developing
 		app.nodes.revealNodes(firstDelay, devMode);
 
-		// app.ageChart.init();
 		calculateAgeInfo();
 
 		app.disciplinesNodesChart.init();
@@ -387,6 +360,8 @@ window.app = window.app || {};
 		app.otherFilters.init();
 
 		app.lineChart.init();
+
+		app.percentageChart.init();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();

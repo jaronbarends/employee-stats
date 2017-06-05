@@ -18,7 +18,8 @@ window.app.genderFilters = (function($) {
 			bucketNames: [
 				'office',
 				'discipline',
-				'organisationalUnit'
+				'organisationalUnit',
+				'parttimePercentage'
 			],
 			propNames: [
 				'gender'
