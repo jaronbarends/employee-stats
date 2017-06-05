@@ -22,28 +22,6 @@ window.app.filters = (function($) {
 
 	//-- Start chart fucntions --
 
-		/**
-		* create a chart for a type-instance of specific bucket-filter
-		* @param {array} dataset The dataset to draw a chart for
-		* @param {object} options {chartType:like pieChart, chartIdx, extent:[]}
-		* @returns {undefined}
-		*/
-		var createFilterChart = function(dataset, options, $container) {
-			var containerId = 'chart-box-' + options.chartIdx,
-				html = '<div id="' + containerId +'" class="chart-box chart-box--' + options.chartType + '"></div>';
-
-			$container.append(html);
-
-			if (options.chartType === 'pie') {
-				var typeCount = dataset[0].typeCount,
-					maxCount = options.extent[1],
-					relativeSize = typeCount/maxCount;
-
-				app.pieChart.drawChart(dataset, containerId, relativeSize);
-			}
-
-		};
-
 
 		/**
 		* join data from bucket and property
@@ -99,9 +77,31 @@ window.app.filters = (function($) {
 
 			return joinedDatasets;
 		};
-		
-		
 
+
+
+		/**
+		* create a chart for a type-instance of specific bucket-filter
+		* @param {array} dataset The dataset to draw a chart for
+		* @param {object} options {chartType:like pieChart, chartIdx, extent:[]}
+		* @returns {undefined}
+		*/
+		var createChart = function(dataset, options, $container) {
+			const containerId = 'chart-box-' + app.util.getRandomId(),
+				html = '<div id="' + containerId +'" class="chart-box chart-box--' + options.chartType + '"></div>';
+
+			$container.append(html);
+
+			if (options.chartType === 'pie') {
+				var typeCount = dataset[0].typeCount,
+					maxCount = options.extent[1],
+					relativeSize = typeCount/maxCount;
+
+				app.pieChart.drawChart(dataset, containerId, relativeSize);
+			}
+
+		};
+		
 
 
 		/**
@@ -138,7 +138,7 @@ window.app.filters = (function($) {
 						extent
 					};
 
-				createFilterChart(dataset, options, $container);
+				createChart(dataset, options, $container);
 			}
 
 
@@ -231,6 +231,7 @@ window.app.filters = (function($) {
 	* @returns {undefined}
 	*/
 	var initCompareToolGeneric = function(options) {
+		console.log(app.data.buckets);
 		var $form = $('#' + options.formId),
 			$bucketSelect = $form.find('.filter--bucket'),
 			$propertiesSelect = $form.find('.filter--properties'),
@@ -264,7 +265,7 @@ window.app.filters = (function($) {
 	* @returns {undefined}
 	*/
 	var init = function() {
-		initCompareTool();
+		// initCompareTool();
 	};
 
 

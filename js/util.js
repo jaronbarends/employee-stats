@@ -176,10 +176,23 @@ window.app.util = (function($) {
 	};
 
 
+	/**
+	 * A helper function that creates and returns an alphanumeric string that can be used in ID attributes
+	 * 
+	 * @param {number} [length=12] - Optional length of returned string
+	 * @returns {string} - Generated alphanumeric string
+	 */
+	const getRandomId = (length=12) => {
+	    let str = Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
+	    return str;
+	};
+
+
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
 		convertToClassName,
 		getEmployeeClasses,
+		getRandomId,
 		getTimeoutsAndDelays,
 		getYearsUntilToday,
 		randomizeArray,

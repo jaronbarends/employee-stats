@@ -383,8 +383,9 @@ window.app = window.app || {};
 		app.disciplinesNodesChart.init();
 		app.agesNodesChart.init();
 
-		app.filters.init();
+		// app.filters.init();
 		app.genderFilters.init();
+		app.otherFilters.init();
 
 		app.lineChart.init();
 
