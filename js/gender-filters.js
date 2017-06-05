@@ -25,7 +25,7 @@ window.app.genderFilters = (function($) {
 			]
 		};
 
-		app.filters.initCompareToolGeneric(options);
+		app.filters.init(options);
 	};
 
 

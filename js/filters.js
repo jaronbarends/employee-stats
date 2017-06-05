@@ -169,45 +169,6 @@ window.app.filters = (function($) {
 
 
 	/**
-	* initialize comparison tool
-	* @returns {undefined}
-	*/
-	var initCompareTool = function() {
-		var $bucketSelect = $('#bucket-filter'),
-			$propertiesSelect = $('#employee-properties'),
-			bucketOptionsHtml = '',
-			propertyOptionsHtml = '';
-
-			// console.log(app.data.buckets);
-
-		for (var bucketName in app.data.buckets) {
-			var guiName = app.data.buckets[bucketName].guiName;
-
-			bucketOptionsHtml += '<option value="' + bucketName +'"';
-			if (bucketName === 'office') {
-				bucketOptionsHtml += ' selected="selected"'
-			}
-			bucketOptionsHtml += '>' + guiName + '</option>';
-		}
-		$bucketSelect.append(bucketOptionsHtml);
-
-
-		// generate props to show
-		// console.log(app.filters.props);
-		for (var propName in app.filters.props) {
-			propertyOptionsHtml += '<option value="' + propName + '"';
-			if (propName === 'gender') {
-				propertyOptionsHtml += ' selected="selected"';
-			}
-			propertyOptionsHtml += '>' + app.filters.props[propName].guiName + '</option>';	
-		}
-		$propertiesSelect.append(propertyOptionsHtml);
-
-		$('#filter-charts-form').on('submit', showComparison).trigger('submit');
-	};
-
-
-	/**
 	* hide select and corresponding label if it has only one value
 	* @returns {undefined}
 	*/
@@ -217,9 +178,8 @@ window.app.filters = (function($) {
 				$label = $elm.closest('form')
 					.find('label[for="' + id + '"]')
 					.addClass('u-hidden');
-			$elm.addClass('u-hidden');
 
-			console.log(id, $label.length);
+			$elm.addClass('u-hidden');
 		}
 	};
 	
@@ -230,16 +190,16 @@ window.app.filters = (function($) {
 	* initialize comparison tool
 	* @returns {undefined}
 	*/
-	var initCompareToolGeneric = function(options) {
-		console.log(app.data.buckets);
-		var $form = $('#' + options.formId),
+	const init = function(options) {
+		// console.log(app.data.buckets);
+		const $form = $('#' + options.formId),
 			$bucketSelect = $form.find('.filter--bucket'),
-			$propertiesSelect = $form.find('.filter--properties'),
-			bucketOptionsHtml = '',
+			$propertiesSelect = $form.find('.filter--properties');
+		let bucketOptionsHtml = '',
 			propertyOptionsHtml = '';
 
 		options.bucketNames.forEach((bucketName) => {
-			var guiName = app.data.buckets[bucketName].guiName;
+			const guiName = app.data.buckets[bucketName].guiName;
 
 			bucketOptionsHtml += '<option value="' + bucketName +'"';
 			bucketOptionsHtml += '>' + guiName + '</option>';
@@ -260,21 +220,12 @@ window.app.filters = (function($) {
 			.trigger('submit');// trigger now for first time
 	};
 
-	/**
-	* 
-	* @returns {undefined}
-	*/
-	var init = function() {
-		// initCompareTool();
-	};
-
 
 
 
 	// define public methods that are available through app
-	var publicMethodsAndProps = {
+	const publicMethodsAndProps = {
 		init,
-		initCompareToolGeneric,
 		props
 	};
 

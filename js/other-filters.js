@@ -33,7 +33,7 @@ window.app.otherFilters = (function($) {
 			selectedProp: 'discipline'
 		};
 
-		app.filters.initCompareToolGeneric(options);
+		app.filters.init(options);
 	};
 
 
