@@ -145,41 +145,39 @@ window.app.util = (function($) {
 	* @returns {undefined}
 	*/
 	const getEmployeeSortFunction2 = function(props) {
-		// define simple comparison function we'll call multiple times
-		const compareValues = function(a, b, prop) {
-			const propName = prop.name;
-			let	order = prop.order || 'ASC',
-				result = 0;
 
+		// define recursive comparison function we'll call multiple times
+		const recursiveSort = function(a, b, i) {
+			const prop = props[i],
+				propName = prop.name,
+				order = prop.order || 'ASC';
+			let result = 0;
+
+			// actual comparison
 			if (a[propName] > b[propName]) {
 				result = 1;
 			} else if (a[propName] < b[propName]) {
 				result = -1;
 			}
 
+			// if we want desc, invert the result
 			if (result !== 0 && order.toLowerCase() === 'desc') {
 				result = -result;
 			}
 
+			// if values are equal, and there are sorting properties left, call function again
+			if (result === 0 && props[i+1]) {
+				i++;
+				result = recursiveSort(a, b, i);
+			}
+			
 			return result;
 		}
 
 		// define function we'll call on array
 		const sortFunction = function(a, b) {
-			let i = 0,
-				result = 0;
-
-			const recursiveSort = function(a, b, i) {
-				result = compareValues(a, b, props[i]);
-				if (result === 0 && props[i+1]) {
-					i++;
-					result = recursiveSort(a, b, i);
-				}
-				return result;
-			}
-			result = recursiveSort(a, b, i);
-
-			return result;
+			let i = 0;
+			return recursiveSort(a, b, i);
 		};
 
 		return sortFunction;
