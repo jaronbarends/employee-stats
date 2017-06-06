@@ -1,6 +1,6 @@
 window.app = window.app || {};
 
-window.app.percentageChart = (function($) {
+window.app.hoursPerWeekChart = (function($) {
 
 	'use strict';
 

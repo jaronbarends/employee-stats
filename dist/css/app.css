@@ -837,6 +837,9 @@ button {
 .unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) text {
   display: block; }
 
+.hours-per-week-chart .tick line {
+  stroke: rgba(54, 54, 54, 0.3); }
+
 .topic-takeaways--employees-general {
   text-align: center; }
   .topic-takeaways--employees-general dl {

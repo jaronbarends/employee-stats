@@ -145,18 +145,10 @@ class UnitBarChart {
 	
 
 	/**
-	* create scales for number of nodes and proper type name
+	* create scale for values
 	* @returns {undefined}
 	*/
 	_createScales() {
-		// we have a few different scales:
-		// the value scale is a numeric scale for the values
-		// the type label scale is a scale that can return the proper type name
-		// the bar position scale is the scale for employee-bars
-		// both the values and the bars can be used vertically or horizontally
-		// so we can't name them xScale and yScale
-
-		// first determine which propery (width or height) to use for each scale
 		let valueScaleSize;
 
 		if (this.settings.isHorizontal) {
@@ -168,6 +160,10 @@ class UnitBarChart {
 		this.valueScale = d3.scaleLinear()
 			.domain([0, this.maxValue])
 			.rangeRound([valueScaleSize, 0]);
+
+		this.barCountScale = d3.scaleLinear()
+			.domain([0, this.barCount])
+			.rangeRound([0, this.width]);
 	};
 
 
@@ -178,21 +174,27 @@ class UnitBarChart {
 	*/
 	_createAxes() {
 		// now set the proper scale for each axis
-		let axis;
+		let valueAxis,
+			clss = 'axis axis--x',
+			translate = this.settings.margin.left +',' + (this.settings.margin.top + this.height),
+			tickValues = [0,8,16,24,32,40];
 
 		if (this.settings.isHorizontal) {
-			axis = d3.axisBottom(this.valueScale);
-			this.chart.append('g')
-				.attr('class', 'axis axis--x')
-				.attr('transform', 'translate(' + this.settings.margin.left +',' + (this.settings.margin.top + this.height) +')')
-				.call(axis);
+			valueAxis = d3.axisBottom(this.valueScale);
 		} else {
-			axis = d3.axisLeft(this.valueScale);
-			this.chart.append('g')
-				.attr('class', 'axis axis--y')
-				.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
-				.call(axis);
+			valueAxis = d3.axisLeft(this.valueScale);
+			clss = 'axis axis--y';
+			// ticks have their origin at x=0, but we want them to span the entire width so use translateX
+			translate = this.width + this.settings.margin.left + ',' + this.settings.margin.top;
 		}
+
+		valueAxis = valueAxis.tickValues([0,8,16,24,32,40])
+			.tickSize(this.width);
+
+		this.chart.append('g')
+			.attr('class', clss)
+			.attr('transform', 'translate(' + translate + ')')
+			.call(valueAxis);
 
 	};
 
@@ -240,22 +242,10 @@ class UnitBarChart {
 		this._setBarCount();
 		this._initChart();
 		this._createScales();
+		this._addBars();
 		this._createAxes();
 
-		this._addBars();
 		// this.addCountLabels();
 	};
 
-
-
-	/**
-	* create the chart and add nodes
-	* @returns {undefined}
-	*/
-	drawChart() {
-		this.createChart();
-		this.addNodes();
-		this.addCountLabels();
-	};
-	
 }

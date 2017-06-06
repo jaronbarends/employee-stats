@@ -362,7 +362,7 @@ window.app = window.app || {};
 
 		app.lineChart.init();
 
-		app.percentageChart.init();
+		app.hoursPerWeekChart.init();
 
 		// report data missing in dataset (for dev purposes only)
 		// reportMissingGeoData();
