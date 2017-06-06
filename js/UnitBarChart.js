@@ -147,7 +147,7 @@ class UnitBarChart {
 			barCount = this.barCount;
 
 		let barsDirectionSize = barCount * settings.barWidth + (barCount - 1) * settings.barGap,
-			valueDirectionSize = 100;
+			valueDirectionSize = 200;
 
 		if (settings.isHorizontal) {
 			this.width = valueDirectionSize;
@@ -162,9 +162,6 @@ class UnitBarChart {
 
 		this.chart.attr('width', svgWidth)
 			.attr('height', svgHeight);
-
-			console.log('c:', this.chart);
-
 	};
 	
 	
@@ -182,30 +179,19 @@ class UnitBarChart {
 		// so we can't name them xScale and yScale
 
 		// first determine which propery (width or height) to use for each scale
-		let valueScaleHeightOrWidth,
-			barPositionHeightOrWidth;
+		let valueScaleSize;
 
 		if (this.settings.isHorizontal) {
-			valueScaleHeightOrWidth = this.height;
-			barPositionHeightOrWidth = this.width;
+			valueScaleSize = this.width;
 		} else {
-			valueScaleHeightOrWidth = this.width;
-			barPositionHeightOrWidth = this.height;
+			valueScaleSize = this.height;
 		}
+
+		console.log(this.maxValue, valueScaleSize);
 
 		this.valueScale = d3.scaleLinear()
-			.domain(d3.range(this.maxValue))
-			.rangeRound([0, valueScaleHeightOrWidth]);
-			// .padding(0.1);
-
-		this.barPositionScale = d3.scaleLinear()
-			.domain([0, this.barCount]);
-
-		if (this.settings.isHorizontal) {
-			this.barPositionScale.range([0, barPositionHeightOrWidth]);
-		} else {
-			this.barPositionScale.range([barPositionHeightOrWidth, 0]);
-		}
+			.domain([0, this.maxValue])
+			.rangeRound([valueScaleSize, 0]);
 	};
 
 
@@ -216,43 +202,25 @@ class UnitBarChart {
 	*/
 	_createAxes() {
 		// now set the proper scale for each axis
-		let xScale,
-			xTicksScale,
-			yScale,
-			yTicksScale;
+		let axis;
 
 		if (this.settings.isHorizontal) {
-			xScale = this.barPositionScale;
-			xTicksScale = xScale;
-			yScale = this.valueScale;
-			yTicksScale = this.valueScale;
-			// yTicksScale = this.typeLabelScale;
+			axis = d3.axisBottom(this.valueScale);
+			this.chart.append('g')
+				.attr('class', 'axis axis--x')
+				.attr('transform', 'translate(' + this.settings.margin.left +',' + (this.settings.margin.top + this.height) +')')
+				.call(axis);
 		} else {
-			xScale = this.valueScale;
-			// xTicksScale = this.typeLabelScale;
-			xTicksScale = this.valueScale;
-			yScale = this.barPositionScale;
-			yTicksScale = yScale;
+			axis = d3.axisLeft(this.valueScale);
+			this.chart.append('g')
+				.attr('class', 'axis axis--y')
+				.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
+				.call(axis);
 		}
 
-		let xAxis = d3.axisBottom(xTicksScale),
-			yAxis = d3.axisLeft(yTicksScale)
-						.tickPadding(10);
-
-
-		// render axes
-		this.chart.append('g')
-			.attr('class', 'axis axis--x')
-			.attr('transform', 'translate(' + this.settings.margin.left +',' + (this.settings.margin.top + this.height) +')')
-			.call(xAxis);
-
-		this.chart.append('g')
-			.attr('class', 'axis axis--y')
-			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
-			.call(yAxis);
-
-			console.log('done');
 	};
+
+
 
 
 	/**
@@ -260,7 +228,9 @@ class UnitBarChart {
 	* @returns {undefined}
 	*/
 	_addBars() {
-		const dx = this.settings.barWidth + this.settings.barGap;
+		const dx = this.settings.barWidth + this.settings.barGap,
+			valueScale = this.valueScale;
+			console.log('h:', this.height);
 		// console.log(this.dataset);
 		let eachBar = this.chart.append('g')
 			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
@@ -270,10 +240,14 @@ class UnitBarChart {
 			.append('rect')
 			.attr('class', window.app.util.getEmployeeClasses)
 			.attr('width', this.settings.barWidth)
-			.attr('height', function(d) {
-				return d.hoursPerWeek;
+			.attr('height', (d) => {
+				// console.log(d.hoursPerWeek, valueScale(d.hoursPerWeek));
+				return this.height - valueScale(d.hoursPerWeek);
 			})
-			.attr('x', function(d, i) {
+			.attr('y', (d) => {
+				return valueScale(d.hoursPerWeek);
+			})
+			.attr('x', (d, i) => {
 				return i * dx;
 			})
 	};
