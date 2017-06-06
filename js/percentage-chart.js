@@ -37,9 +37,10 @@ window.app.percentageChart = (function($) {
 			barsGroupSelector = '#unit-bar-chart__bars--hours-per-week',
 			sortProperties = [
 				{name: 'hoursPerWeek'},
-				{name: 'gender', order: 'desc'}// we want women first, and in dataset the values are dutch: 'man' and 'vrouw'
+				{name: 'gender', order: 'desc'},// we want women first, and in dataset the values are dutch: 'man' and 'vrouw'
+				{name: 'office'}
 			],
-			sortFunction = app.util.getEmployeeSortFunction(sortProperties);
+			sortFunction = app.util.getEmployeeSortFunction2(sortProperties);
 
 		const options = {
 			isHorizontal: false,
