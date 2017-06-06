@@ -19,6 +19,7 @@ window.app = window.app || {};
 			organisationalUnit: { guiName: 'Organisational unit', dataset: []},
 			office: { guiName: 'Office', dataset: []},
 			parttimePercentage: { guiName: 'Parttime percentage', dataset: []},
+			hoursPerWeek: { guiName: 'Hours per week', dataset: []},
 			ageRound: { guiName: 'Age', dataset: []},
 			startYear: { guiName: 'Starting year', dataset: []}
 		},

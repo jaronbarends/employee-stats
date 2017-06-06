@@ -89,6 +89,20 @@ window.app.dataprocessorEmployees = (function($) {
 
 
 	/**
+	* add a property for the number of hours an employee works per week
+	* @param {object} emp The current employee's data-object
+	* @returns {undefined}
+	*/
+	const addHoursPerWeek = function(emp) {
+		const perc = emp.parttimePercentage,
+			hoursPerWeek = 40*perc/100;
+		
+		emp.hoursPerWeek = hoursPerWeek;
+	};
+	
+
+
+	/**
 	* Associate MD's with the correct office (now, they're all associated with Utr)
 	* @returns {undefined}
 	*/
@@ -378,6 +392,7 @@ window.app.dataprocessorEmployees = (function($) {
 			cleanOrganisationalUnit(emp);// remove office name, fix mt's unit
 			processAge(emp);// add props for age; collect overall age info
 			processStartDate(emp);// add info to employeesStartedPerYear array
+			addHoursPerWeek(emp);
 			addUnitChartDataObject(emp);
 		});
 

@@ -3,11 +3,11 @@ class UnitChart {
 	/**
 	* constructor function
 	* @param {array} dataset The dataset we want to show, i.e. app.data.buckets.discipline.dataset
-	* @param {string} chartSelector The selector for the svg-element to plot the chart context (labels, axes) in
-	* @param {object} options {originalDataset:array, chartSelector:string[, sortFunction:function]}
+	* @param {string} chartContextSelector The selector for the svg-element to plot the chart context (labels, axes) in
+	* @param {object} options {[sortFunction:function]}
 	* @returns {undefined}
 	*/
-	constructor(dataset, chartSelector, id, options) {
+	constructor(dataset, chartContextSelector, id, options) {
 		let defaults = {
 			sortFunction: null,// assume datasets are usually already in right order
 			margin: {
@@ -33,7 +33,7 @@ class UnitChart {
 		// this.dataset = this.flattenDataset();
 
 		// do chart stuff
-		this.chart = d3.select(chartSelector);
+		this.chart = d3.select(chartContextSelector);
 		this.width = 0;
 		this.height = 0;
 		this.countLabels = null;

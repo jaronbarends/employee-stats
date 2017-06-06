@@ -7,11 +7,11 @@ class UnitBarChart {
 	/**
 	* constructor function
 	* @param {array} dataset The dataset we want to show, i.e. app.data.buckets.parttimePercentage.dataset
-	* @param {string} chartSelector The selector for the svg-element to plot the chart context (labels, axes) in
+	* @param {string} chartContextSelector The selector for the svg-element to plot the chart context (labels, axes) in
 	* @param {object} options {[sortFunction:function]}
 	* @returns {undefined}
 	*/
-	constructor(dataset, chartSelector, options) {
+	constructor(dataset, chartContextSelector, options) {
 		let defaults = {
 			sortFunction: null,// assume datasets are usually already in right order
 			margin: {
@@ -21,8 +21,12 @@ class UnitBarChart {
 				right: 20
 			},
 			isHorizontal: true,// the "bars" of the chart are horizontal
-			barWidth: 2,
-			barGap: 1
+			radius: 4,
+			barWidth: 3,
+			barGap: 1,
+			typeMargin: 10,
+			employeeMargin: 2,
+			showCountLabels: true
 		};
 
 		console.log(dataset);
@@ -37,7 +41,7 @@ class UnitBarChart {
 		// this.dataset = this.flattenDataset();
 
 		// do chart stuff
-		this.chart = d3.select(chartSelector);
+		this.chart = d3.select(chartContextSelector);
 		this.width = 0;
 		this.height = 0;
 		this.countLabels = null;
@@ -47,7 +51,7 @@ class UnitBarChart {
 			return parseInt(elm.type, 10);
 		});
 
-		this.createChart();
+		this.createChartContext();
 	}
 
 
@@ -67,10 +71,10 @@ class UnitBarChart {
 	* @returns {undefined}
 	*/
 	sortAndFlattenDataset() {
-		let sortedDataset = this._sortDataset(this.originalDataset),
-			sortedFlattenedDataset = this.flattenDataset(sortedDataset);
+		// let sortedDataset = this._sortDataset(this.originalDataset),
+		// 	sortedFlattenedDataset = this.flattenDataset(sortedDataset);
 
-		return sortedFlattenedDataset;
+		// return sortedFlattenedDataset;
 	};
 	
 
@@ -83,26 +87,14 @@ class UnitBarChart {
 	* @returns {Object} the sorted or unaltered dataset
 	*/
 	_sortDataset(dataset) {
-		let sortFunction = this.settings.sortFunction;
-		if (sortFunction) {
-			dataset = dataset.sort(sortFunction);
-		}
+		// let sortFunction = this.settings.sortFunction;
+		// if (sortFunction) {
+		// 	dataset = dataset.sort(sortFunction);
+		// }
 
-		return dataset;
+		// return dataset;
 
 	};
-
-
-	/**
-	* calculate the total number of bars
-	* @returns {undefined}
-	*/
-	_setBarCount() {
-		this.originalDataset.forEach((obj) => {
-			this.barCount += parseInt(obj.employees.length);
-		});
-	};
-	
 
 
 
@@ -113,23 +105,23 @@ class UnitBarChart {
 	* @returns {array} The flattened dataset
 	*/
 	flattenDataset(originalDataset = this.originalDataset) {
-		let flatSet = [];
+		// let flatSet = [];
 
-		for (var i=0, len=originalDataset.length; i<len; i++) {
-			var employees = originalDataset[i].employees;
-			for (var j=0, len2=employees.length; j<len2; j++) {
-				let emp = employees[j],
-					ucObj = emp.unitChartData;
+		// for (var i=0, len=originalDataset.length; i<len; i++) {
+		// 	var employees = originalDataset[i].employees;
+		// 	for (var j=0, len2=employees.length; j<len2; j++) {
+		// 		let emp = employees[j],
+		// 			ucObj = emp.unitChartData;
 
-				ucObj[this.id] = {
-					typeIdx: i,
-					employeeOfTypeIdx: j
-				};
-				flatSet.push(emp);
-			}
-		}
+		// 		ucObj[this.id] = {
+		// 			typeIdx: i,
+		// 			employeeOfTypeIdx: j
+		// 		};
+		// 		flatSet.push(emp);
+		// 	}
+		// }
 
-		return flatSet;
+		// return flatSet;
 	};
 
 
@@ -144,10 +136,15 @@ class UnitBarChart {
 		// calculate desired size based on dataset, radius and margin between units
 		let originalDataset = this.originalDataset,
 			settings = this.settings,
-			barCount = this.barCount;
+			numberOfTypes = originalDataset.length;
 
-		let barsDirectionSize = barCount * settings.barWidth + (barCount - 1) * settings.barGap,
+		originalDataset.forEach((obj) => {
+			this.barCount += parseInt(obj.employees.length);
+		});
+
+		let barsDirectionSize = this.barCount * this.settings.barWidth + (this.barCount - 1) * this.settings.barGap,
 			valueDirectionSize = 100;
+			// valueDirectionSize = 2*settings.radius * numberOfTypes + settings.typeMargin * (numberOfTypes - 1);
 
 		if (settings.isHorizontal) {
 			this.width = valueDirectionSize;
@@ -193,10 +190,15 @@ class UnitBarChart {
 			barPositionHeightOrWidth = this.height;
 		}
 
-		this.valueScale = d3.scaleLinear()
+		this.valueScale = d3.scaleBand()
 			.domain(d3.range(this.maxValue))
 			.rangeRound([0, valueScaleHeightOrWidth]);
 			// .padding(0.1);
+
+		// this.typeLabelScale = d3.scaleBand()
+		// 	.domain(this.originalDataset.map(function(d) {return d.type;}))
+		// 	.rangeRound([0, valueScaleHeightOrWidth])
+		// 	.padding(0.1);
 
 		this.barPositionScale = d3.scaleLinear()
 			.domain([0, this.barCount]);
@@ -253,32 +255,148 @@ class UnitBarChart {
 
 			console.log('done');
 	};
+	
 
 
 	/**
-	* add the bars to the chart
+	* 
 	* @returns {undefined}
 	*/
-	_addBars() {
-		const dx = this.settings.barWidth + this.settings.barGap;
-		// console.log(this.dataset);
-		let eachBar = this.chart.append('g')
-			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
-			.selectAll('.bar')
-			.data(this.dataset)
-			.enter()
-			.append('rect')
-			.attr('class', window.app.util.getEmployeeClasses)
-			.attr('width', this.settings.barWidth)
-			.attr('height', function(d) {
-				return d.hoursPerWeek;
-			})
-			.attr('x', function(d, i) {
-				return i * dx;
-			})
+	_addEachCircle() {
+		// let eachCircle = this.chart.append('g')
+		// 	.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
+		// 	.selectAll('.unit')
+		// 	.data(this.dataset)
+		// 	.enter()
+		// 	.append('circle')
+		// 	.attr('class', window.app.util.getEmployeeClasses)
+		// 	.attr('r', this.settings.radius);
+
+		// return eachCircle;
+	};
+
+
+
+	/**
+	* circles need to be placed in the center of a scale's band
+	* so calculate the offset for that
+	* @returns {undefined}
+	*/
+	_getOffsetToScaleBandCenter() {
+		// return Math.ceil(this.valueScale.bandwidth()/2);
+	};
+
+
+	/**
+	* get the position for a node in the chart
+	* @returns {undefined}
+	*/
+	getNodePosition(d, i, options) {
+		// let x,
+		// 	y;
+
+		// let defaults = {
+		// 	ths: this,
+		// 	addChartMargins: false
+		// };
+
+		// let settings = Object.assign({}, defaults, options),
+		// 	ths = settings.ths;
+
+		// let ucData = d.unitChartData[settings.id];
+
+		// if (ths.settings.isHorizontal) {
+		// 	x = ths.barPositionScale(ucData.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+		// 	y = ths.valueScale(ucData.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+		// } else {
+		// 	x = ths.valueScale(ucData.typeIdx) + ths._getOffsetToScaleBandCenter();// put center in center of band
+		// 	y = ths.barPositionScale(ucData.employeeOfTypeIdx + 1);// employeeOfTypeIdx = 0-based
+		// }
+
+		// if (settings.addChartMargins) {
+		// 	x += ths.settings.margin.left;
+		// 	y += ths.settings.margin.top;
+		// }
+
+		// return [x,y];
+
 	};
 	
 	
+	
+
+	/**
+	* add all data-nodes
+	* @returns {undefined}
+	*/
+	addNodes() {
+		// render units
+		// let eachCircle = this._addEachCircle(),
+		// 	cxOrCyForType,
+		// 	cxOrCyForbarPosition;
+
+		// let options = {
+		// 	id: this.id
+		// };
+
+		// eachCircle.attr('cx', (d, i) => {
+		// 		// yay! arrow function's this is this class's this :)
+		// 		return this.getNodePosition(d, i, options)[0];
+		// 	})
+		// 	.attr('cy', (d, i) => {
+		// 		return this.getNodePosition(d, i, options)[1];
+		// 	});
+	};
+
+
+
+	/**
+	* add labels with employee count for every type
+	* @returns {undefined}
+	*/
+	addCountLabels() {
+		// if (this.settings.showCountLabels) {
+		// 	let typeAmounts = [];
+		// 	this.originalDataset.forEach(function(typeObj) {
+		// 		typeAmounts.push(typeObj.employees.length);
+		// 	});
+
+		// 	// now add text to svg
+		// 	let eachCountLabel = this.chart.append('g')
+		// 		.attr('class', 'count-labels')
+		// 		.attr('transform', 'translate(' + this.settings.margin.left +',' + this.settings.margin.top +')')
+		// 		.selectAll('.count-label')
+		// 		.data(typeAmounts)
+		// 		.enter()
+		// 		.append('text')
+		// 		.attr('class', 'count-label')
+		// 		.text(function(d) {
+		// 			return d;
+		// 		});
+
+		// 	if (this.settings.isHorizontal) {
+		// 		eachCountLabel.attr('x', (d, i) => {
+		// 				return this.barPositionScale(d+1);// put label where next unit would be
+		// 			})
+		// 			.attr('y', (d, i) => {
+		// 				return this.valueScale(i) + this._getOffsetToScaleBandCenter();
+		// 			})
+		// 			.attr('dy', '0.3em');
+		// 	} else {
+		// 		eachCountLabel.attr('x', (d, i) => {
+		// 					return this.valueScale(i) + this._getOffsetToScaleBandCenter();
+		// 			})
+		// 			.attr('y', (d, i) => {
+		// 					return this.barPositionScale(d+1);// put label where next unit would be
+		// 			})
+		// 			.attr('dy', 0)
+		// 			.attr('text-anchor', 'middle');
+		// 	}
+
+		// 	this.countLabels = eachCountLabel;
+
+		// }
+	};
 
 
 
@@ -286,14 +404,13 @@ class UnitBarChart {
 	* create the chart context (i.e. everything but the nodes)
 	* @returns {undefined}
 	*/
-	createChart() {
-		this._setBarCount();
+	createChartContext() {
 		this._initChart();
 		this._createScales();
 		this._createAxes();
 
-		this._addBars();
-		// this.addCountLabels();
+		// this.addNodes();
+		this.addCountLabels();
 	};
 
 
@@ -303,7 +420,7 @@ class UnitBarChart {
 	* @returns {undefined}
 	*/
 	drawChart() {
-		this.createChart();
+		this.createChartContext();
 		this.addNodes();
 		this.addCountLabels();
 	};
