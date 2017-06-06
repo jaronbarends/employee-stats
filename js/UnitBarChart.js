@@ -22,19 +22,18 @@ class UnitBarChart {
 			},
 			isHorizontal: true,// the "bars" of the chart are horizontal
 			barWidth: 2,
-			barGap: 1
+			barGap: 1,
+			predefinedMinValue: 2
 		};
-
-		console.log(dataset);
 
 
 		// setup stuff
 		this.settings = Object.assign({}, defaults, options);
 		// this.id = id;
 		this.originalDataset = dataset;
-		this.dataset = this.sortAndFlattenDataset();
-		// this.originalDataset = this._sortDataset(dataset);
-		// this.dataset = this.flattenDataset();
+		// this.dataset = this.sortAndFlattenDataset();
+		this.dataset = this.flattenDataset();
+		this.dataset = this._sortDataset(this.dataset);
 
 		// do chart stuff
 		this.chart = d3.select(chartSelector);
@@ -60,20 +59,6 @@ class UnitBarChart {
 	getDataset() {
 		// return this.sortAndFlattenDataset();
 	};
-
-
-	/**
-	* sort and flatten this chart's dataset
-	* @returns {undefined}
-	*/
-	sortAndFlattenDataset() {
-		let sortedDataset = this._sortDataset(this.originalDataset),
-			sortedFlattenedDataset = this.flattenDataset(sortedDataset);
-
-		return sortedFlattenedDataset;
-	};
-	
-
 
 
 
@@ -112,20 +97,13 @@ class UnitBarChart {
 	* @param {array} dataset The dataset to flatten
 	* @returns {array} The flattened dataset
 	*/
-	flattenDataset(originalDataset = this.originalDataset) {
+	flattenDataset(dataset = this.originalDataset) {
 		let flatSet = [];
 
-		for (var i=0, len=originalDataset.length; i<len; i++) {
-			var employees = originalDataset[i].employees;
+		for (var i=0, len=dataset.length; i<len; i++) {
+			var employees = dataset[i].employees;
 			for (var j=0, len2=employees.length; j<len2; j++) {
-				let emp = employees[j],
-					ucObj = emp.unitChartData;
-
-				ucObj[this.id] = {
-					typeIdx: i,
-					employeeOfTypeIdx: j
-				};
-				flatSet.push(emp);
+				flatSet.push(employees[j]);
 			}
 		}
 
@@ -187,8 +165,6 @@ class UnitBarChart {
 			valueScaleSize = this.height;
 		}
 
-		console.log(this.maxValue, valueScaleSize);
-
 		this.valueScale = d3.scaleLinear()
 			.domain([0, this.maxValue])
 			.rangeRound([valueScaleSize, 0]);
@@ -230,8 +206,7 @@ class UnitBarChart {
 	_addBars() {
 		const dx = this.settings.barWidth + this.settings.barGap,
 			valueScale = this.valueScale;
-			console.log('h:', this.height);
-		// console.log(this.dataset);
+
 		let eachBar = this.chart.append('g')
 			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
 			.selectAll('.bar')
@@ -241,11 +216,12 @@ class UnitBarChart {
 			.attr('class', window.app.util.getEmployeeClasses)
 			.attr('width', this.settings.barWidth)
 			.attr('height', (d) => {
-				// console.log(d.hoursPerWeek, valueScale(d.hoursPerWeek));
-				return this.height - valueScale(d.hoursPerWeek);
+				let h = Math.max(this.height - valueScale(d.hoursPerWeek), this.settings.predefinedMinValue)
+				return h;
 			})
 			.attr('y', (d) => {
-				return valueScale(d.hoursPerWeek);
+				let y = Math.min(valueScale(d.hoursPerWeek), this.height - this.settings.predefinedMinValue);
+				return y;
 			})
 			.attr('x', (d, i) => {
 				return i * dx;

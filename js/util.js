@@ -99,6 +99,47 @@ window.app.util = (function($) {
 	};
 
 
+	/**
+	* get a function to sort employees on multiple properties
+	* @param {array} props Array of properties [{name:'propertyName', order: 'ASC|DESC'}, {...}]
+	* @returns {undefined}
+	*/
+	const getEmployeeSortFunction = function(props) {
+		// define simple comparison function we'll call multiple times
+		const compareValues = function(a, b, prop) {
+			const propName = prop.name;
+			let	order = prop.order || 'ASC',
+				result = 0;
+
+			if (a[propName] > b[propName]) {
+				result = 1;
+			} else if (a[propName] < b[propName]) {
+				result = -1;
+			}
+
+			if (result !== 0 && order.toLowerCase() === 'desc') {
+				result = -result;
+			}
+
+			return result;
+		}
+
+		// define function we'll call on array
+		const sortFunction = function(a, b) {
+			let result = compareValues(a, b, props[0]);
+
+			// when result is equal, sort by next prop
+			if (result === 0 && props[1]) {
+				result = compareValues(a, b, props[1]);
+			}
+			return result;
+		};
+
+		return sortFunction;
+	};
+	
+
+
 
 	/**
 	* get sorting order (ascending or descending)
@@ -192,6 +233,7 @@ window.app.util = (function($) {
 	var publicMethodsAndProps = {
 		convertToClassName,
 		getEmployeeClasses,
+		getEmployeeSortFunction,
 		getRandomId,
 		getTimeoutsAndDelays,
 		getYearsUntilToday,
