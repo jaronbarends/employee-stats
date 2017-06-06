@@ -100,51 +100,12 @@ window.app.util = (function($) {
 
 
 	/**
-	* get a function to sort employees on multiple properties
-	* @param {array} props Array of properties [{name:'propertyName', order: 'ASC|DESC'}, {...}]
-	* @returns {undefined}
+	* get a function you can pass to Array.sort to sort employees on multiple properties
+	* for every property you need to specify the property name and optionally ASC(default) or DESC
+	* @param {array} props Array of properties [{name:'propertyName', order: 'ASC|DESC'}, {...}, {...}]
+	* @returns {function} The sort function to pass to Array.sort
 	*/
 	const getEmployeeSortFunction = function(props) {
-		// define simple comparison function we'll call multiple times
-		const compareValues = function(a, b, prop) {
-			const propName = prop.name;
-			let	order = prop.order || 'ASC',
-				result = 0;
-
-			if (a[propName] > b[propName]) {
-				result = 1;
-			} else if (a[propName] < b[propName]) {
-				result = -1;
-			}
-
-			if (result !== 0 && order.toLowerCase() === 'desc') {
-				result = -result;
-			}
-
-			return result;
-		}
-
-		// define function we'll call on array
-		const sortFunction = function(a, b) {
-			let result = compareValues(a, b, props[0]);
-
-			// when result is equal, sort by next prop
-			if (result === 0 && props[1]) {
-				result = compareValues(a, b, props[1]);
-			}
-			return result;
-		};
-
-		return sortFunction;
-	};
-
-
-	/**
-	* get a function to sort employees on multiple properties
-	* @param {array} props Array of properties [{name:'propertyName', order: 'ASC|DESC'}, {...}]
-	* @returns {undefined}
-	*/
-	const getEmployeeSortFunction2 = function(props) {
 
 		// define recursive comparison function we'll call multiple times
 		const recursiveSort = function(a, b, i) {
@@ -170,7 +131,7 @@ window.app.util = (function($) {
 				i++;
 				result = recursiveSort(a, b, i);
 			}
-			
+
 			return result;
 		}
 
@@ -279,7 +240,6 @@ window.app.util = (function($) {
 		convertToClassName,
 		getEmployeeClasses,
 		getEmployeeSortFunction,
-		getEmployeeSortFunction2,
 		getRandomId,
 		getTimeoutsAndDelays,
 		getYearsUntilToday,

@@ -40,7 +40,7 @@ window.app.percentageChart = (function($) {
 				{name: 'gender', order: 'desc'},// we want women first, and in dataset the values are dutch: 'man' and 'vrouw'
 				{name: 'office'}
 			],
-			sortFunction = app.util.getEmployeeSortFunction2(sortProperties);
+			sortFunction = app.util.getEmployeeSortFunction(sortProperties);
 
 		const options = {
 			isHorizontal: false,
