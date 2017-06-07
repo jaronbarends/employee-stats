@@ -227,14 +227,13 @@ class UnitBarChart {
 				.attr('y1', 0)
 				.attr('y2', 10)
 
-			if (val > 1) {
+			// if (val > 1) {
 				tick.append('text')
 					.text(val)
 					.style('text-anchor', 'middle')
 					.attr('x', this.barCountScale(-1*val/2))
-					.attr('y', 15)
-
-			}
+					.attr('y', 22)
+			// }
 		});
 	};
 	

@@ -1,39 +1,7 @@
 .nodes-chart-context--legend {
-	font-size: $font-size-tiny;
-	color: $color-grey-xlight;
 
 	.highlight-office & {
 		@extend .nodes-chart-context--is-active;
 	}
 }
 
-.nodes-legend-list {
-	display: inline-block;
-	color: $color-grey-dark;
-}
-
-
-.legend-entry-employee {
-	display: inline-block;
-	margin: -0.1em 0.3em 0.1em 1em;
-	border-radius: 50%;
-	width: 6px;
-	height: 6px;
-	background: $color-amersfoort;
-
-	&--amsterdam {
-		background: $color-amsterdam;		
-	}
-
-	&--eindhoven {
-		background: $color-eindhoven;		
-	}
-
-	&--utrecht {
-		background: $color-utrecht;		
-	}
-}
-
-.legend-definition-employee {
-	display: inline-block;
-}

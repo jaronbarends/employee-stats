@@ -1,0 +1,47 @@
+.chart-context--legend {
+	font-size: $font-size-tiny;
+	color: $color-grey-xlight;
+}
+
+.legend-list {
+	display: inline-block;
+	color: $color-grey-dark;
+}
+
+
+.legend-entry-employee {
+	display: inline-block;
+	margin: -0.1em 0.3em 0.1em 1em;
+	border-radius: 50%;
+	width: 6px;
+	height: 6px;
+	background: $color-blue;
+
+	&--amersfoort {
+		background: $color-amersfoort;		
+	}
+
+	&--amsterdam {
+		background: $color-amsterdam;		
+	}
+
+	&--eindhoven {
+		background: $color-eindhoven;		
+	}
+
+	&--utrecht {
+		background: $color-utrecht;		
+	}
+}
+
+.legend-definition-employee {
+	display: inline-block;
+}
+
+.chart-context--legend--hours-per-week {
+	.legend-entry-employee {
+		border-radius: 0;
+		width: 2px;
+		height: 8px;
+	}
+}

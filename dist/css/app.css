@@ -711,11 +711,11 @@ button {
 .nodes-chart-context--city-lines .line--office-eindhoven {
   stroke: #00bdfa; }
 
-.nodes-chart-context--legend {
+.chart-context--legend {
   font-size: 1.2rem;
   color: #cbcccc; }
 
-.nodes-legend-list {
+.legend-list {
   display: inline-block;
   color: #6d6e6e; }
 
@@ -725,7 +725,9 @@ button {
   border-radius: 50%;
   width: 6px;
   height: 6px;
-  background: #fecc00; }
+  background: #00bdfa; }
+  .legend-entry-employee--amersfoort {
+    background: #fecc00; }
   .legend-entry-employee--amsterdam {
     background: #363636; }
   .legend-entry-employee--eindhoven {
@@ -735,6 +737,11 @@ button {
 
 .legend-definition-employee {
   display: inline-block; }
+
+.chart-context--legend--hours-per-week .legend-entry-employee {
+  border-radius: 0;
+  width: 2px;
+  height: 8px; }
 
 .pie-chart {
   width: 100px;
