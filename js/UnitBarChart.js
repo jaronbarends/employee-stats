@@ -42,6 +42,7 @@ class UnitBarChart {
 		this.countLabels = null;
 
 		this.barCount = 0;
+		this.barCountValues = [];
 		this.maxValue = d3.max(this.originalDataset, function(elm) {
 			return parseInt(elm.type, 10);
 		});
@@ -125,7 +126,7 @@ class UnitBarChart {
 			barCount = this.barCount;
 
 		let barsDirectionSize = barCount * settings.barWidth + (barCount - 1) * settings.barGap,
-			valueDirectionSize = 200;
+			valueDirectionSize = 160;
 
 		if (settings.isHorizontal) {
 			this.width = valueDirectionSize;
@@ -167,6 +168,78 @@ class UnitBarChart {
 	};
 
 
+	/**
+	* 
+	* @returns {undefined}
+	*/
+	_calculateBarCountValues() {
+		let propName = this.settings.primarySortProperty.name,
+			prevVal,
+			currValCount = null;
+
+		if (!this.barCountValues.length) {
+			this.dataset.forEach((emp, i) => {
+				let val = emp[propName];
+				if (val === prevVal) {
+					currValCount++;
+				} else {
+					if (currValCount !== null) {
+						this.barCountValues.push(currValCount);
+					}
+					prevVal = val;
+					currValCount = 1;
+				}
+
+				if (i === this.dataset.length-1) {
+					// after last element, prevVal won't be evaluated again so push it
+					this.barCountValues.push(currValCount);
+				}
+			});
+		}
+	};
+	
+
+
+	/**
+	* create the axis for bar count
+	* @returns {undefined}
+	*/
+	_createBarCountAxis() {
+		let axis,
+			values = this.barCountValues,
+			cummValue = 0;
+		
+		axis = this.chart.append('g')
+			.attr('class', 'axis axis--x')
+			.attr('transform', 'translate(' + this.settings.margin.left +',' + (this.settings.margin.top + this.height) + ')');
+
+		values.forEach((val) => {
+			cummValue += val;
+			console.log(val, cummValue);
+			let tick = axis.append('g')
+				.attr('class', 'tick')
+				.attr('transform', 'translate(' + this.barCountScale(cummValue) + ', 0)');
+
+			tick.append('line')
+				.attr('stroke', '#000')
+				.attr('x1', -0.5)
+				.attr('x2', -0.5)
+				.attr('y1', 0)
+				.attr('y2', 10)
+
+			if (val > 1) {
+				tick.append('text')
+					.text(val)
+					.style('text-anchor', 'middle')
+					.attr('x', this.barCountScale(-1*val/2))
+					.attr('y', 15)
+
+			}
+		});
+	};
+	
+
+
 
 	/**
 	* create the axes for the chart
@@ -195,7 +268,6 @@ class UnitBarChart {
 			.attr('class', clss)
 			.attr('transform', 'translate(' + translate + ')')
 			.call(valueAxis);
-
 	};
 
 
@@ -241,9 +313,11 @@ class UnitBarChart {
 	createChart() {
 		this._setBarCount();
 		this._initChart();
+		this._calculateBarCountValues();
 		this._createScales();
 		this._addBars();
 		this._createAxes();
+		this._createBarCountAxis();
 
 		// this.addCountLabels();
 	};

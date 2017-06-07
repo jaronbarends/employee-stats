@@ -34,9 +34,9 @@ window.app.hoursPerWeekChart = (function($) {
 	const init = function() {
 		const dataset = app.data.buckets.hoursPerWeek.dataset,
 			chartSelector = '#unit-bar-chart--hours-per-week',
-			barsGroupSelector = '#unit-bar-chart__bars--hours-per-week',
+			primarySortProperty = {name: 'hoursPerWeek'},
 			sortProperties = [
-				{name: 'hoursPerWeek'},
+				primarySortProperty,
 				{name: 'gender', order: 'desc'},// we want women first, and in dataset the values are dutch: 'man' and 'vrouw'
 				{name: 'office'}
 			],
@@ -44,7 +44,8 @@ window.app.hoursPerWeekChart = (function($) {
 
 		const options = {
 			isHorizontal: false,
-			sortFunction: sortFunction,
+			primarySortProperty,
+			sortFunction,
 			margin: {
 				top: 10,
 				right: 0,
