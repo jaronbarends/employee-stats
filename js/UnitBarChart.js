@@ -213,7 +213,6 @@ class UnitBarChart {
 
 		values.forEach((val) => {
 			cummValue += val;
-			console.log(val, cummValue);
 			let tick = axis.append('g')
 				.attr('class', 'tick')
 				.attr('transform', 'translate(' + this.barCountScale(cummValue) + ', 0)');
