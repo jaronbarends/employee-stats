@@ -29,9 +29,7 @@ class UnitBarChart {
 
 		// setup stuff
 		this.settings = Object.assign({}, defaults, options);
-		// this.id = id;
 		this.originalDataset = dataset;
-		// this.dataset = this.sortAndFlattenDataset();
 		this.dataset = this.flattenDataset();
 		this.dataset = this._sortDataset(this.dataset);
 
@@ -169,7 +167,7 @@ class UnitBarChart {
 
 
 	/**
-	* 
+	* calculate how many times each value occurs
 	* @returns {undefined}
 	*/
 	_calculateBarCountValues() {
@@ -278,7 +276,11 @@ class UnitBarChart {
 	*/
 	_addBars() {
 		const dx = this.settings.barWidth + this.settings.barGap,
-			valueScale = this.valueScale;
+			valueScale = this.valueScale,
+			oddClass = 'unit-bar-chart__bar-group--odd',
+			evenClass = 'unit-bar-chart__bar-group--even';
+		let currClass = evenClass,
+			prevVal = null;
 
 		let eachBar = this.chart.append('g')
 			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
@@ -286,7 +288,18 @@ class UnitBarChart {
 			.data(this.dataset)
 			.enter()
 			.append('rect')
-			.attr('class', window.app.util.getEmployeeClasses)
+			.attr('class', (d) => {
+				let clss = window.app.util.getEmployeeClasses(d),
+					val = d.hoursPerWeek;
+
+				if (val !== prevVal) {
+					prevVal = val;
+					currClass = ( currClass === evenClass ) ? oddClass : evenClass;
+				}
+				clss += ' '+currClass;
+
+				return clss;
+			})
 			.attr('width', this.settings.barWidth)
 			.attr('height', (d) => {
 				let h = Math.max(this.height - valueScale(d.hoursPerWeek), this.settings.predefinedMinValue)

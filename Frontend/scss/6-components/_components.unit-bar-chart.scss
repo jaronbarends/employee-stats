@@ -1,0 +1,9 @@
+.unit-bar-chart__bar-group {
+	&--odd {
+		opacity: 0.7;
+	}
+
+	&--even {
+		opacity: 1;
+	}
+}

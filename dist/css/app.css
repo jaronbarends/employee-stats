@@ -844,6 +844,12 @@ button {
 .unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) text {
   display: block; }
 
+.unit-bar-chart__bar-group--odd {
+  opacity: 0.7; }
+
+.unit-bar-chart__bar-group--even {
+  opacity: 1; }
+
 .hours-per-week-chart .tick line {
   stroke: rgba(54, 54, 54, 0.3); }
 
