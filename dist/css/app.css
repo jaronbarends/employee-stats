@@ -978,7 +978,12 @@ button {
 
 .u-centered {
   left: 50%;
-  transform: translateX(-50%); }
+  transform: translateX(-50%);
+  text-align: center; }
 
 .u-hidden {
   display: none !important; }
+
+.u-footnote {
+  font-size: 1.2rem;
+  color: #8b8b8c; }
