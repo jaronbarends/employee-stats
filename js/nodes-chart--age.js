@@ -4,6 +4,8 @@ window.app.agesNodesChart = (function($) {
 
 	'use strict';
 
+	/* globals UnitChart */ //Tell jshint UnitChart exists as global var
+
 	let app = window.app,
 		chart;
 
@@ -68,12 +70,19 @@ window.app.agesNodesChart = (function($) {
 					bottom: 50,
 					left: 30
 				}
-			},
-			lowestAge = dataset[0].type,
-			showTicks5nPlus = 6 - lowestAge%5;
+			};
+
+		// we only want to show tick labels for ages that are a multiple of 5
+		// so the css has to be something like nt-child(5n + x)
+		// so we have to tell the css what the value of x should be
+		let lowestAge = dataset[0].type,
+			showTicks5nPlusX = 6 - lowestAge%5;
+			if (showTicks5nPlusX === 6) {
+				showTicks5nPlusX = 1;
+			}
 
 		chart = new UnitChart(dataset, chartContextSelector, unitChartObjId, options);
-		document.querySelector(chartContextSelector+' .axis--x').setAttribute('data-tick-show-5n-plus', showTicks5nPlus);
+		document.querySelector(chartContextSelector+' .axis--x').setAttribute('data-tick-show-5n-plus-x', showTicks5nPlusX);
 	};
 	
 

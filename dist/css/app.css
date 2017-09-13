@@ -820,29 +820,22 @@ button {
 .unit-chart--age .axis--x .tick text {
   display: none; }
 
-.unit-chart--age .axis--x[data-tick-show-5n-plus="2"] .tick:nth-of-type(5n+2) line {
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="1"] .tick:nth-of-type(5n+1) line,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="2"] .tick:nth-of-type(5n+2) line,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="3"] .tick:nth-of-type(5n+3) line,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="4"] .tick:nth-of-type(5n+4) line,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="5"] .tick:nth-of-type(5n+5) line {
   stroke: #363636; }
 
-.unit-chart--age .axis--x[data-tick-show-5n-plus="2"] .tick:nth-of-type(5n+2) text {
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="1"] .tick:nth-of-type(5n+1) text,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="2"] .tick:nth-of-type(5n+2) text,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="3"] .tick:nth-of-type(5n+3) text,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="4"] .tick:nth-of-type(5n+4) text,
+.unit-chart--age .axis--x[data-tick-show-5n-plus-x="5"] .tick:nth-of-type(5n+5) text {
   display: block; }
 
-.unit-chart--age .axis--x[data-tick-show-5n-plus="3"] .tick:nth-of-type(5n+3) line {
-  stroke: #363636; }
-
-.unit-chart--age .axis--x[data-tick-show-5n-plus="3"] .tick:nth-of-type(5n+3) text {
-  display: block; }
-
-.unit-chart--age .axis--x[data-tick-show-5n-plus="4"] .tick:nth-of-type(5n+4) line {
-  stroke: #363636; }
-
-.unit-chart--age .axis--x[data-tick-show-5n-plus="4"] .tick:nth-of-type(5n+4) text {
-  display: block; }
-
-.unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) line {
-  stroke: #363636; }
-
-.unit-chart--age .axis--x[data-tick-show-5n-plus="5"] .tick:nth-of-type(5n+5) text {
-  display: block; }
+.unit-chart--age .axis--y text {
+  display: none; }
 
 .unit-bar-chart__bar-group--odd {
   opacity: 0.7; }

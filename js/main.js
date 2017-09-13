@@ -348,9 +348,10 @@ window.app = window.app || {};
 		app.nodes.init();
 		setEmployeeCount();
 
-		let firstDelay = 200,
-			devMode = true;// skip delays while developing
-		app.nodes.revealNodes(firstDelay, devMode);
+		let firstDelay = 200;
+		// app.nodes.revealNodes(firstDelay);
+			let devMode = true;// skip delays while developing
+			app.nodes.revealNodes(firstDelay, devMode);
 
 		calculateAgeInfo();
 

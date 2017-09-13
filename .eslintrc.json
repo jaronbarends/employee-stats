@@ -27,8 +27,6 @@
         ],
         "no-console": [
             "warn"
-        ],
-        "no-extra-semi": [
         ]
     },
     "globals": {

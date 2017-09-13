@@ -1,31 +1,38 @@
-.unit-chart--age .axis--x {
-	.tick {
+.unit-chart--age {
+	.axis--x {
+		.tick {
 
-		line {
-			stroke: #ccc;
-		}
-
-		text {
-			display: none;
-		}
-
-	}// .tick
-
-	// only show ticks for ages that are multiple of 5
-	@for $i from 2 through 5 {
-		&[data-tick-show-5n-plus="#{$i}"] .tick:nth-of-type(5n+#{$i}) {
 			line {
-				stroke: $color-grey-xxdark;
+				stroke: #ccc;
 			}
 
 			text {
-				display: block;
+				// hide tick text by default, below we'll show the multiples of 5
+				display: none;
+			}
+
+		}// .tick
+
+		// only show ticks for ages that are multiple of 5
+		&[data-tick-show-5n-plus-x="1"] .tick:nth-of-type(5n+1),
+		&[data-tick-show-5n-plus-x="2"] .tick:nth-of-type(5n+2),
+		&[data-tick-show-5n-plus-x="3"] .tick:nth-of-type(5n+3),
+		&[data-tick-show-5n-plus-x="4"] .tick:nth-of-type(5n+4),
+		&[data-tick-show-5n-plus-x="5"] .tick:nth-of-type(5n+5) {
+			line {
+				stroke: #363636;
+			}
+
+			text {
+			  display: block;
 			}
 		}
+
+	}// .axis--x
+
+	.axis--y {
+		text {
+			display: none;
+		}
 	}
-
-
-	// }// .tick
-
-}
-// .unit-chart--age .axis--x
+}// .unit-chart--age 
