@@ -252,6 +252,38 @@ window.app.nodes = (function($) {
 	};
 
 
+	/**
+	* highlight the employee's ages
+	* @returns {undefined}
+	*/
+	const addAgeHighlighting = function() {
+		const ageSet = app.data.buckets.ageRound.dataset,
+			minAge = ageSet[0].type,
+			maxAge = ageSet[ageSet.length-1].type,
+			blueToDarkGrey30 = ['#00bdfa','#15b8f2','#1fb3eb','#27aee3','#2ca8dc','#30a4d4','#349fcd','#379ac6','#3995c0','#3b91b9','#3d8cb1','#3f86aa','#4082a3','#417d9c','#417896','#42738e','#426f87','#426a81','#42657a','#416274','#415c6d','#405867','#3f5460','#3e505a','#3d4c55','#3c474d','#3b4248','#393f42','#383a3c','#363636'],
+			blueToDarkGrey10 = ['#00bdfa','#28ace2','#359dca','#3d8db3','#407e9d','#426f87','#415f71','#3f525d','#3b4449','#363636'],
+			blueToDarkGrey5 = ['#00bdfa','#3898c4','#417692','#3f5562','#363636'],
+			blueToDarkGrey3 = ['#00bdfa','#417692','#363636'],
+			ageScale = d3.scaleOrdinal()
+				.domain([minAge, maxAge])
+				.range(blueToDarkGrey10);
+
+		elements.nodes
+			.style('fill', d => ageScale(parseInt(d.age, 10)));
+	};
+
+
+	/**
+	* 
+	* @returns {undefined}
+	*/
+	const removeNodeBackgrounds = function() {
+		elements.nodes.style('fill', null);
+	};
+	
+	
+
+
 
 	/**
 	* 
@@ -265,12 +297,14 @@ window.app.nodes = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndPropsAndProps = {
+		addAgeHighlighting,
+		changeNodesChartTopic,
 		elements,
 		getNodeGridPosition,
 		init,
+		removeNodeBackgrounds,
 		revealNodes,
 		setNodePositions,
-		changeNodesChartTopic,
 		setNodeSize,
 		setNodeSpacing,
 	};

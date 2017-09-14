@@ -71,10 +71,13 @@ window.app.hoursPerWeekChart = (function($) {
 	*/
 	const initTakeaways = function() {
 		// calculate total hours per week
-		let totalHours = calculateTotalHoursPerWeek(),
-			roundedHours = 100*Math.round(totalHours/100);
+		const totalHours = calculateTotalHoursPerWeek(),
+			roundedHours = 100*Math.round(totalHours/100),
+			thousands = Math.floor(roundedHours/1000),
+			hundreds = roundedHours - 1000 * thousands,
+			formattedRoundedHours = thousands + ',' + hundreds;
 		
-		document.getElementById('total-hours-per-week').textContent = roundedHours;
+		document.getElementById('total-hours-per-week').textContent = formattedRoundedHours;
 	};
 	
 

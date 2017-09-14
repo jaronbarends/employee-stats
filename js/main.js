@@ -42,6 +42,8 @@ window.app = window.app || {};
 		band31: ['#fecc00','#fbbd18','#f9ae24','#f59f2c','#f18f32','#ee7f36','#e96e3a','#e55d3d','#e0493f','#db3241','#d60042','#d23352','#cd4a64','#c75c75','#bf6d86','#b57b99','#a889ac','#9798c0','#80a4d3','#60b0e6','#00bdfa','#45c1f9','#65c6f8','#7dcbf7','#90d0f6','#a0d5f4','#b1daf3','#c1def2','#d0e3f1','#dfe8ef','#ecedee']
 	};
 
+	const blueToDarkGrey40 = ['#00bdfa','#0fb9f5','#1ab5ef','#21b1e9','#26aee4','#2aaadf','#2ea6d9','#31a3d3','#339fcf','#369cc9','#3897c3','#3a94be','#3b90b9','#3d8db3','#3e89ae','#3f86a9','#4082a4','#407e9e','#417c9a','#417894','#417590','#42708a','#426d86','#426a80','#42667b','#416477','#415f71','#415d6d','#405969','#405663','#3f525f','#3e4f5a','#3d4c55','#3d4850','#3c464c','#3b4348','#3a4043','#393c3f','#37393b','#363636'];
+
 
 
 	/**
@@ -207,18 +209,28 @@ window.app = window.app || {};
 		$('#highlight-gender').on('click', function(e) {
 			e.preventDefault();
 			removeHighlightClasses();
+			app.nodes.removeNodeBackgrounds();
 			$sgBody.addClass('highlight-gender');
 		});
 
 		$('#highlight-office').on('click', function(e) {
 			e.preventDefault();
 			removeHighlightClasses();
+			app.nodes.removeNodeBackgrounds();
 			$sgBody.addClass('highlight-office');
+		});
+
+		$('#highlight-age').on('click', function(e) {
+			e.preventDefault();
+			removeHighlightClasses();
+			app.nodes.removeNodeBackgrounds();
+			app.nodes.addAgeHighlighting();
 		});
 
 		$('#no-highlight').on('click', function(e) {
 			e.preventDefault();
 			removeHighlightClasses();
+			app.nodes.removeNodeBackgrounds();
 		});
 	};
 	
@@ -265,6 +277,8 @@ window.app = window.app || {};
 				.find('.age-months__number')
 				.text(avgMonths);
 		};
+
+
 
 
 	//-- End age functions --
