@@ -264,12 +264,17 @@ window.app.nodes = (function($) {
 			blueToDarkGrey10 = ['#00bdfa','#28ace2','#359dca','#3d8db3','#407e9d','#426f87','#415f71','#3f525d','#3b4449','#363636'],
 			blueToDarkGrey5 = ['#00bdfa','#3898c4','#417692','#3f5562','#363636'],
 			blueToDarkGrey3 = ['#00bdfa','#417692','#363636'],
-			ageScale = d3.scaleOrdinal()
+			colorScale = blueToDarkGrey5,
+			ageScale = d3.scaleLinear()
 				.domain([minAge, maxAge])
-				.range(blueToDarkGrey10);
+				.range([0, colorScale.length-1]);
 
 		elements.nodes
-			.style('fill', d => ageScale(parseInt(d.age, 10)));
+			.style('fill', (d) => {
+				const age = parseInt(d.ageRound, 10),
+					idx = Math.floor(ageScale(age));
+				return colorScale[idx];
+			});
 	};
 
 

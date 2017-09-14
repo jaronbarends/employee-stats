@@ -108,6 +108,9 @@
 			<div class="age-months">
 				<div class="value value--primary age-months age-months__number">..</div> months
 			</div>
+
+			<div id="samples">samples:
+			</div>
 		</div>
 
 
@@ -115,6 +118,33 @@
 
 	<div class="topic-charts">
 		<div id="nodes-chart-container" class="nodes-chart-container">
+
+			<div class="chart-context--legend nodes-chart-context nodes-chart-context--legend nodes-chart-context--legend--offices nodes-chart-context--is-inactive">
+			 	Employees working in:
+			 	<dl class="legend-list">
+			 		<dt class="legend-entry-employee legend-entry-employee--amersfoort"></dt>
+			 		<dd class="legend-definition-employee">Amersfoort</dd>
+			 		<dt class="legend-entry-employee legend-entry-employee--amsterdam"></dt>
+			 		<dd class="legend-definition-employee">Amsterdam</dd>
+			 		<dt class="legend-entry-employee legend-entry-employee--eindhoven"></dt>
+			 		<dd class="legend-definition-employee">Eindhoven</dd>
+			 		<dt class="legend-entry-employee legend-entry-employee--utrecht"></dt>
+			 		<dd class="legend-definition-employee">Utrecht</dd>
+			 	</dl>
+			 </div>
+
+			<div class="chart-context--legend nodes-chart-context nodes-chart-context--legend nodes-chart-context--legend--age nodes-chart-context--is-inactive">
+			 	<dl class="legend-list">
+			 		<dd class="legend-definition-employee">Younger</dd>
+			 		<dt class="legend-entry-employee legend-entry-employee--youngest"></dt>
+			 		<dt class="legend-entry-employee legend-entry-employee--younger"></dt>
+			 		<dt class="legend-entry-employee legend-entry-employee--avg-age"></dt>
+			 		<dt class="legend-entry-employee legend-entry-employee--older"></dt>
+			 		<dt class="legend-entry-employee legend-entry-employee--oldest"></dt>
+			 		<dd class="legend-definition-employee">Older</dd>
+			 	</dl>
+			 </div>
+
 			<div id="nodes-chart-context--unknown" class="nodes-chart-context nodes-chart-context--unknown nodes-chart-context--is-inactive"></div>
 			<svg id="nodes-chart-svg" class="chart-svg chart-svg--nodes nodes-chart--is-not-initiated">
 
@@ -134,20 +164,6 @@
 				<g id="employee-nodes-group" class="employee-nodes-group"></g>
 
 			</svg>
-			<div id="nodes-chart-context--legend"
-			 class="chart-context--legend nodes-chart-context nodes-chart-context--legend nodes-chart-context--is-inactive">
-			 	Employees working in:
-			 	<dl class="legend-list">
-			 		<dt class="legend-entry-employee legend-entry-employee--amersfoort"></dt>
-			 		<dd class="legend-definition-employee">Amersfoort</dd>
-			 		<dt class="legend-entry-employee legend-entry-employee--amsterdam"></dt>
-			 		<dd class="legend-definition-employee">Amsterdam</dd>
-			 		<dt class="legend-entry-employee legend-entry-employee--eindhoven"></dt>
-			 		<dd class="legend-definition-employee">Eindhoven</dd>
-			 		<dt class="legend-entry-employee legend-entry-employee--utrecht"></dt>
-			 		<dd class="legend-definition-employee">Utrecht</dd>
-			 	</dl>
-			 </div>
 		</div><!-- /.nodes-chart-container -->
 	</div><!-- /.topic-charts -->
 

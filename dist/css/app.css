@@ -453,7 +453,7 @@ h3 {
 
 .topic-takeaways-area,
 .topic-charts {
-  padding: 0 2em; }
+  padding: 2em; }
 
 .topic-takeaways-area {
   position: relative;
@@ -530,10 +530,10 @@ h3 {
 
 .nodes-chart-context {
   transition: opacity 0.9s 0.2s ease-out; }
-  .nodes-chart-context--is-inactive, .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--legend {
+  .nodes-chart-context--is-inactive, .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--legend--offices, .highlight-age .nodes-chart-context--city-lines.nodes-chart-context--legend--age, .nodes-chart-context--legend {
     opacity: 0;
     pointer-events: none; }
-  .nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--legend {
+  .nodes-chart-context--is-active, .highlight-office .nodes-chart-context--city-lines.nodes-chart-context--is-active, .highlight-office .nodes-chart-context--legend--offices, .highlight-age .nodes-chart-context--legend--age {
     opacity: 1;
     transition: opacity 0.9s 0.2s ease-out;
     pointer-events: initial; }
@@ -583,7 +583,7 @@ h3 {
   fill: #8b8b8c;
   transition: opacity 1s 1s; }
 
-.unit-chart.nodes-chart-context--is-inactive .count-label, .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--is-active .count-label, .highlight-office .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--legend .count-label {
+.unit-chart.nodes-chart-context--is-inactive .count-label, .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--is-active .count-label, .highlight-office .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--legend--offices .count-label, .highlight-age .unit-chart.nodes-chart-context--city-lines.nodes-chart-context--legend--age .count-label, .unit-chart.nodes-chart-context--legend .count-label {
   opacity: 0; }
 
 input,
@@ -742,6 +742,30 @@ button {
   border-radius: 0;
   width: 2px;
   height: 8px; }
+
+.nodes-chart-context--legend {
+  position: absolute;
+  top: -2em; }
+
+.nodes-chart-context--legend--age .legend-entry-employee {
+  margin-left: 0.3em; }
+
+.nodes-chart-context--legend--age .legend-entry-employee--youngest {
+  margin-left: 1em;
+  background: #00bdfa; }
+
+.nodes-chart-context--legend--age .legend-entry-employee--younger {
+  background: #3898c4; }
+
+.nodes-chart-context--legend--age .legend-entry-employee--avg-age {
+  background: #417692; }
+
+.nodes-chart-context--legend--age .legend-entry-employee--older {
+  background: #3f5562; }
+
+.nodes-chart-context--legend--age .legend-entry-employee--oldest {
+  margin-right: 1em;
+  background: #363636; }
 
 .pie-chart {
   width: 100px;

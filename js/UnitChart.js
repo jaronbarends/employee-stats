@@ -50,7 +50,7 @@ class UnitChart {
 	*/
 	getDataset() {
 		return this.sortAndFlattenDataset();
-	};
+	}
 
 
 	/**
@@ -62,7 +62,7 @@ class UnitChart {
 			sortedFlattenedDataset = this.flattenDataset(sortedDataset);
 
 		return sortedFlattenedDataset;
-	};
+	}
 	
 
 
@@ -80,8 +80,7 @@ class UnitChart {
 		}
 
 		return dataset;
-
-	};
+	}
 
 
 
@@ -109,7 +108,7 @@ class UnitChart {
 		}
 
 		return flatSet;
-	};
+	}
 
 
 
@@ -144,7 +143,7 @@ class UnitChart {
 
 		this.chart.attr('width', svgWidth)
 			.attr('height', svgHeight);
-	};
+	}
 	
 	
 
@@ -184,15 +183,15 @@ class UnitChart {
 
 		this.employeeCountScale = d3.scaleLinear()
 			.domain([0, d3.max(this.originalDataset, function(d) {
-					return d.employees.length;
-				})]);
+				return d.employees.length;
+			})]);
 
 		if (this.settings.isHorizontal) {
 			this.employeeCountScale.range([0, employeeCountHeightOrWidth]);
 		} else {
 			this.employeeCountScale.range([employeeCountHeightOrWidth, 0]);
 		}
-	};
+	}
 
 
 
@@ -233,7 +232,7 @@ class UnitChart {
 			.attr('class', 'axis axis--y')
 			.attr('transform', 'translate(' + this.settings.margin.left + ',' + this.settings.margin.top + ')')
 			.call(yAxis);
-	};
+	}
 	
 
 
@@ -257,7 +256,7 @@ class UnitChart {
 			.attr('r', this.settings.radius);
 
 		return eachCircle;
-	};
+	}
 
 
 
@@ -268,7 +267,7 @@ class UnitChart {
 	*/
 	_getOffsetToScaleBandCenter() {
 		return Math.ceil(this.typeScale.bandwidth()/2);
-	};
+	}
 
 
 	/**
@@ -304,7 +303,7 @@ class UnitChart {
 
 		return [x,y];
 
-	};
+	}
 	
 	
 	
@@ -324,13 +323,13 @@ class UnitChart {
 		};
 
 		eachCircle.attr('cx', (d, i) => {
-				// yay! arrow function's this is this class's this :)
-				return this.getNodePosition(d, i, options)[0];
-			})
-			.attr('cy', (d, i) => {
-				return this.getNodePosition(d, i, options)[1];
-			});
-	};
+			// yay! arrow function's this is this class's this :)
+			return this.getNodePosition(d, i, options)[0];
+		})
+		.attr('cy', (d, i) => {
+			return this.getNodePosition(d, i, options)[1];
+		});
+	}
 
 
 
@@ -380,7 +379,7 @@ class UnitChart {
 			this.countLabels = eachCountLabel;
 
 		}
-	};
+	}
 
 
 
@@ -395,7 +394,7 @@ class UnitChart {
 
 		// this.addNodes();
 		this.addCountLabels();
-	};
+	}
 
 
 
@@ -407,6 +406,6 @@ class UnitChart {
 		this.createChartContext();
 		this.addNodes();
 		this.addCountLabels();
-	};
+	}
 	
 }

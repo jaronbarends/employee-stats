@@ -1,7 +1,46 @@
 .nodes-chart-context--legend {
+	@extend .nodes-chart-context--is-inactive;
+	position: absolute;
+	top: -2em;
+
+}
+
+.nodes-chart-context--legend--offices {
 
 	.highlight-office & {
 		@extend .nodes-chart-context--is-active;
 	}
 }
 
+.nodes-chart-context--legend--age {
+
+	.highlight-age & {
+		@extend .nodes-chart-context--is-active;
+	}
+
+	.legend-entry-employee {
+		margin-left: 0.3em;
+	}
+
+	.legend-entry-employee--youngest {
+		margin-left: 1em;
+		background: nth($color-scale-blue-dark-grey, 1);
+	}
+
+	.legend-entry-employee--younger {
+		background: nth($color-scale-blue-dark-grey, 2);
+	}
+
+	.legend-entry-employee--avg-age {
+		background: nth($color-scale-blue-dark-grey, 3);
+	}
+
+	.legend-entry-employee--older {
+		background: nth($color-scale-blue-dark-grey, 4);
+	}
+
+	.legend-entry-employee--oldest {
+		margin-right: 1em;
+		background: nth($color-scale-blue-dark-grey, 5);
+	}
+}

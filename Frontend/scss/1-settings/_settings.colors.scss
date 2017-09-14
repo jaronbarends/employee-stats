@@ -17,6 +17,7 @@
 	$color-scale-blue-red: (#00bdfa,#77a8d9,#9e93b8,#b57b99,#c4627b,#cf435e,#d60042);// https://gka.github.io/palettes/#colors=#00bdfa,#d60042|steps=7|bez=1|coL=1
 	$color-scale-blue-grey: (#00bdfa,#5bc5f8,#82cdf6,#a0d5f4,#bbddf2,#d4e5f0,#ecedee);// https://gka.github.io/palettes/#colors=#00bdfa,#ecedee|steps=7|bez=1|coL=1
 	$color-scale-grey: (#363636,#515151,#6d6e6e,#8b8b8c,#ababac,#cbcccc,#ecedee);
+	$color-scale-blue-dark-grey: (#00bdfa, #3898c4, #417692, #3f5562, #363636);
 	// nth($color, $i)
 
 // grey colors - all taken from the color
@@ -42,7 +43,7 @@ $color-white: #fff;
 
 	$color-link: $color-primary;
 	$color-link-hover: $color-link;
-	 
+		 
 	//defaults
 	$color-text-default: $color-grey-xxdark !default;
 	$color-text-less-important: #999 !default;//for less important text
