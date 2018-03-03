@@ -170,7 +170,7 @@ window.app.dataprocessorEmployees = (function($) {
 		var startDate = emp.startDate,
 			parseTime = d3.timeParse('%d/%m/%Y'),
 			yearStr = '31/12/' + startDate.split('/')[2],
-			year = parseTime(startDate);
+			year = parseTime(yearStr);
 
 		var espy = app.data.employeesStartedPerYear,
 			yearFound = false;
@@ -384,9 +384,11 @@ window.app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var processEmployeeData = function() {
+		// console.log(app.data.employees);
 		// process data we want to manipulate before use
 		// loop through all employees; collect info and do data-cleaning
 		app.data.employees.forEach(function(emp) {
+			// console.log(emp);
 			correctMDOffice(emp);
 			cleanDiscipline(emp);// separate discipline and level;
 			cleanOrganisationalUnit(emp);// remove office name, fix mt's unit

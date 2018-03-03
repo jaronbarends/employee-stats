@@ -56,8 +56,9 @@ app.dataprocessorGeo = (function($) {
 						break;
 					}
 				}
-
+				
 				if (!locationFound) {
+					// console.log('not found:', locationName);
 					app.data.placesWithoutGeoData.push(employee[employeeLocationProp]);
 				}
 			}
@@ -204,7 +205,7 @@ app.dataprocessorGeo = (function($) {
 					str += uniqueUnknown[i] + '\n';
 				}
 
-				console.log(str);
+				// console.log(str);
 			};
 
 
@@ -227,7 +228,8 @@ app.dataprocessorGeo = (function($) {
 
 	// define public methods that are available through app
 	var publicMethodsAndProps = {
-		init
+		init,
+		reportMissingGeoData
 	};
 
 	return publicMethodsAndProps;

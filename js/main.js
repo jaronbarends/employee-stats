@@ -369,9 +369,9 @@ window.app = window.app || {};
 		setEmployeeCount();
 
 		let firstDelay = 200;
-		// app.nodes.revealNodes(firstDelay);
-			let devMode = true;// skip delays while developing
-			app.nodes.revealNodes(firstDelay, devMode);
+		app.nodes.revealNodes(firstDelay);
+			// let devMode = true;// skip delays while developing
+			// app.nodes.revealNodes(firstDelay, devMode);
 
 		calculateAgeInfo();
 
@@ -386,7 +386,7 @@ window.app = window.app || {};
 		app.hoursPerWeekChart.init();
 
 		// report data missing in dataset (for dev purposes only)
-		// reportMissingGeoData();
+		app.dataprocessorGeo.reportMissingGeoData();
 
 	};// loadHandler
 
@@ -398,7 +398,8 @@ window.app = window.app || {};
 	*/
 	var loadData = function() {
 		d3.queue()
-			.defer(d3.csv, '../data/employees.csv')
+			// .defer(d3.csv, '../data/employees-12-2016.csv')
+			.defer(d3.csv, '../data/employees-12-2017.csv')
 			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
