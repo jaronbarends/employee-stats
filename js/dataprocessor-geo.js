@@ -191,21 +191,17 @@ app.dataprocessorGeo = (function($) {
 			* @returns {undefined}
 			*/
 			var reportMissingGeoData = function() {
-				
-				Array.prototype.unique = function() {
-				  return this.filter(function (value, index, self) { 
-				    return self.indexOf(value) === index;
-				  });
-				};
-
-				var uniqueUnknown = app.data.placesWithoutGeoData.unique(),
+				var uniqueValues = function (value, index, self) { 
+						return self.indexOf(value) === index;
+					},
+					uniquePlacesWithoutGeoData = app.data.placesWithoutGeoData.filter(uniqueValues),
 					str = '\n\n';
 
-				for (var i=0, len=uniqueUnknown.length; i<len; i++) {
-					str += uniqueUnknown[i] + '\n';
+				for (var i=0, len=uniquePlacesWithoutGeoData.length; i<len; i++) {
+					str += uniquePlacesWithoutGeoData[i] + '\n';
 				}
 
-				// console.log(str);
+				console.log(str);
 			};
 
 

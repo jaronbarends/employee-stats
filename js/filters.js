@@ -112,7 +112,7 @@ window.app.filters = (function($) {
 		*/
 		var createChartsByFilter = function(bucketName, propName, chartsContainerId) {
 			// we'll distinguish buckets and types: a bucket consists of several types,
-			// like the bucket offices consists of types utrecht, amersfoors, ...
+			// like the bucket offices consists of types utrecht, amersfoort, ...
 
 			// remove any previous charts
 			const $container = $('#'+chartsContainerId);
