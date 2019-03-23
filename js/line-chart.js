@@ -43,7 +43,7 @@ window.app.lineChart = (function($) {
 
 		sgTotalData = app.data.employeesPerYear;
 		sgStartedData = app.data.employeesStartedPerYear;
-		
+
 		 // process data for totals
 		for (var i=0; i<sgTotalData.length; i++) {
 			var d = sgTotalData[i];

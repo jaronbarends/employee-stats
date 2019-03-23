@@ -1,0 +1,9 @@
+Bij error Error: <circle> attribute cx: Expected length, "NaN".
+
+gaat het niet goed met toekennen van de jaren doordat date-format niet juist is (gescheiden door - ipv door /)
+
+op te lossen met replace op employee data's csv:
+replace
+(\d{1,2})-(\d{1,2})-(\d{4})
+width
+$1/$2/$3

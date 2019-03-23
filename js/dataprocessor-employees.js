@@ -167,10 +167,15 @@ window.app.dataprocessorEmployees = (function($) {
 	* @returns {undefined}
 	*/
 	var processStartDate = function(emp) {
+		if (!emp.startDate.match(/\d{1,2}\/\d{1,2}\/\d{4}/)) {
+			console.warn(emp, 'startDate should have format dd/mm/yyyy');
+		}
 		var startDate = emp.startDate,
 			parseTime = d3.timeParse('%d/%m/%Y'),
 			yearStr = '31/12/' + startDate.split('/')[2],
 			year = parseTime(yearStr);
+
+
 
 		var espy = app.data.employeesStartedPerYear,
 			yearFound = false;

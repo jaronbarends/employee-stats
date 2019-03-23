@@ -7,6 +7,8 @@ window.app = window.app || {};
 	var $sgBody = $('body'),
 		app = window.app;
 
+	let useDummyData = false;
+
 	// vars for datasets
 
 	app.data = {
@@ -397,9 +399,10 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var loadData = function() {
+		const employeesCsv = useDummyData ? '../data/employees-12-2017-randomized.csv' : '../data/employees-12-2017.csv';
 		d3.queue()
 			// .defer(d3.csv, '../data/employees-12-2016.csv')
-			.defer(d3.csv, '../data/employees-12-2017.csv')
+			.defer(d3.csv, employeesCsv)
 			// .defer(d3.csv, '../data/employees-excerpt-real-data.csv')
 			// .defer(d3.csv, '../data/employees-excerpt.csv')
 			.defer(d3.json, '../data/provinces.topojson')
@@ -417,6 +420,16 @@ window.app = window.app || {};
 	* @returns {undefined}
 	*/
 	var init = function() {
+		useDummyData = true;
+		if (useDummyData) {
+			console.warn(`You're looking at randomized data`);
+			const mainHeader = document.getElementById(`main-heading`);
+			const note = document.createElement(`p`);
+			note.style.padding = '0.2em';
+			note.style.backgroundColor = '#ccf2fe';
+			note.textContent = `Data has been randomized for privacy reasons`;
+			mainHeader.parentNode.insertBefore(note, mainHeader);
+		}
 		initSimulation();
 		initSortingLinks();
 		initHighlightLinks();
